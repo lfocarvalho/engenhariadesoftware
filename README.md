@@ -22,15 +22,21 @@ Um projeto de agenda pessoal online inspirado no Notion, porém mais simples e o
 
               PHP
 
+              MySql
+
               HTML5
 
               CSS3
 
               Git/GitHub
 
-## Versão Beta  do Aplicativo no figma:
+## Logo do Projeto:
+
+![image](https://github.com/user-attachments/assets/7dcb55c4-6fe8-4dcb-b55f-b83438be5bed)
+
+## Versão Beta  do Aplicativo no [Figma](https://www.figma.com/design/jv0gykfRstoIKWcypGvp1A/Untitled?node-id=1-2&t=cr9aatuTIzlfmUJu-1):
        
-![WhatsApp Image 2025-04-09 at 08 41 40](https://github.com/user-attachments/assets/571f236f-9c0b-4c5a-a2e0-f2343be57f18)
+![WhatsApp Image 2025-04-09 at 10 00 40](https://github.com/user-attachments/assets/d79621f2-9226-4d5f-9fc1-7063f67fb2d0)
 
 ## Informações Acadêmicas:
 
