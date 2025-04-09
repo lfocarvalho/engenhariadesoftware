@@ -35,17 +35,13 @@ Um projeto de agenda pessoal online inspirado no Notion, porém mais simples e o
       Disciplina: engenharia de software  - Semestre 2025.1
       Professor Edeilson Milhomem da Silva
 
-## Integrantes do Grupo:
-
-Isabela Barros de Oliveira.
-
-Letícia Gomes Lopes.
-
-Luiz Fernando De Oliveira Carvalho.
-
-Mateus Leopoldo Santiago da Silva.
-
-Natália Morais Nerys.
-
-Ranor Victor dos Santos Araújo.
-
+#### Equipe
+| Nome | Github |
+| ------------------------- | ------------------------------------------ |
+| Isabela Barros de Oliveira. | [@Isabelabarros-o](https://github.com/isabelabarros-o) |
+| Letícia Gomes Lopes. | [@LeticiaGLopes](https://github.com/LeticiaGLopes-151) |
+| Luiz Fernando De Oliveira Carvalho. | [@Lfocarvalho](https://github.com/lfocarvalho) |
+| Mateus Leopoldo Santiago da Silva. | [@MateusLeopoldo](https://github.com/MateusLeopoldo) |
+| Natália Morais Nerys. | [@Natalia-Nerys](https://github.com/natalia-nerys) |
+| Ranor Victor dos Santos Araújo. | [@RanorVictor](https://github.com/ranorvictor) |
+| Link para repositório do projeto | [link](https://github.com/lfocarvalho/engenhariadesoftware)
