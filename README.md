@@ -44,4 +44,4 @@ Um projeto de agenda pessoal online inspirado no Notion, porém mais simples e o
 | Mateus Leopoldo Santiago da Silva. | [@MateusLeopoldo](https://github.com/MateusLeopoldo) |
 | Natália Morais Nerys. | [@Natalia-Nerys](https://github.com/natalia-nerys) |
 | Ranor Victor dos Santos Araújo. | [@RanorVictor](https://github.com/ranorvictor) |
-| Link para repositório do projeto | [link](https://github.com/lfocarvalho/engenhariadesoftware)
+| Link para repositório do projeto | [DailyPlanner](https://github.com/lfocarvalho/engenhariadesoftware)
