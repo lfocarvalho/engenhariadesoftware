@@ -28,6 +28,10 @@ Um projeto de agenda pessoal online inspirado no Notion, porém mais simples e o
 
               Git/GitHub
 
+## Versão Beta  do Aplicativo no figma:
+       
+![WhatsApp Image 2025-04-09 at 08 41 40](https://github.com/user-attachments/assets/571f236f-9c0b-4c5a-a2e0-f2343be57f18)
+
 ## Informações Acadêmicas:
 
       Universidade Federal do Tocantins 
