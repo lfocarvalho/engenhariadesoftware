@@ -13,7 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Carrega tarefas existentes
     if (file_exists($arquivo)) {
         $conteudo = file_get_contents($arquivo);
-        $tarefas = json_decode($conteudo, true) ?: [];
+        $tarefas = json_decode($conteudo, true);
+        if (!is_array($tarefas)) {
+            $tarefas = [];
+        }
     }
 
     // Prepara nova tarefa

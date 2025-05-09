@@ -2,6 +2,9 @@
 if (file_exists('tarefas.json')) {
     $json_tarefas = file_get_contents('tarefas.json');
     $tarefas = json_decode($json_tarefas, true);
+    if (!is_array($tarefas)){
+        $tarefas = [];
+    }
 } else {
     $tarefas = [];
 }
