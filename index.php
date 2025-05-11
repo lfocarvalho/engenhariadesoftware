@@ -25,7 +25,11 @@ $tarefasFiltradas = filtrarTarefas($tarefas, $filtro);
 </head>
 <body>
     <div class="container">
-        <h1>📝 Minha Lista de Tarefas</h1>
+        <div class="cabecalho-logo">
+            <img id="logo" src="logo.png" alt="Logo">
+            <h1 id="titulo">DAILY PLANNER</h1>
+        </div>
+
 
         <!-- Formulário para adicionar tarefas -->
         <form action="salvar_tarefa.php" method="POST" class="formulario-tarefa">

@@ -1,7 +1,5 @@
 <?php
-// Verifica se o formulário foi submetido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validação básica
     if (empty($_POST['titulo']) || empty($_POST['data_vencimento'])) {
         header('Location: index.php?erro=1');
         exit;
@@ -10,13 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $arquivo = 'tarefas.json';
     $tarefas = [];
 
-    // Carrega tarefas existentes
     if (file_exists($arquivo)) {
         $conteudo = file_get_contents($arquivo);
         $tarefas = json_decode($conteudo, true) ?: [];
     }
 
-    // Prepara nova tarefa
+    $tarefas = is_array($tarefas) ? array_combine(array_map('strval', array_keys($tarefas)), array_values($tarefas)) : [];
+
+
     $novaTarefa = [
         'titulo' => $_POST['titulo'],
         'descricao' => $_POST['descricao'] ?? '',
@@ -24,12 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'concluida' => false
     ];
 
-    // Adiciona ao array (o ID será o índice automático)
-    $tarefas[] = $novaTarefa;
+    $id = uniqid();
 
-    // Salva no arquivo
-    file_put_contents($arquivo, json_encode($tarefas, JSON_PRETTY_PRINT));
+    $tarefas[$id] = $novaTarefa;
+
+
+    file_put_contents($arquivo, json_encode($tarefas, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT));
 }
+
 
 header('Location: index.php');
 exit;

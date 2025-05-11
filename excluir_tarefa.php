@@ -1,19 +1,26 @@
 <?php
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
-    $arquivo = 'tarefas.json'; // Corrigido o nome do arquivo
+    $arquivo = 'tarefas.json'; 
     
+   // excluir 
     if (file_exists($arquivo)) {
-        $tarefas = json_decode(file_get_contents($arquivo), true);
-        
-        // Remove a tarefa com o ID informado
-        unset($tarefas[$id]);
-        
-        // Salva as alterações
-        file_put_contents($arquivo, json_encode($tarefas));
+        $conteudo = file_get_contents($arquivo);
+        $tarefas = json_decode($conteudo, true);
+
+        $tarefas = array_combine(array_map('strval', array_keys($tarefas)), array_values($tarefas));
+
+        unset($tarefas[(string)$id]);
+
+        if (empty($tarefas)) {
+            file_put_contents($arquivo, json_encode(new stdClass()));
+        } else {
+            file_put_contents($arquivo, json_encode($tarefas, JSON_FORCE_OBJECT));
+        }
     }
 }
 
-header('Location: index.php'); // Corrigido o redirecionamento
+
+header('Location: index.php');
 exit;
 ?>
