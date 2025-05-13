@@ -1,19 +1,34 @@
 <?php
-if (file_exists('tarefas.json')) {
-    $json_tarefas = file_get_contents('tarefas.json');
-    $tarefas = json_decode($json_tarefas, true);
-} else {
-    $tarefas = [];
+require 'config.php';
+session_start();
+
+// Simulação de usuário (remova isso quando implementar autenticação real)
+$_SESSION['usuario']['id'] = 1; // Exemplo: usuário ID 1
+
+$usuario_id = $_SESSION['usuario']['id'] ?? null;
+
+if (!$usuario_id) {
+    echo "Usuário não autenticado.";
+    exit;
 }
 
 // Verifica o filtro ativo
 $filtro = $_GET['filtro'] ?? 'todas';
 
-// Inclui o arquivo de filtros
-require 'filtros.php';
+// Consulta as tarefas do usuário com base no filtro
+$sql = "SELECT * FROM tarefas WHERE usuario_id = ?";
+$params = [$usuario_id];
 
-// Aplica o filtro
-$tarefasFiltradas = filtrarTarefas($tarefas, $filtro);
+if ($filtro === 'pendentes') {
+    $sql .= " AND concluida = 0";
+} elseif ($filtro === 'concluidas') {
+    $sql .= " AND concluida = 1";
+}
+
+$sql .= " ORDER BY data_vencimento ASC";
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$tarefas = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -29,7 +44,6 @@ $tarefasFiltradas = filtrarTarefas($tarefas, $filtro);
             <img id="logo" src="logo.png" alt="Logo">
             <h1 id="titulo">DAILY PLANNER</h1>
         </div>
-
 
         <!-- Formulário para adicionar tarefas -->
         <form action="salvar_tarefa.php" method="POST" class="formulario-tarefa">
@@ -48,10 +62,10 @@ $tarefasFiltradas = filtrarTarefas($tarefas, $filtro);
 
         <!-- Lista de tarefas -->
         <div class="tarefas">
-            <?php if (empty($tarefasFiltradas)) : ?>
+            <?php if (empty($tarefas)) : ?>
                 <p class="vazio">Nenhuma tarefa encontrada. 🎉</p>
             <?php else : ?>
-                <?php foreach ($tarefasFiltradas as $id => $tarefa) : ?>
+                <?php foreach ($tarefas as $tarefa) : ?>
                     <div class="tarefa <?= $tarefa['concluida'] ? 'concluida' : '' ?>">
                         <div class="cabecalho-tarefa">
                             <h3><?= htmlspecialchars($tarefa['titulo']) ?></h3>
@@ -61,11 +75,11 @@ $tarefasFiltradas = filtrarTarefas($tarefas, $filtro);
                         <p class="descricao"><?= htmlspecialchars($tarefa['descricao']) ?></p>
                         
                         <div class="acoes">
-                            <a href="alterar_status.php?id=<?= $id ?>" class="status">
+                            <a href="alterar_status.php?id=<?= $tarefa['id'] ?>" class="status">
                                 <?= $tarefa['concluida'] ? '✅ Concluído' : '🕒 Pendente' ?>
                             </a>
-                            <a href="editar_tarefa.php?id=<?= $id ?>" class="editar">✏️ Editar</a>
-                            <a href="excluir_tarefa.php?id=<?= $id ?>" class="excluir">🗑️ Excluir</a>
+                            <a href="editar_tarefa.php?id=<?= $tarefa['id'] ?>" class="editar">✏️ Editar</a>
+                            <a href="excluir_tarefa.php?id=<?= $tarefa['id'] ?>" class="excluir">🗑️ Excluir</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

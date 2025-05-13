@@ -1,16 +1,30 @@
 <?php
+require 'config.php'; // Conexão com o banco de dados
+session_start();
 
+// Verifica se o usuário está logado
+//if (!isset($_SESSION['usuario'])) {
+  //  header('Location: login.php');
+    //exit;
+//}
+
+// Verifica se o ID da tarefa foi fornecido
 if (isset($_GET['id'])) {
- 
-    $json_tarefas = file_get_contents('tarefas.json');
-    $tarefas = json_decode($json_tarefas, true);
-
-  
     $id = $_GET['id'];
-    if (isset($tarefas[$id])) {
-        $tarefa = $tarefas[$id];
-    } else {
-        echo "Tarefa não encontrada!";
+
+    // Verifica se a tarefa existe no banco de dados
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM tarefas WHERE id = ? AND usuario_id = ?");
+        $stmt->execute([$id, $_SESSION['usuario']['id']]);
+        $tarefa = $stmt->fetch();
+
+        if (!$tarefa) {
+            echo "Tarefa não encontrada!";
+            exit;
+        }
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        echo "Erro ao buscar a tarefa.";
         exit;
     }
 } else {
@@ -18,19 +32,31 @@ if (isset($_GET['id'])) {
     exit;
 }
 
-
+// Verifica se o formulário foi submetido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-   
-    $tarefas[$id]['titulo'] = $_POST['titulo'];
-    $tarefas[$id]['descricao'] = $_POST['descricao'];
-    $tarefas[$id]['data_vencimento'] = $_POST['data_vencimento'];
+    // Validação dos campos
+    if (empty($_POST['titulo']) || empty($_POST['data_vencimento'])) {
+        echo "Título e data de vencimento são obrigatórios!";
+        exit;
+    }
 
+    $titulo = $_POST['titulo'];
+    $descricao = $_POST['descricao'] ?? '';
+    $data_vencimento = $_POST['data_vencimento'];
 
-    file_put_contents('tarefas.json', json_encode($tarefas, JSON_PRETTY_PRINT));
+    // Atualiza a tarefa no banco de dados
+    try {
+        $stmt = $pdo->prepare("UPDATE tarefas SET titulo = ?, descricao = ?, data_vencimento = ? WHERE id = ? AND usuario_id = ?");
+        $stmt->execute([$titulo, $descricao, $data_vencimento, $id, $_SESSION['usuario']['id']]);
 
-
-    header('Location: index.php');
-    exit;
+        // Redireciona após sucesso
+        header('Location: index.php');
+        exit;
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        echo "Erro ao atualizar a tarefa.";
+        exit;
+    }
 }
 ?>
 
