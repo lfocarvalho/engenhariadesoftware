@@ -1,5 +1,14 @@
 <?php
-// Verifica se o formulário foi submetido
+require 'config.php';
+session_start();
+
+// Verifica se o usuário está logado
+//if (!isset($_SESSION['usuario'])) {
+  //  header('Location: login.php');
+    //exit;
+//}
+
+// Verifica se a requisição é POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validação básica
     if (empty($_POST['titulo']) || empty($_POST['data_vencimento'])) {
@@ -7,33 +16,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $arquivo = 'tarefas.json';
-    $tarefas = [];
+    // Coleta os dados do formulário
+    $titulo = $_POST['titulo'];
+    $descricao = $_POST['descricao'] ?? '';
+    date_default_timezone_set('America/Sao_Paulo');
+    $data_vencimento = date('Y-m-d H:i:s', strtotime($_POST['data_vencimento']));
+    $usuario_id = $_SESSION['usuario']['id'];
 
-    // Carrega tarefas existentes
-    if (file_exists($arquivo)) {
-        $conteudo = file_get_contents($arquivo);
-        $tarefas = json_decode($conteudo, true);
-        if (!is_array($tarefas)) {
-            $tarefas = [];
-        }
+    // Insere a tarefa no banco de dados
+    try {
+        $stmt = $pdo->prepare("INSERT INTO tarefas (titulo, descricao, data_vencimento, usuario_id) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$titulo, $descricao, $data_vencimento, $usuario_id]);
+    } catch (PDOException $e) {
+        header('Location: index.php?erro=2');
+        exit;
     }
 
-    // Prepara nova tarefa
-    $novaTarefa = [
-        'titulo' => $_POST['titulo'],
-        'descricao' => $_POST['descricao'] ?? '',
-        'data_vencimento' => $_POST['data_vencimento'],
-        'concluida' => false
-    ];
-
-    // Adiciona ao array (o ID será o índice automático)
-    $tarefas[] = $novaTarefa;
-
-    // Salva no arquivo
-    file_put_contents($arquivo, json_encode($tarefas, JSON_PRETTY_PRINT));
+    // Redireciona após o sucesso
+    header('Location: index.php');
+    exit;
 }
-
-header('Location: index.php');
-exit;
 ?>
