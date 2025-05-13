@@ -62,10 +62,10 @@ $tarefas = $stmt->fetchAll();
 
         <!-- Lista de tarefas -->
         <div class="tarefas">
-            <?php if (empty($tarefas)) : ?>
+            <?php if (empty($tarefasFiltradas)) : ?>
                 <p class="vazio">Nenhuma tarefa encontrada. 🎉</p>
             <?php else : ?>
-                <?php foreach ($tarefas as $tarefa) : ?>
+                <?php foreach ($tarefasFiltradas as $id => $tarefa) : ?>
                     <div class="tarefa <?= $tarefa['concluida'] ? 'concluida' : '' ?>">
                         <div class="cabecalho-tarefa">
                             <h3><?= htmlspecialchars($tarefa['titulo']) ?></h3>
@@ -75,11 +75,11 @@ $tarefas = $stmt->fetchAll();
                         <p class="descricao"><?= htmlspecialchars($tarefa['descricao']) ?></p>
                         
                         <div class="acoes">
-                            <a href="alterar_status.php?id=<?= $tarefa['id'] ?>" class="status">
+                            <a href="alterar_status.php?id=<?= $id ?>" class="status">
                                 <?= $tarefa['concluida'] ? '✅ Concluído' : '🕒 Pendente' ?>
                             </a>
-                            <a href="editar_tarefa.php?id=<?= $tarefa['id'] ?>" class="editar">✏️ Editar</a>
-                            <a href="excluir_tarefa.php?id=<?= $tarefa['id'] ?>" class="excluir">🗑️ Excluir</a>
+                            <a href="editar_tarefa.php?id=<?= $id ?>" class="editar">✏️ Editar</a>
+                            <a href="excluir_tarefa.php?id=<?= $id ?>" class="excluir" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');">🗑️ Excluir</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
