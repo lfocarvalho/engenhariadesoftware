@@ -10,7 +10,6 @@ session_start();
 
 // Verifica se a requisição é POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validação básica
     if (empty($_POST['titulo']) || empty($_POST['data_vencimento'])) {
         header('Location: index.php?erro=1');
         exit;
@@ -22,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     date_default_timezone_set('America/Sao_Paulo');
     $data_vencimento = date('Y-m-d H:i:s', strtotime($_POST['data_vencimento']));
     $usuario_id = $_SESSION['usuario']['id'];
-
     // Insere a tarefa no banco de dados
     try {
         $stmt = $pdo->prepare("INSERT INTO tarefas (titulo, descricao, data_vencimento, usuario_id) VALUES (?, ?, ?, ?)");

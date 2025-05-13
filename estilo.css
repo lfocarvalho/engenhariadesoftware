@@ -1,12 +1,15 @@
 /* Estilos Gerais */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
+    background: pink;
     margin: 0;
     padding: 20px;
     color: #333;
 }
 
+#titulo{
+    display: flex;
+}
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -33,7 +36,7 @@ input, textarea, select {
 
 button {
     padding: 12px 20px;
-    background: #007bff;
+    background: #28d671;
     color: white;
     border: none;
     border-radius: 6px;
@@ -84,7 +87,7 @@ button:hover {
 
 .editar {
     background: #ffc107;
-    color: black;
+    color: white;
 }
 
 .status {
@@ -108,7 +111,7 @@ button:hover {
 }
 
 .filtros a.ativo {
-    background: #007bff;
+    background: #28d671;
     color: white;
 }
 
@@ -117,4 +120,20 @@ button:hover {
     text-align: center;
     color: #6c757d;
     font-style: italic;
+}
+
+.cabecalho-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* espaço entre o logo e o texto */
+    margin-bottom: 20px;
+  }
+  
+  #logo {
+    width: 100px;
+    height: auto;
+  }
+  
+#titulo {
+    color: rgb(223, 46, 76);
 }
