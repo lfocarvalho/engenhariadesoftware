@@ -86,5 +86,33 @@ $tarefas = $stmt->fetchAll();
             <?php endif; ?>
         </div>
     </div>
+        <!-- Botão do SAC -->
+    <div class="sac-flutuante">
+        <button type="button" class="botao-sac" onclick="toggleModalSac()">SAC</button>
+    </div>
+
+    <!-- Modal do SAC -->
+    <div class="modal-sac" id="modalSac" style="display: none;">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="toggleModalSac()">&times;</span>
+            <h2>Enviar Mensagem ao SAC</h2>
+            <form method="post" action="salvar_sac.php">
+                <input type="text" name="titulo" placeholder="Assunto" required><br>
+                <textarea name="descricao" placeholder="Sua mensagem..." required rows="5"></textarea><br>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function toggleModalSac() {
+        var modal = document.getElementById('modalSac');
+        if (modal.style.display === 'none' || modal.style.display === '') {
+            modal.style.display = 'block';
+        } else {
+            modal.style.display = 'none';
+        }
+    }
+    </script>
 </body>
 </html>
