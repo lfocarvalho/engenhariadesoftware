@@ -1,6 +1,6 @@
 <?php
 
-require_once 'C:\Users\letic\EngSoft\engenhariadesoftware\config.php';
+require_once 'config.php';
 
 // Verifica se uma sessão já foi iniciada
 if (session_status() == PHP_SESSION_NONE) {
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ];
                     $mensagem = "Bem-vindo, " . htmlspecialchars($usuario["nome"]) . "! Você está logado como " . $usuario["tipo"] . ".";
                     // Redirecionar para a página principal após o login bem-sucedido
-                    header("Location: index.php"); // Substitua "index.php" pelo nome da sua página principal
+                    header("Location: perfil.html"); // Substitua "index.php" pelo nome da sua página principal
                     exit();
                 } else {
                     $erro = "Senha incorreta.";

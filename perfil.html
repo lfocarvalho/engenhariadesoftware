@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/80" alt="Foto do usuário" class="profile-pic">
+                <h3 id="username">Nome do Usuário</h3>
+                <p id="user-email">usuario@email.com</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Perfil</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+                    <li class="logout"><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="account-actions">
+                <h2><i class="fas fa-user-cog"></i> Configurações da Conta</h2>
+                
+                <div class="danger-zone">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h3>
+                    <p>Ao apagar sua conta, todos os seus dados serão permanentemente removidos e não poderão ser recuperados.</p>
+                    
+                    <button id="deleteAccountBtn" class="btn-danger">
+                        <i class="fas fa-trash-alt"></i> Apagar Minha Conta
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-exclamation-circle"></i> Confirmar Exclusão</h3>
+            <p>Tem certeza que deseja apagar sua conta permanentemente?</p>
+            <div class="modal-buttons">
+                 <br><a href="apagar_conta.php">Sim, apagar conta</a>
+                
+                <button id="cancelDelete" class="btn-cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

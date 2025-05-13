@@ -37,5 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br><a href="index.php">Voltar para página inicial</a>
     </div>
 
+    <a href="excluir_conta.php" onclick="return confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível.');">Excluir minha conta</a>
 </body>
 </html>
