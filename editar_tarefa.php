@@ -3,10 +3,10 @@ require 'config.php'; // Conexão com o banco de dados
 session_start();
 
 // Verifica se o usuário está logado
-//if (!isset($_SESSION['usuario'])) {
-  //  header('Location: login.php');
-    //exit;
-//}
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit;
+}
 
 // Verifica se o ID da tarefa foi fornecido
 if (isset($_GET['id'])) {

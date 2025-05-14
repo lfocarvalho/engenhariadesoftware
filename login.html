@@ -1,51 +1,9 @@
-<?php
-require_once 'config.php';
-
-session_start();
-
-$erro = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = trim($_POST['login']);
-    $senha = trim($_POST['senha']);
-
-    if (empty($login) || empty($senha)) {
-        $erro = "Por favor, preencha todos os campos.";
-    } else {
-        try {
-            // Consulta o banco de dados para verificar o login
-            $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
-            $stmt->execute([$login]);
-            $usuario = $stmt->fetch();
-
-            if ($usuario && password_verify($senha, $usuario['senha'])) {
-                // Login bem-sucedido, cria a sessão do usuário
-                $_SESSION['usuario'] = [
-                    'id' => $usuario['id'],
-                    'nome' => $usuario['nome'],
-                    'email' => $usuario['email']
-                ];
-
-                // Redireciona para a próxima página (exemplo: dashboard.php)
-                header('Location: dashboard.html');
-                exit();
-            } else {
-                $erro = "Login ou senha inválidos.";
-            }
-        } catch (PDOException $e) {
-            $erro = "Erro ao acessar o banco de dados: " . $e->getMessage();
-        }
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Bem-vindo</title>
-    <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="login.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
@@ -62,12 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-box">
             <h1>Bem-vindo de volta!</h1>
             <p class="subtitle">Vamos descobrir juntos o que você vai realizar hoje?</p>
-
-            <?php if (!empty($erro)): ?>
-                <p class="mensagem-erro"><?php echo $erro; ?></p>
-            <?php endif; ?>
             
-            <form class="login-form" action="login.php" method="POST">
+            <form class="login-form" action="dashboard.html" method="GET">
                 <div class="form-group">
                     <label for="login">Login</label>
                     <input type="text" id="login" name="login" class="input-field" required>
