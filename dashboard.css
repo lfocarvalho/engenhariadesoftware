@@ -567,3 +567,162 @@ body {
     max-height: 300px;
     overflow-y: auto;
 }
+    .sac-flutuante {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        cursor: pointer;
+        width: 91px;
+        height: 91px;
+        flex-shrink: 0;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        transition: transform 0.3s ease;
+    }
+    
+    .sac-flutuante:hover {
+        transform: scale(1.05);
+    }
+    
+    .botao-sac {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 0;
+        position: relative;
+    }
+    
+    .botao-sac svg {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .botao-sac-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #FDF7EF;
+        font-weight: bold;
+        font-size: 16px;
+        pointer-events: none;
+    }
+    
+    .modal-sac {
+        position: fixed;
+        bottom: 120px;
+        right: 20px;
+        width: 300px;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 1000;
+        padding: 20px;
+        display: none;
+        border: 1px solid #F6C4B7;
+    }
+    
+    .modal-conteudo {
+        position: relative;
+    }
+    
+    .modal-conteudo h2 {
+        margin-top: 0;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .modal-conteudo input,
+    .modal-conteudo textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+    
+    .modal-conteudo textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+    
+    .modal-conteudo button[type="submit"] {
+        background-color: #F6C4B7;
+        color: #333;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    
+    .modal-conteudo button[type="submit"]:hover {
+        background-color: #de8982;
+    }
+    
+    @media (max-width: 400px) {
+        .modal-sac {
+            width: calc(100% - 40px);
+            right: 20px;
+            left: auto;
+            bottom: 120px;
+        }
+        
+        .sac-flutuante {
+            width: 75px;
+            height: 75px;
+        }
+    }
+
+/* Estilo para a mensagem de sucesso do SAC */
+.sac-success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(60, 40, 20, 0.45); /* marrom translúcido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.sac-success-box {
+    background: #7c4a21; /* marrom principal */
+    color: #fff;
+    padding: 40px 60px;
+    border-radius: 18px;
+    box-shadow: 0 2px 18px #0003;
+    text-align: center;
+    font-family: inherit;
+}
+
+.sac-success-box h2 {
+    margin-bottom: 24px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.sac-success-btn {
+    background: #a86f3c;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+    margin-top: 10px;
+}
+
+.sac-success-btn:hover {
+    background: #6b3d1a;
+}

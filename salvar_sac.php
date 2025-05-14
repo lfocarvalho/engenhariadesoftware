@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = $pdo->prepare("INSERT INTO sac_tarefa (titulo, descricao, data_vencimento, usuario_id, data_criacao) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$titulo, $descricao, $data_criacao, $usuario_id, $data_criacao]);
-        header('Location: index.php?sucesso=1');
+        header('Location: dashboard.html?sucesso_sac=1');
     } catch (PDOException $e) {
-        header('Location: index.php?erro=2');
+        header('Location: dashboard.html?erro=2');
     }
     exit;
 }
 
-header('Location: index.php');
+header('Location: dashboard.html?sucesso_sac=1');

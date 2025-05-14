@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+    <script>
+    // Exibe mensagem de sucesso do SAC se o parâmetro estiver na URL
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('sucesso_sac') === '1') {
+            const msg = document.createElement('div');
+            msg.className = 'sac-success-overlay';
+            msg.innerHTML = `
+                <div class="sac-success-box">
+                    <h2>SAC enviado com sucesso!</h2>
+                    <button class="sac-success-btn" onclick="window.location.href='dashboard.html'">Fechar</button>
+                </div>
+            `;
+            document.body.appendChild(msg);
+        }
+    }
+    </script>
     <div class="dashboard-container">
         <div class="sidebar">
             <div class="user-avatar"></div>
@@ -256,6 +273,35 @@
                 window.location.href = "dashboard.html";
             }
         }
+    </script>
+            <!-- Botão do SAC -->
+    <div class="sac-flutuante">
+        <button type="button" class="botao-sac" onclick="toggleModalSac()">SAC</button>
+    </div>
+
+    <!-- Modal do SAC -->
+    <div class="modal-sac" id="modalSac" style="display: none;">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="toggleModalSac()">&times;</span>
+            <h2>Enviar Mensagem ao SAC</h2>
+            <form method="post" action="salvar_sac.php">
+                <input type="text" name="titulo" placeholder="Assunto" required><br>
+                <textarea name="descricao" placeholder="Sua mensagem..." required rows="5"></textarea><br>
+                <button type="submit">Enviar</button>
+                
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function toggleModalSac() {
+        var modal = document.getElementById('modalSac');
+        if (modal.style.display === 'none' || modal.style.display === '') {
+            modal.style.display = 'block';
+        } else {
+            modal.style.display = 'none';
+        }
+    }
     </script>
 </body>
 </html>
