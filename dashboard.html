@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="user-avatar"></div>
+            <nav class="menu">
+                <a href="home.html" class="menu-item active">
+                    <div class="menu-icon"></div>
+                    Home
+                </a>
+                <a href="agenda.html" class="menu-item">
+                    <div class="menu-icon"></div>
+                    Agenda
+                </a>
+                <a href="progresso.html" class="menu-item">
+                    <div class="menu-icon"></div>
+                    Progresso
+                </a>
+                <a href="configuracoes.html" class="menu-item">
+                    <div class="menu-icon"></div>
+                    Configurações
+                </a>
+            </nav>
+            <button class="logout-button" onclick="redirectToIndex()">Sair</button>
+        </div>
+        <div class="content-area">
+            <header class="dashboard-header">
+                <h1>Bem-vindo ao Dashboard</h1>
+                <p>Gerencie suas tarefas e produtividade</p>
+            </header>
+            <div class="dashboard-grid">
+                <!-- Seção de Agenda do Dia -->
+                <div class="card">
+                    <h2>Agenda do Dia</h2>
+                    <div class="activity-container">
+                        <ul class="agenda-list" id="activity-list">
+                            <!-- As atividades serão carregadas dinamicamente aqui -->
+                        </ul>
+                    </div>
+                    <button class="add-button" onclick="openAddActivityModal()">Adicionar Atividade</button>
+                </div>
+
+                <!-- Seção de Produtividade -->
+                <div class="card">
+                    <h2>Produtividade</h2>
+                    <div class="productivity-circle">
+                        75%
+                    </div>
+                </div>
+
+                <!-- Seção de Calendário -->
+                <div class="card">
+                    <h2>Calendário</h2>
+                    <div class="calendar-header">
+                        <button class="prev-button">Anterior</button>
+                        <span class="current-month">Maio 2025</span>
+                        <button class="next-button">Próximo</button>
+                    </div>
+                    <div class="week-days">
+                        <span>Dom</span>
+                        <span>Seg</span>
+                        <span>Ter</span>
+                        <span>Qua</span>
+                        <span>Qui</span>
+                        <span>Sex</span>
+                        <span>Sáb</span>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="empty-day"></div>
+                        <div class="day">1</div>
+                        <div class="day">2</div>
+                        <div class="day">3</div>
+                        <!-- Continue com os dias do mês -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar/editar atividade -->
+    <div id="activity-modal" class="popup hidden">
+        <div class="popup-content">
+            <h2 id="modal-title">Adicionar Atividade</h2>
+            <form id="activity-form" action="salvar_tarefa.php" method="POST">
+                <input type="hidden" id="activity-id" name="id">
+                <div class="form-group">
+                    <label for="activity-title">Título</label>
+                    <input type="text" id="activity-title" name="titulo" class="input-field" placeholder="Digite o título" required>
+                </div>
+                <div class="form-group">
+                    <label for="activity-description">Descrição</label>
+                    <textarea id="activity-description" name="descricao" class="input-field" placeholder="Digite a descrição" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="activity-date">Data</label>
+                    <input type="date" id="activity-date" name="date" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="activity-time">Hora</label>
+                    <input type="time" id="activity-time" name="time" class="input-field" required>
+                </div>
+                <button type="submit" class="save-button">Salvar</button>
+                <button type="button" class="cancel-button" onclick="closeModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Função para carregar atividades
+        async function loadActivities() {
+            const response = await fetch('get_atividades.php');
+            const activities = await response.json();
+            const activityList = document.getElementById('activity-list');
+            activityList.innerHTML = '';
+
+            activities.forEach(activity => {
+                const li = document.createElement('li');
+                li.classList.add('activity');
+                li.innerHTML = `
+                    <div class="activity-header" onclick="toggleActivity(this)">
+                        <span class="activity-title">${activity.time} - ${activity.title}</span>
+                        <button class="toggle-button">+</button>
+                    </div>
+                    <div class="activity-details hidden">
+                        <p class="activity-description">${activity.description}</p>
+                        <div class="activity-actions">
+                            <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
+                            <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
+                        </div>
+                    </div>
+                `;
+                activityList.appendChild(li);
+            });
+        }
+
+        // Função para abrir o modal de adicionar atividade
+        function openAddActivityModal() {
+            document.getElementById('modal-title').textContent = 'Adicionar Atividade';
+            document.getElementById('activity-form').reset();
+            document.getElementById('activity-id').value = '';
+            document.getElementById('activity-modal').classList.remove('hidden');
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            document.getElementById('activity-modal').classList.add('hidden');
+        }
+
+        // Função para expandir/recolher detalhes da atividade
+        function toggleActivity(header) {
+            const details = header.nextElementSibling;
+            const toggleButton = header.querySelector('.toggle-button');
+
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                toggleButton.textContent = '-';
+            } else {
+                details.classList.add('hidden');
+                toggleButton.textContent = '+';
+            }
+        }
+
+        // Gera o calendário ao carregar a página
+        document.addEventListener('DOMContentLoaded', generateCalendar);
+
+        // Função para gerar os dias do calendário
+        function generateCalendar() {
+            const calendarGrid = document.querySelector('.calendar-grid');
+            const currentMonthElement = document.querySelector('.current-month');
+
+            // Obtém a data atual
+            const today = new Date();
+            let currentMonth = today.getMonth(); // Mês atual (0-11)
+            let currentYear = today.getFullYear(); // Ano atual
+
+            // Função para atualizar o calendário
+            function updateCalendar() {
+                // Limpa o calendário
+                calendarGrid.innerHTML = '';
+
+                // Define o primeiro dia do mês
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // Dia da semana (0-6)
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Total de dias no mês
+
+                // Atualiza o título do mês
+                const monthNames = [
+                    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+                ];
+                currentMonthElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+                // Preenche os dias vazios antes do primeiro dia do mês
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.classList.add('empty-day');
+                    calendarGrid.appendChild(emptyCell);
+                }
+
+                // Preenche os dias do mês
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.classList.add('day');
+                    dayCell.textContent = day;
+
+                    // Marca o dia atual
+                    if (
+                        day === today.getDate() &&
+                        currentMonth === today.getMonth() &&
+                        currentYear === today.getFullYear()
+                    ) {
+                        dayCell.classList.add('today');
+                    }
+
+                    calendarGrid.appendChild(dayCell);
+                }
+            }
+
+            // Botões de navegação do calendário
+            document.querySelector('.prev-button').addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                updateCalendar();
+            });
+
+            document.querySelector('.next-button').addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                updateCalendar();
+            });
+
+            // Gera o calendário inicial
+            updateCalendar();
+        }
+
+        // Função para redirecionar ao clicar no botão "Sair"
+        function redirectToIndex() {
+            const confirmLogout = confirm("Você deseja mesmo sair da conta?");
+            if (confirmLogout) {
+                // Redireciona para a página inicial (index.php)
+                window.location.href = "index.php";
+            } else {
+                // Permanece na página atual (dashboard.html)
+                window.location.href = "dashboard.html";
+            }
+        }
+    </script>
+</body>
+</html>

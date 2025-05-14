@@ -1,0 +1,569 @@
+/* Estilos gerais */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #F7EADC;
+}
+
+.dashboard-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.main-panel {
+    width: 100%;
+    height: 100%;
+    background: #FDF7EF;
+    box-shadow: 0px 0px 15px 10px rgba(153, 130, 122, 0.25);
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background: #FBF2E5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+    width: 150px;
+    height: 150px;
+    background: #F8F0E1;
+    border-radius: 50%;
+    margin-bottom: 40px;
+}
+
+.menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 20px;
+}
+
+.menu-item {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    gap: 10px;
+    text-decoration: none;
+    color: #99827A;
+    font-size: 18px;
+    font-weight: 500;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.menu-item.active {
+    background: #F2E7D9;
+    color: #755F52;
+}
+
+.menu-item:hover {
+    background: #F2E7D9;
+    color: #755F52;
+}
+
+.menu-icon {
+    width: 30px;
+    height: 30px;
+    background: #755F52;
+    mask-size: cover;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+/* Botão de logout */
+.logout-button {
+    width: 220px;
+    height: 50px;
+    background: #755F52;
+    border-radius: 15px;
+    border: none;
+    color: #FBF2E5;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    gap: 10px;
+    margin-top: auto;
+    margin-bottom: 40px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.logout-button:hover {
+    background: #604A3E;
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+}
+
+.logout-icon {
+    width: 20px;
+    height: 20px;
+    background: #FBF2E5;
+    mask: url('data:image/svg+xml,...') no-repeat center;
+    mask-size: cover;
+}
+
+/* Área de conteúdo */
+.content-area {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.dashboard-header h1 {
+    color: #494542;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.dashboard-header p {
+    color: #494542;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 0;
+}
+
+/* Cards */
+.card {
+    background: #FFFCF8; /* Fundo claro */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    border-radius: 15px; /* Bordas arredondadas */
+    padding: 20px 30px; /* Ajuste do espaçamento interno */
+    display: flex;
+    flex-direction: column; /* Organiza os elementos verticalmente */
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    justify-content: center; /* Centraliza o conteúdo verticalmente */
+    max-width: 350px; /* Largura máxima */
+    margin: 20px auto; /* Centraliza o calendário na página */
+}
+
+/* Ajuste do título do calendário */
+.card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #494542;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Estilo para o layout das seções (Agenda, Produtividade e Calendário) */
+.dashboard-grid {
+    display: flex; /* Alinha os elementos lado a lado */
+    gap: 20px; /* Espaçamento entre as seções */
+    justify-content: center; /* Centraliza as seções horizontalmente */
+    flex-wrap: wrap; /* Permite que as seções quebrem para a próxima linha em telas menores */
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        flex-direction: column; /* Empilha as seções verticalmente em telas menores */
+        gap: 15px; /* Reduz o espaçamento entre as seções */
+    }
+
+    .card {
+        max-width: 100%; /* Faz os cards ocuparem toda a largura disponível */
+    }
+}
+
+/* Agenda do dia */
+.agenda-list {
+    list-style: none;
+    padding: 0;
+}
+
+.agenda-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Garante que o texto e o botão fiquem nas extremidades */
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 10px; /* Adiciona espaçamento interno */
+    background: #FFFCF8; /* Fundo para destacar cada tarefa */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+.agenda-list li span {
+    flex: 1; /* Faz o texto ocupar o espaço disponível */
+    color: #494542; /* Cor do texto */
+    font-size: 16px; /* Tamanho do texto */
+}
+
+.agenda-list li.completed {
+    background: #E8E8E8; /* Fundo mais claro para indicar conclusão */
+    box-shadow: none; /* Remove a sombra para diferenciar */
+}
+
+.agenda-list li.completed span {
+    color: #99827A; /* Cor mais clara para o texto */
+    text-decoration: line-through; /* Texto riscado */
+}
+
+.task-button {
+    padding: 5px 15px;
+    background: #755F52;
+    color: #FBF2E5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.task-button:hover {
+    background: #604A3E;
+}
+
+.task-button.completed {
+    background: #99827A; /* Cor diferente para o botão */
+    color: #FFFFFF; /* Texto branco */
+    cursor: default; /* Cursor padrão para indicar que não é clicável */
+}
+
+/* Produtividade */
+.productivity-circle {
+    width: 100px;
+    height: 100px;
+    background: #FFFDF9;
+    border-radius: 50%;
+    outline: 10px solid #FBEDE3;
+    outline-offset: -5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #494542;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+/* Calendário */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Garante que os botões e o título ocupem toda a largura */
+    margin-bottom: 15px;
+}
+
+.calendar-header button {
+    background: #755F52; /* Cor de fundo consistente */
+    color: #FFF; /* Texto branco */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.calendar-header button:hover {
+    background: #604A3E; /* Cor mais escura ao passar o mouse */
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+}
+
+.calendar-header button:active {
+    transform: scale(0.95); /* Leve redução ao clicar */
+}
+
+.current-month {
+    font-size: 18px;
+    font-weight: 600;
+    color: #494542; /* Cor consistente com o texto */
+    text-align: center;
+}
+
+/* Dias da semana */
+.week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 colunas iguais */
+    text-align: center;
+    margin: 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #755F52; /* Cor mais escura */
+    width: 100%; /* Garante que os dias da semana ocupem toda a largura */
+}
+
+/* Dias do calendário */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 colunas iguais */
+    gap: 8px; /* Espaçamento entre os dias */
+    width: 100%; /* Garante que o calendário ocupe toda a largura */
+    margin-top: 10px;
+}
+
+.day {
+    width: 40px;
+    height: 40px;
+    background: #FFF; /* Fundo branco */
+    border: 1px solid #E0E0E0; /* Borda leve */
+    border-radius: 5px; /* Bordas levemente arredondadas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #494542; /* Texto escuro */
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.day:hover {
+    background: #F2E7D9; /* Fundo mais claro ao passar o mouse */
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+}
+
+.day.selected {
+    background: #755F52; /* Fundo destacado para o dia selecionado */
+    color: #FFF; /* Texto branco */
+    font-weight: 600;
+}
+
+/* Dias vazios no início do mês */
+.empty-day {
+    background: transparent;
+    pointer-events: none; /* Desativa interações */
+}
+
+/* Botões "Anterior" e "Próximo" no calendário */
+.calendar-header button {
+    background: #755F52; /* Cor de fundo consistente com o projeto */
+    color: #FFF7F7; /* Texto branco */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.calendar-header button:hover {
+    background: #604A3E; /* Cor mais escura ao passar o mouse */
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+}
+
+.calendar-header button:active {
+    transform: scale(0.95); /* Leve redução ao clicar */
+}
+
+/* Estilo do título do mês no calendário */
+.current-month {
+    font-size: 18px;
+    font-weight: 600;
+    color: #494542; /* Cor consistente com o texto do projeto */
+    margin: 0 10px;
+}
+
+/* Estilo para a lista de atividades */
+.activity {
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    background: #FFFCF8;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    background: #F7EADC;
+    font-size: 16px;
+    font-weight: 500;
+    color: #494542;
+}
+
+.activity-header:hover {
+    background: #F2E7D9;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #755F52;
+    cursor: pointer;
+}
+
+.activity-details {
+    padding: 15px;
+    background: #FFF;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.activity-details.hidden {
+    display: none;
+}
+
+.activity-description {
+    font-size: 14px;
+    color: #494542;
+}
+
+.activity-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-button,
+.delete-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button {
+    background: #755F52;
+    color: #FFF7F7;
+}
+
+.edit-button:hover {
+    background: #604A3E;
+}
+
+.delete-button {
+    background: #D9534F;
+    color: #FFF;
+}
+
+.delete-button:hover {
+    background: #C9302C;
+}
+
+/* Botão de adicionar atividade */
+.add-button {
+    width: 100%;
+    padding: 10px;
+    background: #755F52;
+    color: #FFF7F7;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.add-button:hover {
+    background-color: #604A3E;
+}
+
+/* Modal */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background: #FFFFFF;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+}
+
+.popup-content h2 {
+    font-size: 24px;
+    color: #806359;
+    margin-bottom: 20px;
+}
+
+/* Estilo para o campo de data */
+.popup-content .form-group label {
+    font-size: 14px;
+    color: #806359;
+    margin-bottom: 5px;
+}
+
+.popup-content .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.popup-content .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.save-button {
+    padding: 10px 20px;
+    background: #755F52;
+    color: #FFF7F7;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+    background-color: #604A3E;
+}
+
+.cancel-button {
+    padding: 10px 20px;
+    background: #D9534F;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+
+.cancel-button:hover {
+    background-color: #C9302C;
+}
+
+/* Scroll para atividades */
+.activity-container {
+    max-height: 300px;
+    overflow-y: auto;
+}

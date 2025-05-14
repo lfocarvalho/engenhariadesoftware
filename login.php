@@ -1,44 +1,39 @@
 <?php
+require_once 'config.php';
 
-require_once 'C:\Users\letic\EngSoft\engenhariadesoftware\config.php';
-
-// Verifica se uma sessão já foi iniciada
-if (session_status() == PHP_SESSION_NONE) {
+// Verifica se a sessão já foi iniciada
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 $erro = '';
-$mensagem = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST["email"]);
-    $senha = trim($_POST["senha"]);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login = trim($_POST['login']);
+    $senha = trim($_POST['senha']);
 
-    if (empty($email) || empty($senha)) {
+    if (empty($login) || empty($senha)) {
         $erro = "Por favor, preencha todos os campos.";
     } else {
         try {
-            $sql = "SELECT * FROM usuarios WHERE email = ?";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$email]);
+            // Consulta o banco de dados para verificar o login
+            $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
+            $stmt->execute([$login]);
             $usuario = $stmt->fetch();
 
-            if ($usuario) {
-                if (password_verify($senha, $usuario['senha'])) {
-                    $_SESSION["usuario"] = [
-                        "id" => $usuario["id"],
-                        "nome" => $usuario["nome"],
-                        "tipo" => $usuario["tipo"]
-                    ];
-                    $mensagem = "Bem-vindo, " . htmlspecialchars($usuario["nome"]) . "! Você está logado como " . $usuario["tipo"] . ".";
-                    // Redirecionar para a página principal após o login bem-sucedido
-                    header("Location: index.php"); // Substitua "index.php" pelo nome da sua página principal
-                    exit();
-                } else {
-                    $erro = "Senha incorreta.";
-                }
+            if ($usuario && password_verify($senha, $usuario['senha'])) {
+                // Login bem-sucedido, cria a sessão do usuário
+                $_SESSION['usuario'] = [
+                    'id' => $usuario['id'],
+                    'nome' => $usuario['nome'],
+                    'email' => $usuario['email']
+                ];
+
+                // Redireciona para a próxima página (exemplo: dashboard.php)
+                header('Location: dashboard.html');
+                exit();
             } else {
-                $erro = "Usuário não encontrado.";
+                $erro = "Login ou senha inválidos.";
             }
         } catch (PDOException $e) {
             $erro = "Erro ao acessar o banco de dados: " . $e->getMessage();
@@ -51,122 +46,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Daily Planner</title>
-    <style>
-        /* Estilos Gerais (copiados do seu CSS) */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: pink;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-
-        #titulo {
-            display: flex;
-        }
-
-        .container {
-            max-width: 400px; /* Reduzi a largura para o formulário de login */
-            margin: 100px auto; /* Centraliza vertical e horizontalmente */
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* Estilos específicos para o formulário de login */
-        .formulario-login {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .formulario-login label {
-            font-weight: bold;
-        }
-
-        .formulario-login input[type="email"],
-        .formulario-login input[type="password"] {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-
-        .formulario-login button {
-            padding: 12px 20px;
-            background: #007bff; /* Cor primária para o botão de login */
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 18px;
-        }
-
-        .formulario-login button:hover {
-            background: #0056b3;
-        }
-
-        .mensagem-erro {
-            color: red;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .mensagem-sucesso {
-            color: green;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .cabecalho-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            justify-content: center; /* Centraliza o logo e o título */
-        }
-
-        #logo {
-            width: 80px; /* Ajuste o tamanho do logo conforme necessário */
-            height: auto;
-        }
-
-        #titulo-login {
-            color: rgb(223, 46, 76);
-            font-size: 2em;
-            margin-top: 0;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bem-vindo</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="cabecalho-logo">
-            <h1 id="titulo-login">Daily Planner</h1>
+    <div class="background-pattern">
+        <!-- Tiles gerados via CSS pseudo-elementos -->
+    </div>
+    
+    <div class="login-container">
+        <div class="logo">
+            <div class="logo-icon"></div>
         </div>
+        
+        <div class="login-box">
+            <h1>Bem-vindo de volta!</h1>
+            <p class="subtitle">Vamos descobrir juntos o que você vai realizar hoje?</p>
 
-        <?php if (!empty($erro)): ?>
-            <p class="mensagem-erro"><?php echo $erro; ?></p>
-        <?php endif; ?>
-
-        <?php if (!empty($mensagem)): ?>
-            <p class="mensagem-sucesso"><?php echo $mensagem; ?></p>
-        <?php endif; ?>
-
-        <?php if (empty($mensagem)): ?>
-            <form method="POST" class="formulario-login">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
-
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
-
-                <button type="submit">Entrar</button>
+            <?php if (!empty($erro)): ?>
+                <p class="mensagem-erro"><?php echo $erro; ?></p>
+            <?php endif; ?>
+            
+            <form class="login-form" action="login.php" method="POST">
+                <div class="form-group">
+                    <label for="login">Login</label>
+                    <input type="text" id="login" name="login" class="input-field" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" class="input-field active-field" required>
+                </div>
+                
+                <!-- Botão "ENTRAR" acima do link -->
+                <button type="submit" class="login-button">ENTRAR</button>
+                <a href="#" class="forgot-password">Esqueci minha senha</a>
             </form>
-        <?php endif; ?>
+            
+            <div class="social-login">
+                <div class="social-icon apple"></div>
+                <div class="social-icon facebook"></div>
+                <div class="social-icon google"></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
