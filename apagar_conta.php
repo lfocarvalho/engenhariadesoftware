@@ -14,9 +14,6 @@ try {
     $stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
     $stmt->execute([$usuario_id]);
 
-    // Destroi a sessão
-    session_destroy();
-
     // Redireciona para a página inicial ou de login
     header('Location: index.php?msg=conta_excluida');
     exit;

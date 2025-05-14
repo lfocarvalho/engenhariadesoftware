@@ -26,27 +26,21 @@
     </script>
     <div class="dashboard-container">
         <div class="sidebar">
-            <div class="user-avatar"></div>
-            <nav class="menu">
-                <a href="home.html" class="menu-item active">
-                    <div class="menu-icon"></div>
-                    Home
-                </a>
-                <a href="agenda.html" class="menu-item">
-                    <div class="menu-icon"></div>
-                    Agenda
-                </a>
-                <a href="progresso.html" class="menu-item">
-                    <div class="menu-icon"></div>
-                    Progresso
-                </a>
-                <a href="configuracoes.html" class="menu-item">
-                    <div class="menu-icon"></div>
-                    Configurações
-                </a>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/80" alt="Foto do usuário" class="profile-pic">
+                <h3 id="username">Nome do Usuário</h3>
+                <p id="user-email">usuario@email.com</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="home.html"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="perfil.html"><i class="fas fa-user"></i> Perfil</a></li>
+                    <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                    <li class="logout"><a href="#" onclick="redirectToIndex()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                </ul>
             </nav>
-            <button class="logout-button" onclick="redirectToIndex()">Sair</button>
             <button class="change-password-button" onclick="window.location.href='perfil.php'">Alterar Senha</button>
+            <button class="delete-account-button" onclick="window.location.href='perfil.html'">Apagar Conta</button>
         </div>
         <div class="content-area">
             <header class="dashboard-header">
@@ -306,3 +300,4 @@
     </script>
 </body>
 </html>
+``` 
