@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL COMMENT 'Senha em texto puro - NÃO SEGURO',
     senha_hash VARCHAR(255) COMMENT 'Opcional: manter hash também',
     tipo ENUM('admin', 'usuario') DEFAULT 'usuario',
     data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
