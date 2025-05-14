@@ -73,7 +73,11 @@
                         <span>Sáb</span>
                     </div>
                     <div class="calendar-grid">
-                        <!-- Dias do calendário serão gerados dinamicamente -->
+                        <div class="empty-day"></div>
+                        <div class="day">1</div>
+                        <div class="day">2</div>
+                        <div class="day">3</div>
+                        <!-- Continue com os dias do mês -->
                     </div>
                 </div>
             </div>
@@ -239,6 +243,18 @@
 
             // Gera o calendário inicial
             updateCalendar();
+        }
+
+        // Função para redirecionar ao clicar no botão "Sair"
+        function redirectToIndex() {
+            const confirmLogout = confirm("Você deseja mesmo sair da conta?");
+            if (confirmLogout) {
+                // Redireciona para a página inicial (index.php)
+                window.location.href = "index.php";
+            } else {
+                // Permanece na página atual (dashboard.html)
+                window.location.href = "dashboard.html";
+            }
         }
     </script>
 </body>

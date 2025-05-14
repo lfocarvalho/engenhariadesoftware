@@ -45,8 +45,9 @@ body {
 .logo-icon {
     width: 80px;
     height: 80px;
-    background: #fff;
+    background: #f80505;
     border-radius: 50%;
+    display: none;
 }
 
 /* Caixa de Login */
@@ -98,14 +99,14 @@ body {
     display: block;
     margin: 10px 0;
     font-size: 12px;
-    color: #007bff;
+    color: #000102;
     text-decoration: none;
 }
 
 .login-button {
     width: 100%;
     padding: 10px;
-    background: #6a11cb;
+    background: #000000;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -114,33 +115,5 @@ body {
 }
 
 .login-button:hover {
-    background: #2575fc;
-}
-
-/* Login Social */
-.social-login {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.social-icon {
-    width: 40px;
-    height: 40px;
-    margin: 0 10px;
-    background: #ddd;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.social-icon.apple {
-    background: #000;
-}
-
-.social-icon.facebook {
-    background: #3b5998;
-}
-
-.social-icon.google {
-    background: #db4437;
+    background: #000000;
 }

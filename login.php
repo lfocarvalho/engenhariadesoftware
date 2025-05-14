@@ -1,7 +1,10 @@
 <?php
 require_once 'config.php';
 
-session_start();
+// Verifica se a sessão já foi iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $erro = '';
 
@@ -78,9 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="password" id="senha" name="senha" class="input-field active-field" required>
                 </div>
                 
-                <a href="#" class="forgot-password">Esqueci minha senha</a>
-                
+                <!-- Botão "ENTRAR" acima do link -->
                 <button type="submit" class="login-button">ENTRAR</button>
+                <a href="#" class="forgot-password">Esqueci minha senha</a>
             </form>
             
             <div class="social-login">

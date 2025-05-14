@@ -24,7 +24,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         margin: 0;
         padding: 0;
         font-family: 'Roboto', sans-serif;
-        background-image: url('img/background.svg'); /* Caminho atualizado para a imagem SVG */
+        background-image: url('img/backk.svg'); /* Caminho atualizado para a imagem SVG */
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -216,9 +216,10 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
     </section>
 
     <!-- Ajustando o botão -->
-    <div style="width: 200px; height: 50px; background: #755F52; box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 10px; text-align: center; line-height: 50px; margin: 30px auto;">
+ 
+    <div style="width: 200px; height: 50px; background: #755F52; box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 10px; text-align: center; line-height: 50px; margin: 300px 0 0 81px;">
       <a href="cadastrar_usuario.php" style="color: #FFF7F7; font-size: 18px; font-family: Roboto; font-weight: 500; text-decoration: none;">
-        Clique Aqui
+        Começar agora
       </a>
     </div>
   </main>
