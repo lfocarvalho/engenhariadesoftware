@@ -14,7 +14,9 @@ try {
 }
 
 // Inicia a sessão (para autenticação)
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Função para verificar se o usuário é admin
 function isAdmin() {

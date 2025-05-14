@@ -726,3 +726,29 @@ body {
 .sac-success-btn:hover {
     background: #6b3d1a;
 }
+
+/* Botão de alterar senha no padrão do botão de sair */
+.change-password-button {
+    width: 220px;
+    height: 50px;
+    background: #755F52;
+    border-radius: 15px;
+    border: none;
+    color: #FBF2E5;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    font-family: inherit;
+}
+
+.change-password-button:hover {
+    background: #604A3E;
+    transform: scale(1.05);
+}

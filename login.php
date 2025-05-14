@@ -69,6 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if (!empty($erro)): ?>
                 <p class="mensagem-erro"><?php echo $erro; ?></p>
             <?php endif; ?>
+
+            <?php if (isset($_GET['senha_alterada']) && $_GET['senha_alterada'] == '1'): ?>
+                <p class="mensagem-sucesso">Senha alterada com sucesso! Faça login novamente.</p>
+            <?php endif; ?>
             
             <form class="login-form" action="login.php" method="POST">
                 <div class="form-group">

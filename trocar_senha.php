@@ -1,6 +1,8 @@
 <?php
 require 'config.php'; // Aqui, config.php deve criar o objeto $pdo (PDO)
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 function editarSenhaUsuario($senhaAtual, $novaSenha) {
     global $pdo;

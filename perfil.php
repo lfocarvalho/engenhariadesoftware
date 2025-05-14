@@ -20,6 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Ajuste para compatibilidade com a função
         $_SESSION['usuario_id'] = $_SESSION['usuario']['id'];
         $mensagem = editarSenhaUsuario($senhaAtual, $novaSenha);
+        if ($mensagem === "Senha alterada com sucesso.") {
+            session_destroy();
+            header("Location: login.php?senha_alterada=1");
+            exit();
+        }
     }
 }
 ?>
