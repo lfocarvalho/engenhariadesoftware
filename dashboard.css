@@ -1,17 +1,23 @@
 /* Estilos gerais */
-body {
+body, html {
+    height: 100vh;
     margin: 0;
     padding: 0;
+    overflow: hidden; /* Impede scroll global */
+}
+
+body {
     font-family: 'Roboto', sans-serif;
     background-color: #F7EADC;
 }
 
 .dashboard-container {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
+    overflow: hidden; /* Impede scroll interno */
 }
 
 .main-panel {
@@ -26,104 +32,163 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 300px;
-    background: #FBF2E5;
+    background: linear-gradient(135deg, #8d6e5c 0%, #604A3E 100%);
+    color: #fff7f7;
+    width: 260px;
+    min-height: 100vh;
+    border-radius: 0 24px 24px 0;
+    box-shadow: 6px 0 24px rgba(120, 90, 70, 0.13), 0 1.5px 0 #bca18c inset;
+    border-right: 2px solid #bca18c;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 40px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 32px 18px 24px 18px;
+    position: relative;
+    transition: background 0.3s;
 }
 
-.user-avatar {
-    width: 150px;
-    height: 150px;
-    background: #F8F0E1;
+.sidebar nav {
+    flex: 0 0 auto;
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.profile-pic {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    margin-bottom: 40px;
+    border: 3px solid #fff7f7;
+    box-shadow: 0 2px 8px rgba(120, 90, 70, 0.13);
+    margin-bottom: 12px;
+    object-fit: cover;
 }
 
-.menu {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 0 20px;
+.user-profile h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff7f7;
 }
 
-.menu-item {
+.user-profile p {
+    margin: 0;
+    font-size: 13px;
+    color: #e3d9d2;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
     width: 100%;
-    height: 60px;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 12px;
+}
+
+.sidebar nav ul li a {
     display: flex;
     align-items: center;
-    padding-left: 20px;
     gap: 10px;
+    color: #fff7f7;
     text-decoration: none;
-    color: #99827A;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    transition: background 0.3s, color 0.3s;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
 }
 
-.menu-item.active {
-    background: #F2E7D9;
-    color: #755F52;
+.sidebar nav ul li a:hover,
+.sidebar nav ul li.logout a:hover {
+    background: #bca18c;
+    color: #604A3E;
 }
 
-.menu-item:hover {
-    background: #F2E7D9;
-    color: #755F52;
+.sidebar nav ul li a.active,
+.sidebar nav ul li a:focus {
+    background: #fff7f7;
+    color: #604A3E;
+    font-weight: 700;
+    box-shadow: 0 2px 8px #bca18c44;
 }
 
-.menu-icon {
-    width: 30px;
-    height: 30px;
-    background: #755F52;
-    mask-size: cover;
-    mask-repeat: no-repeat;
-    mask-position: center;
-}
-
-/* Botão de logout */
-.logout-button {
-    width: 220px;
-    height: 50px;
-    background: #755F52;
-    border-radius: 15px;
-    border: none;
-    color: #FBF2E5;
-    font-size: 18px;
-    font-weight: 500;
+.sidebar nav ul li.logout a {
+    color: #fff;
+    font-weight: 700;
+    background: #a86f3c;
+    border-radius: 12px;
+    padding: 14px 0;
+    width: 100%;
     display: flex;
-    justify-content: center; /* Centraliza o texto horizontalmente */
-    align-items: center; /* Centraliza o texto verticalmente */
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-top: 18px;
+    box-shadow: 0 2px 8px #0001;
+    transition: background 0.2s, color 0.2s, padding 0.3s, border-radius 0.3s;
     gap: 10px;
-    margin-top: auto;
-    margin-bottom: 40px;
+}
+
+.sidebar nav ul li.logout a:hover {
+    background: #6b3d1a;
+    color: #fff7f7;
+}
+
+.change-password-button,
+.delete-account-button {
+    width: 120px;
+    height: 36px;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+.change-password-button {
+    background: #fff7f7;
+    color: #755F52;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 90, 70, 0.07);
 }
 
-.logout-button:hover {
-    background: #604A3E;
-    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+.change-password-button:hover {
+    background: #bca18c;
+    color: #604A3E;
 }
 
-.logout-icon {
-    width: 20px;
-    height: 20px;
-    background: #FBF2E5;
-    mask: url('data:image/svg+xml,...') no-repeat center;
-    mask-size: cover;
+.delete-account-button {
+    background: #ffe0e0;
+    color: #c0392b;
+    margin-bottom: 0;
+}
+
+.delete-account-button:hover {
+    background: #c0392b;
+    color: #fff;
 }
 
 /* Área de conteúdo */
 .content-area {
     flex: 1;
-    padding: 40px;
+    padding: 32px 24px;
     overflow-y: auto;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
 }
 
 .dashboard-header h1 {
@@ -142,16 +207,18 @@ body {
 
 /* Cards */
 .card {
-    background: #FFFCF8; /* Fundo claro */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
-    border-radius: 15px; /* Bordas arredondadas */
-    padding: 20px 30px; /* Ajuste do espaçamento interno */
+    background: #FFFCF8;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 20px 30px;
     display: flex;
-    flex-direction: column; /* Organiza os elementos verticalmente */
-    align-items: center; /* Centraliza o conteúdo horizontalmente */
-    justify-content: center; /* Centraliza o conteúdo verticalmente */
-    max-width: 350px; /* Largura máxima */
-    margin: 20px auto; /* Centraliza o calendário na página */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 350px;
+    margin: 20px auto;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 /* Ajuste do título do calendário */
@@ -165,10 +232,14 @@ body {
 
 /* Estilo para o layout das seções (Agenda, Produtividade e Calendário) */
 .dashboard-grid {
-    display: flex; /* Alinha os elementos lado a lado */
-    gap: 20px; /* Espaçamento entre as seções */
-    justify-content: center; /* Centraliza as seções horizontalmente */
-    flex-wrap: wrap; /* Permite que as seções quebrem para a próxima linha em telas menores */
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow: visible;
+    min-height: 0;
 }
 
 /* Ajuste para telas menores */
@@ -334,9 +405,9 @@ body {
 }
 
 .day.selected {
-    background: #755F52; /* Fundo destacado para o dia selecionado */
-    color: #FFF; /* Texto branco */
-    font-weight: 600;
+    background: #a86f3c;
+    color: #fff;
+    border-radius: 50%;
 }
 
 /* Dias vazios no início do mês */
@@ -796,29 +867,39 @@ body {
 
         /* Sidebar */
         .sidebar {
-            width: 300px;
-            background: #FBF2E5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 40px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.07);
+            background: rgba(120, 90, 70, 0.95); /* tom terroso, levemente translúcido */
+    color: #fff7f7;
+    width: 260px;
+    min-height: 100vh;
+    border-radius: 0 24px 24px 0;
+    box-shadow: 4px 0 24px rgba(120, 90, 70, 0.10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 18px 24px 18px;
+    position: relative;
+    transition: background 0.3s;
         }
+
+        .sidebar nav {
+    flex: 0 0 auto;
+}
 
         .user-profile {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 18px;
         }
 
         .profile-pic {
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: #F8F0E1;
-            margin-bottom: 15px;
-            border: 3px solid #F2E7D9;
+            border: 3px solid #fff7f7;
+            box-shadow: 0 2px 8px rgba(120, 90, 70, 0.13);
+            margin-bottom: 12px;
+            object-fit: cover;
         }
 
         #username {
@@ -837,34 +918,91 @@ body {
         .sidebar nav ul {
             list-style: none;
             padding: 0;
+            margin: 0 0 24px 0;
             width: 100%;
         }
 
         .sidebar nav ul li {
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         .sidebar nav ul li a {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #99827A;
+            color: #fff7f7;
             text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 8px;
             transition: background 0.2s, color 0.2s;
         }
 
         .sidebar nav ul li a:hover,
-        .sidebar nav ul li.logout a {
-            background: #F2E7D9;
-            color: #755F52;
+        .sidebar nav ul li.logout a:hover {
+            background: #bca18c;
+            color: #604A3E;
         }
 
         .sidebar nav ul li.logout a {
-            color: #a86f3c;
+            color: #fff;
+    font-weight: 700;
+    background: #a86f3c;
+    border-radius: 12px;
+    padding: 14px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-top: 18px;
+    box-shadow: 0 2px 8px #0001;
+    transition: background 0.2s, color 0.2s, padding 0.3s, border-radius 0.3s;
+    gap: 10px;
+        }
+
+        .sidebar nav ul li.logout a:hover {
+            background: #6b3d1a;
+    color: #fff7f7;
+        }
+
+        .change-password-button,
+        .delete-account-button {
+            width: 120px;
+    height: 36px;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding: 0;
+    box-shadow: none;
+        }
+
+        .change-password-button {
+            background: #fff7f7;
+            color: #755F52;
+            font-size: 15px;
             font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 1px 4px rgba(120, 90, 70, 0.07);
+        }
+
+        .change-password-button:hover {
+            background: #bca18c;
+            color: #604A3E;
+        }
+
+        .delete-account-button {
+            background: #ffe0e0;
+            color: #c0392b;
+            margin-bottom: 0;
+        }
+
+        .delete-account-button:hover {
+            background: #c0392b;
+            color: #fff;
         }
 
         /* Conteúdo principal */
@@ -1061,3 +1199,250 @@ body {
                 padding: 18px 8px;
             }
         }
+
+        .sidebar-toggle {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: #fff7f7;
+    color: #755F52;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 8px #0002;
+    transition: background 0.2s, color 0.2s;
+}
+.sidebar-toggle:hover {
+    background: #bca18c;
+    color: #604A3E;
+}
+
+/* Sidebar colapsada */
+.sidebar.collapsed {
+    width: 60px;
+    min-width: 60px;
+    padding: 32px 6px 24px 6px;
+    align-items: center;
+}
+
+.sidebar.collapsed nav ul li a {
+    justify-content: center;
+    padding: 10px 0;
+    gap: 0;
+}
+
+.sidebar.collapsed nav ul li a span,
+.sidebar.collapsed .user-profile h3,
+.sidebar.collapsed .user-profile p,
+.sidebar.collapsed .change-password-button,
+.sidebar.collapsed .delete-account-button {
+    display: none !important;
+}
+
+.sidebar .profile-pic {
+    transition: width 0.3s, height 0.3s;
+}
+.sidebar.collapsed .profile-pic {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0;
+}
+
+.sidebar nav ul li a[title] {
+    position: relative;
+}
+.sidebar nav ul li a[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #604A3E;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 13px;
+    z-index: 100;
+}
+
+/* Sidebar */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 100vh;
+    position: relative;
+}
+
+.sidebar-logout {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.logout-btn {
+    background: linear-gradient(90deg, #a86f3c 60%, #755F52 100%);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 14px 0;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 8px #0001;
+    gap: 10px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    margin: 32px auto 0 auto; /* Espaço acima do botão */
+}
+
+.logout-btn:hover {
+    background: linear-gradient(90deg, #755F52 60%, #a86f3c 100%);
+    color: #fff7f7;
+    transform: scale(1.04);
+}
+
+/* Tema escuro */
+body.dark-mode {
+    background-color: #2d221a;
+}
+body.dark-mode .sidebar {
+    background: linear-gradient(135deg, #3e2c22 0%, #1a120d 100%);
+    color: #fff;
+    border-right: 2px solid #604A3E;
+}
+body.dark-mode .sidebar nav ul li a,
+body.dark_mode .sidebar nav ul li.logout a {
+    color: #fff;
+    background: none;
+}
+body.dark-mode .sidebar nav ul li a:hover,
+body.dark-mode .sidebar nav ul li.logout a:hover {
+    background: #604A3E;
+    color: #fff7f7;
+}
+body.dark-mode .sidebar nav ul li a.active,
+body.dark-mode .sidebar nav ul li a:focus {
+    background: #fff7f7;
+    color: #604A3E;
+}
+body.dark-mode .main-content,
+body.dark-mode .content-area {
+    background: #231a13;
+    color: #fff7f7;
+}
+body.dark-mode .card {
+    background: #32251b;
+    color: #fff7f7;
+    box-shadow: 0 8px 32px #0006;
+}
+body.dark-mode .add-button,
+body.dark-mode .logout-btn,
+body.dark-mode .save-btn,
+body.dark-mode .sac-success-btn {
+    background: linear-gradient(90deg, #604A3E 60%, #3e2c22 100%);
+    color: #fff7f7;
+}
+body.dark-mode .add-button:hover,
+body.dark-mode .logout-btn:hover,
+body.dark-mode .save-btn:hover,
+body.dark-mode .sac-success-btn:hover {
+    background: linear-gradient(90deg, #3e2c22 60%, #604A3E 100%);
+    color: #fff;
+}
+
+.theme-toggle-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.theme-toggle {
+    background: #fff7f7;
+    color: #755F52;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #0002;
+    transition: background 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover {
+    background: #bca18c;
+    color: #604A3E;
+}
+
+.change-pic-btn {
+    background: none;
+    border: none;
+    margin-top: 8px;
+    cursor: pointer;
+    color: #a86f3c;
+    font-size: 22px;
+    transition: color 0.2s;
+}
+.change-pic-btn:hover {
+    color: #604A3E;
+}
+
+.pic-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.pic-modal.hidden {
+    display: none;
+}
+.pic-modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 24px;
+    box-shadow: 0 8px 32px #0003;
+    text-align: center;
+    min-width: 320px;
+}
+.close-pic-modal {
+    position: absolute;
+    top: 18px;
+    right: 32px;
+    font-size: 28px;
+    color: #a86f3c;
+    cursor: pointer;
+}
+.pic-options {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 18px;
+}
+.pic-options img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid #a86f3c;
+    cursor: pointer;
+    transition: border 0.2s, transform 0.2s;
+    object-fit: cover;
+}
+.pic-options img:hover {
+    border: 3px solid #604A3E;
+    transform: scale(1.08);
+}
