@@ -29,9 +29,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         body {
             background: url('img/cadastro.svg') no-repeat center center fixed;
             background-size: cover;
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
             margin: 0;
             padding: 0;
+            color: #604A3E;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 32px;
+            left: 32px;
+            background: #fff;
+            color: #604A3E;
+            border: 2px solid #755F52;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-size: 17px;
+            font-weight: 700;
+            box-shadow: 0 4px 16px rgba(120, 90, 70, 0.18);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+            text-decoration: none;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.98;
+        }
+        .back-button:hover {
+            background: #755F52;
+            color: #fff;
+            border: 2px solid #604A3E;
         }
 
         .register-container {
@@ -42,58 +70,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .register-card {
-            background: rgba(255, 255, 255, 0.9); /* Fundo branco com transparência */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.93);
+            padding: 38px 32px 32px 32px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(120, 90, 70, 0.13);
             max-width: 350px;
             width: 100%;
             text-align: center;
         }
 
         .register-title {
-            font-size: 24px;
+            font-size: 26px;
             margin-bottom: 10px;
+            color: #755F52;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .register-subtitle {
-            font-size: 16px;
+            font-size: 15px;
             margin-bottom: 20px;
-            color: #555;
+            color: #8a7b6e;
+        }
+
+        .register-form {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         .form-group {
-            margin-bottom: 15px;
-            text-align: left;
+            width: 100%;
+            margin: 0 0 15px 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
+            font-weight: 500;
+            color: #604A3E;
+            text-align: left; /* Garante alinhamento à esquerda */
         }
 
         .form-group input {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            padding: 10px 12px;
+            border: 1px solid #e3d9d2;
+            border-radius: 6px;
+            font-size: 15px;
+            background: #faf7f5;
+            color: #604A3E;
+            transition: border 0.2s;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border: 1.5px solid #bca18c;
+            outline: none;
         }
 
         .register-button {
             width: 100%;
-            padding: 10px;
-            background: #4CAF50;
+            padding: 11px 0;
+            background: linear-gradient(90deg, #755F52 60%, #604A3E 100%);
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            margin-top: 6px;
+            box-shadow: 0 2px 8px rgba(120, 90, 70, 0.07);
+            transition: background 0.2s, transform 0.2s;
         }
-
         .register-button:hover {
-            background: #45a049;
+            background: linear-gradient(90deg, #604A3E 60%, #755F52 100%);
+            transform: translateY(-2px) scale(1.03);
         }
 
         .register-footer {
@@ -102,17 +156,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .register-footer a {
-            color: #007bff;
+            color: #755F52;
             text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
         .register-footer a:hover {
+            color: #604A3E;
             text-decoration: underline;
         }
 
         .mensagem-erro {
-            color: red;
+            color: #c0392b;
             margin-bottom: 15px;
+            font-weight: 500;
         }
 
         /* Estilo do pop-up */
@@ -129,6 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             visibility: hidden;
             opacity: 0;
             transition: visibility 0s, opacity 0.3s;
+            z-index: 100;
         }
 
         .popup.active {
@@ -138,32 +197,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .popup-content {
             background: #fff;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 24px 32px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(120, 90, 70, 0.18);
         }
 
         .popup-content h2 {
             margin-bottom: 10px;
+            color: #755F52;
         }
 
         .popup-content button {
-            padding: 10px 20px;
-            background: #4CAF50;
+            padding: 10px 24px;
+            background: linear-gradient(90deg, #755F52 60%, #604A3E 100%);
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, transform 0.2s;
         }
 
         .popup-content button:hover {
-            background: #45a049;
+            background: linear-gradient(90deg, #604A3E 60%, #755F52 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        @media (max-width: 500px) {
+            .register-card {
+                min-width: 90vw;
+                max-width: 98vw;
+                padding: 24px 8px 18px 8px;
+            }
+            .back-button {
+                top: 12px;
+                left: 10px;
+                padding: 8px 14px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
+    <a href="javascript:history.back()" class="back-button">&#8592; Voltar</a>
     <div class="register-container">
         <div class="register-card">
             <h1 class="register-title">Crie sua conta</h1>

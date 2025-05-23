@@ -89,13 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="login-button">ENTRAR</button>
                 <a href="#" class="forgot-password">Esqueci minha senha</a>
             </form>
-            
-            <div class="social-login">
-                <div class="social-icon apple"></div>
-                <div class="social-icon facebook"></div>
-                <div class="social-icon google"></div>
-            </div>
         </div>
     </div>
+
+    <!-- Adicione logo após <body> -->
+    <a href="javascript:history.back()" class="back-button">&#8592; Voltar</a>
 </body>
 </html>
