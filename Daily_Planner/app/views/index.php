@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require 'C:\xampp\htdocs\engenhariadesoftware\Daily_Planner\config.php';
 
 // Verifica se uma sessão já foi iniciada
 if (session_status() === PHP_SESSION_NONE) {
