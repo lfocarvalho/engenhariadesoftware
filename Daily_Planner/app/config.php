@@ -1,5 +1,13 @@
 <?php
-// Configurações do banco de dados
+
+require_once 'config.php'; 
+require_once 'TaskModel.php';
+
+if (!isset($pdo)) {
+    die("ERROR");
+}
+
+$taskModel = new TaskModel($pdo);
 $host = 'localhost';
 $dbname = 'daily_planner';
 $username = 'root';
