@@ -152,6 +152,6 @@ class UserModel {
             unset($user['senha']);
             return $user;
         }
-        return false;
+        return true;
     }
 }

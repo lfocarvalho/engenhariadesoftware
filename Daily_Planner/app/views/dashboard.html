@@ -24,6 +24,20 @@
             document.body.appendChild(msg);
         }
     }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('msg') === 'tarefa_excluida') {
+        alert('Tarefa excluída com sucesso!');
+    }
+    if (params.get('msg') === 'status_alterado') {
+        alert('Status da tarefa alterado com sucesso!');
+    }
+    if (params.get('erro') === 'tarefa_nao_encontrada') {
+        alert('Tarefa não encontrada!');
+    }
+    if (params.get('erro') === 'sem_id') {
+        alert('ID da tarefa não informado!');
+    }
     </script>
     <div class="dashboard-container">
         <div class="sidebar">
@@ -60,11 +74,15 @@
                 <!-- Seção de Agenda do Dia -->
                 <div class="card">
                     <h2>Agenda do Dia</h2>
-                    <div class="activity-container">
-                        <ul class="agenda-list" id="activity-list">
-                            <!-- As atividades serão carregadas dinamicamente aqui -->
-                        </ul>
-                    </div>
+                    <!-- Adicione um seletor de filtro acima da lista de tarefas -->
+                    <select id="filtro-tarefas" onchange="filtrarTarefas()">
+                        <option value="todas">Todas</option>
+                        <option value="pendentes">Pendentes</option>
+                        <option value="concluidas">Concluídas</option>
+                    </select>
+                    <ul class="agenda-list" id="activity-list">
+                        <!-- As atividades serão carregadas dinamicamente aqui -->
+                    </ul>
                     <button class="add-button" onclick="openAddActivityModal()">Adicionar Atividade</button>
                 </div>
 
@@ -108,20 +126,20 @@
     <!-- Modal para adicionar/editar atividade -->
     <div id="activity-modal" class="popup hidden">
         <div class="popup-content">
-            <h2 id="modal-title">Adicionar Atividade</h2>
-            <form id="activity-form" action="salvar_tarefa.php" method="POST">
-                <input type="hidden" id="activity-id" name="id">
+        <h2 id="modal-title">Adicionar Atividade</h2>
+            <form id="activity-form" action="../controllers/salvar_tarefa.php" method="POST">
+                <input type="hidden" id="activity-id" name="usuario_id">
                 <div class="form-group">
                     <label for="activity-title">Título</label>
                     <input type="text" id="activity-title" name="titulo" class="input-field" placeholder="Digite o título" required>
                 </div>
                 <div class="form-group">
                     <label for="activity-description">Descrição</label>
-                    <textarea id="activity-description" name="descricao" class="input-field" placeholder="Digite a descrição" required></textarea>
+                    <textarea id="activity-description" name="descricao" class="input-field" placeholder="Digite a descrição"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="activity-date">Data</label>
-                    <input type="date" id="activity-date" name="date" class="input-field" required>
+                    <input type="date" id="activity-date" name="data_vencimento" class="input-field" required>
                 </div>
                 <div class="form-group">
                     <label for="activity-time">Hora</label>
@@ -160,7 +178,7 @@
                 date = today.toISOString().split('T')[0];
             }
             // Exemplo: busca atividades por data (ajuste para seu backend se necessário)
-            const response = await fetch('get_atividades.php?date=' + date);
+            const response = await fetch('../controllers/get_atividades.php?date=' + date);
             const activities = await response.json();
             const activityList = document.getElementById('activity-list');
             activityList.innerHTML = '';
@@ -171,19 +189,34 @@
                 activities.forEach(activity => {
                     const li = document.createElement('li');
                     li.classList.add('activity');
-                    li.innerHTML = `
-                        <div class="activity-header" onclick="toggleActivity(this)">
-                            <span class="activity-title">${activity.time} - ${activity.title}</span>
-                            <button class="toggle-button">+</button>
-                        </div>
-                        <div class="activity-details hidden">
-                            <p class="activity-description">${activity.description}</p>
-                            <div class="activity-actions">
-                                <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
-                                <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
-                            </div>
+
+                    // Cria o header com o título
+                    const header = document.createElement('div');
+                    header.classList.add('activity-header');
+                    header.textContent = activity.title;
+                    header.style.cursor = 'pointer';
+
+                    // Cria o container dos detalhes (inicialmente escondido)
+                    const details = document.createElement('div');
+                    details.classList.add('activity-details', 'hidden');
+                    details.innerHTML = `
+                        <p class="activity-description">${activity.description || ''}</p>
+                        <div class="activity-actions">
+                            <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
+                            <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
+                            <button class="done-button" onclick="markAsDone(${activity.id})">Concluir</button>
                         </div>
                     `;
+
+                    // Expande/recolhe ao clicar no header
+                    header.addEventListener('click', function(e) {
+                        // Evita conflito com botões internos
+                        if (e.target.tagName === 'BUTTON') return;
+                        details.classList.toggle('hidden');
+                    });
+
+                    li.appendChild(header);
+                    li.appendChild(details);
                     activityList.appendChild(li);
                 });
             }
@@ -216,8 +249,70 @@
             }
         }
 
-        // Gera o calendário ao carregar a página
+        async function filtrarTarefas() {
+            const filtro = document.getElementById('filtro-tarefas').value;
+            const response = await fetch('../controllers/filtros.php?filtro=' + filtro);
+            const activities = await response.json();
+            renderActivities(activities);
+        }
+
+        async function loadActivities(date = null) {
+            if (!date) {
+                const today = new Date();
+                date = today.toISOString().split('T')[0];
+            }
+            const response = await fetch('../controllers/get_atividades.php?date=' + date);
+            const activities = await response.json();
+            renderActivities(activities);
+        }
+
+        function renderActivities(activities) {
+            const activityList = document.getElementById('activity-list');
+            activityList.innerHTML = '';
+
+            if (!activities || activities.length === 0) {
+                activityList.innerHTML = '<li class="activity">Nenhuma atividade encontrada.</li>';
+                return;
+            }
+
+            activities.forEach(activity => {
+                const li = document.createElement('li');
+                li.classList.add('activity');
+
+                // Header: só o título
+                const header = document.createElement('div');
+                header.classList.add('activity-header');
+                header.textContent = activity.titulo;
+                header.style.cursor = 'pointer';
+
+                // Detalhes (escondido inicialmente)
+                const details = document.createElement('div');
+                details.classList.add('activity-details', 'hidden');
+                details.innerHTML = `
+                    <p class="activity-description"><strong>Descrição:</strong> ${activity.descricao || ''}</p>
+                    <p><strong>Data:</strong> ${activity.data_vencimento ? new Date(activity.data_vencimento).toLocaleString('pt-BR') : ''}</p>
+                    <div class="activity-actions">
+                        <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
+                        <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
+                        <button class="done-button" onclick="markAsDone(${activity.id})">Concluir</button>
+                    </div>
+                `;
+
+                // Expande/recolhe ao clicar no header
+                header.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'BUTTON') return;
+                    details.classList.toggle('hidden');
+                });
+
+                li.appendChild(header);
+                li.appendChild(details);
+                activityList.appendChild(li);
+            });
+        }
+
+        // Chame filtrarTarefas ao carregar a página
         document.addEventListener('DOMContentLoaded', function() {
+            filtrarTarefas();
             generateCalendar();
             loadActivities(); // <-- Isso garante que as atividades de hoje aparecem ao entrar
         });
@@ -384,4 +479,3 @@
     </script>
 </body>
 </html>
-``` 

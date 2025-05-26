@@ -18,7 +18,7 @@ class TarefaModel {
             $sql .= " AND concluida = 1";
         }
 
-        $sql .= " ORDER BY data_vencimento ASC";
+        $sql .= " ORDER BY data_vencimento DESC, id DESC"; // Mais recentes primeiro
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
@@ -71,6 +71,16 @@ class TarefaModel {
     // Para o painel admin
     public function getAllTarefasAdmin() {
         $stmt = $this->pdo->query("SELECT t.*, u.nome as usuario_nome FROM tarefas t JOIN usuarios u ON t.usuario_id = u.id ORDER BY t.data_criacao DESC");
+        return $stmt->fetchAll();
+    }
+
+    public function getByDateAndUserId($usuario_id, $data) {
+        $sql = "SELECT * FROM tarefas WHERE usuario_id = :usuario_id AND DATE(data_vencimento) = :data ORDER BY data_vencimento ASC";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':usuario_id' => $usuario_id,
+            ':data' => $data
+        ]);
         return $stmt->fetchAll();
     }
 }

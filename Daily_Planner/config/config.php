@@ -24,7 +24,6 @@ function isLoggedIn() {
     return isset($_SESSION['usuario']);
 }
 
-// Função para verificar se o usuário é admin
 function isAdmin() {
     return isLoggedIn() && $_SESSION['usuario']['tipo'] === 'admin';
 }

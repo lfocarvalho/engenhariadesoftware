@@ -16,27 +16,20 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Usuário</title>
+    <title>Cadastrar Usuario</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
     <div class="container">
-        <h1>Cadastrar Usuário</h1>
-        <?php if (!empty($erro)): ?>
-            <div class="erro"><?= htmlspecialchars($erro) ?></div>
-        <?php endif; ?>
-        <?php if (!empty($mensagem)): ?>
-            <div class="sucesso"><?= $mensagem ?></div>
-        <?php endif; ?>
-        <?php if (empty($mensagem)): ?>
-        <form method="POST" action="../controllers/cadastrar_usuario.php">
-            <br>Nome de Usuário: <input type="text" name="nome" placeholder="Nome" required><br>
-            <br>E-mail: <input type="email" name="email" placeholder="Email" required><br>
-            <br>Senha: <input type="password" name="senha" placeholder="Senha" required><br>
+        <h1>Cadastrar Usuario</h1>
+        <form method="POST">
+            <br>Nome de Usuario:  <input type="text" name="nome" placeholder="Nome" required><br>
+            <br>E-mail:  <input type="email" name="email" placeholder="Email" required><br>
+            <br>Senha:  <input type="password" name="senha" placeholder="Senha" required><br>
             <br><button type="submit">Cadastrar</button>
         </form>
-        <?php endif; ?>
         <br><a href="index.php">Voltar para página inicial</a>
     </div>
+
 </body>
 </html>
