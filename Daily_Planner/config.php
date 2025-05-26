@@ -1,10 +1,16 @@
 <?php
+// Inicia a sessão, se ainda não estiver iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Configurações do banco de dados
 $host = 'localhost';
 $dbname = 'daily_planner';
 $username = 'root';
 $password = '';
 
+// Conexão com o banco usando PDO
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,18 +19,13 @@ try {
     die("Erro na conexão: " . $e->getMessage());
 }
 
-// Inicia a sessão (para autenticação)
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+// Função para verificar se o usuário está logado
+function isLoggedIn() {
+    return isset($_SESSION['usuario']);
 }
 
 // Função para verificar se o usuário é admin
 function isAdmin() {
-    return isset($_SESSION['usuario']) && $_SESSION['usuario']['tipo'] === 'admin';
-}
-
-// Função para verificar login
-function isLoggedIn() {
-    return isset($_SESSION['usuario']);
+    return isLoggedIn() && $_SESSION['usuario']['tipo'] === 'admin';
 }
 ?>

@@ -32,7 +32,7 @@ class UserModel {
 
     public function criarUsuario($nome, $email, $senha_hash, $tipo = 'usuario') {
         try {
-            if ($this->getUserByEmail($email)) {
+            if ($this->getUsuarioEmail($email)) {
                 throw new Exception("Email já está em uso");
             }
 
@@ -62,7 +62,7 @@ class UserModel {
 
     public function atualizarUsuario(int $id, string $nome, string $email, ?string $tipo = null): bool {
         try {
-            $existingUser = $this->getUserByEmail($email);
+            $existingUser = $this->getUsuarioEmail($email);
             if ($existingUser && $existingUser['id'] != $id) {
                 throw new Exception("Email já está em uso por outro usuário");
             }
@@ -147,7 +147,7 @@ class UserModel {
     }
 
     public function autenticarUsuario($email, $password) {
-        $user = $this->getUserByEmail($email);
+        $user = $this->getUsuarioEmail($email);
         if ($user && password_verify($password, $user['senha'])) {
             unset($user['senha']);
             return $user;
