@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require __DIR__ . '/../../config/config.php';
 
 // Verifica se a sessão já foi iniciada
 if (session_status() === PHP_SESSION_NONE) {
