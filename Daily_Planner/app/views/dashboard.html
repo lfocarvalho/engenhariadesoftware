@@ -42,7 +42,7 @@
     <div class="dashboard-container">
         <div class="sidebar">
             <div class="user-profile">
-                <img id="profile-pic" src="foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
+                <img id="profile-pic" src="../img/foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
                 <button class="change-pic-btn" onclick="openPicModal()" title="Alterar foto de perfil">
                     <i class="fas fa-camera"></i>
                 </button>
@@ -51,7 +51,7 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="home.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
                     <li><a href="perfil.html"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
                     <li><a href="config.html"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
                 </ul>
@@ -67,7 +67,7 @@
                 </button>
             </div>
             <header class="dashboard-header">
-                <h1>Bem-vindo ao Dashboard</h1>
+                <h1>Bem-vindo ao Daily</h1>
                 <p>Gerencie suas tarefas e produtividade</p>
             </header>
             <div class="dashboard-grid">
@@ -157,12 +157,12 @@
             <span class="close-pic-modal" onclick="closePicModal()">&times;</span>
             <h3>Escolha sua foto de perfil</h3>
             <div class="pic-options">
-                <img src="foto perfil/perfil 1.svg" onclick="selectProfilePic('foto perfil/perfil 1.svg')" alt="Perfil 1">
-                <img src="foto perfil/perfil 2.svg" onclick="selectProfilePic('foto perfil/perfil 2.svg')" alt="Perfil 2">
-                <img src="foto perfil/perfil 3.svg" onclick="selectProfilePic('foto perfil/perfil 3.svg')" alt="Perfil 3">
-                <img src="foto perfil/perfil 4.svg" onclick="selectProfilePic('foto perfil/perfil 4.svg')" alt="Perfil 4">
-                <img src="foto perfil/perfil 5.svg" onclick="selectProfilePic('foto perfil/perfil 5.svg')" alt="Perfil 5">
-                <img src="foto perfil/perfil 6.svg" onclick="selectProfilePic('foto perfil/perfil 6.svg')" alt="Perfil 6">
+                <img src="../img/foto perfil/perfil 1.svg" onclick="selectProfilePic('../img/foto perfil/perfil 1.svg')" alt="Perfil 1">
+                <img src="../img/foto perfil/perfil 2.svg" onclick="selectProfilePic('../img/foto perfil/perfil 2.svg')" alt="Perfil 2">
+                <img src="../img/foto perfil/perfil 3.svg" onclick="selectProfilePic('../img/foto perfil/perfil 3.svg')" alt="Perfil 3">
+                <img src="../img/foto perfil/perfil 4.svg" onclick="selectProfilePic('../img/foto perfil/perfil 4.svg')" alt="Perfil 4">
+                <img src="../img/foto perfil/perfil 5.svg" onclick="selectProfilePic('../img/foto perfil/perfil 5.svg')" alt="Perfil 5">
+                <img src="../img/foto perfil/perfil 6.svg" onclick="selectProfilePic('../img/foto perfil/perfil 6.svg')" alt="Perfil 6">
             </div>
         </div>
     </div>
@@ -193,14 +193,14 @@
                     // Cria o header com o título
                     const header = document.createElement('div');
                     header.classList.add('activity-header');
-                    header.textContent = activity.title;
+                    header.textContent = activity.titulo;
                     header.style.cursor = 'pointer';
 
                     // Cria o container dos detalhes (inicialmente escondido)
                     const details = document.createElement('div');
                     details.classList.add('activity-details', 'hidden');
                     details.innerHTML = `
-                        <p class="activity-description">${activity.description || ''}</p>
+                        <p class="activity-description">${activity.descricao || 'Sem descrição.'}</p>
                         <div class="activity-actions">
                             <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
                             <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
@@ -210,7 +210,6 @@
 
                     // Expande/recolhe ao clicar no header
                     header.addEventListener('click', function(e) {
-                        // Evita conflito com botões internos
                         if (e.target.tagName === 'BUTTON') return;
                         details.classList.toggle('hidden');
                     });
@@ -251,19 +250,42 @@
 
         async function filtrarTarefas() {
             const filtro = document.getElementById('filtro-tarefas').value;
-            const response = await fetch('../controllers/filtros.php?filtro=' + filtro);
-            const activities = await response.json();
-            renderActivities(activities);
+            let url = '../controllers/get_atividades.php';
+            if (filtro && filtro !== 'todas') {
+                url += `?filtro=${filtro}`;
+            }
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Erro HTTP! status: ${response.status}`);
+                const activities = await response.json();
+                if (activities.error) {
+                    document.getElementById('activity-list').innerHTML = `<li style="color:red;">${activities.error}</li>`;
+                    return;
+                }
+                renderActivities(activities);
+            } catch (error) {
+                document.getElementById('activity-list').innerHTML = '<li style="color:red;">Falha ao filtrar atividades. Verifique o console.</li>';
+            }
         }
 
         async function loadActivities(date = null) {
-            if (!date) {
-                const today = new Date();
-                date = today.toISOString().split('T')[0];
+            let url = '../controllers/get_atividades.php';
+            if (date) {
+                url += `?date=${date}`;
             }
-            const response = await fetch('../controllers/get_atividades.php?date=' + date);
-            const activities = await response.json();
-            renderActivities(activities);
+            selectedDate = date;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Erro HTTP! status: ${response.status}`);
+                const activities = await response.json();
+                if (activities.error) {
+                    document.getElementById('activity-list').innerHTML = `<li style="color:red;">${activities.error}</li>`;
+                    return;
+                }
+                renderActivities(activities);
+            } catch (error) {
+                document.getElementById('activity-list').innerHTML = '<li style="color:red;">Falha ao carregar atividades. Verifique o console para detalhes.</li>';
+            }
         }
 
         function renderActivities(activities) {
@@ -272,10 +294,15 @@
 
             if (!activities || activities.length === 0) {
                 activityList.innerHTML = '<li class="activity">Nenhuma atividade encontrada.</li>';
+                // Se não há atividades, produtividade é 0%
+                updateProductivity(0, 0);
                 return;
             }
 
+            let concluidas = 0;
             activities.forEach(activity => {
+                if (activity.concluida == 1 || activity.concluida === true) concluidas++;
+
                 const li = document.createElement('li');
                 li.classList.add('activity');
 
@@ -294,11 +321,10 @@
                     <div class="activity-actions">
                         <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
                         <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
-                        <button class="done-button" onclick="markAsDone(${activity.id})">Concluir</button>
+                        <button class="done-button" onclick="markAsDone(${activity.id})">${activity.concluida == 1 ? 'Desfazer' : 'Concluir'}</button>
                     </div>
                 `;
 
-                // Expande/recolhe ao clicar no header
                 header.addEventListener('click', function(e) {
                     if (e.target.tagName === 'BUTTON') return;
                     details.classList.toggle('hidden');
@@ -308,11 +334,29 @@
                 li.appendChild(details);
                 activityList.appendChild(li);
             });
+
+            updateProductivity(concluidas, activities.length);
+        }
+
+        // Função para atualizar a porcentagem de produtividade
+        function updateProductivity(concluidas, total) {
+            const circle = document.querySelector('.productivity-circle');
+            let percent = 0;
+            if (total > 0) {
+                percent = Math.round((concluidas / total) * 100);
+            }
+            circle.textContent = percent + '%';
         }
 
         // Chame filtrarTarefas ao carregar a página
         document.addEventListener('DOMContentLoaded', function() {
-            filtrarTarefas();
+            const initialFilter = document.getElementById('filtro-tarefas').value;
+            if (initialFilter && initialFilter !== 'todas') {
+                filtrarTarefas();
+            } else {
+                loadActivities(selectedDate); 
+            }
+
             generateCalendar();
             loadActivities(); // <-- Isso garante que as atividades de hoje aparecem ao entrar
         });
@@ -447,6 +491,42 @@
                 document.getElementById('profile-pic').src = savedPic;
             }
         });
+
+        document.getElementById('activity-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('activity-id').value;
+            const titulo = document.getElementById('activity-title').value;
+            const descricao = document.getElementById('activity-description').value;
+            const data = document.getElementById('activity-date').value;
+            const hora = document.getElementById('activity-time').value;
+            const data_vencimento = data + ' ' + hora + ':00';
+
+            const formData = new FormData();
+            formData.append('titulo', titulo);
+            formData.append('descricao', descricao);
+            formData.append('data_vencimento', data_vencimento);
+
+            let url = '../controllers/salvar_tarefa.php';
+            if (id) {
+                formData.append('id', id);
+                url = '../controllers/editar_tarefa.php?id=' + id;
+            }
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+
+            const res = await response.json().catch(() => null);
+            if (res && res.success) {
+                closeModal();
+                loadActivities(selectedDate);
+            } else if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                alert(res && res.error ? res.error : 'Erro ao salvar tarefa.');
+            }
+        };
     </script>
             <!-- Botão do SAC -->
     <div class="sac-flutuante">

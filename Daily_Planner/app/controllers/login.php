@@ -31,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../views/dashboard.html");
             exit();
         } else {
-            header("Location: ../views/dashboard.html");
+            header("Location: ../views/login.php?erro=1");
+            exit();
         }
     }
 }

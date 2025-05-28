@@ -11,8 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $resultado = $userModel->criarUsuario($nome, $email, $senha_plana, 'usuario');
 
     if (is_numeric($resultado)) { // Se retornou o ID do usuário
-        echo "Usuário criado com sucesso! ID: " . $resultado;
-        // Redirecionar para login ou dashboard
+        // Usuário criado com sucesso, redireciona para login
+        header('Location: ../views/login.php?cadastro=sucesso');
+        exit;
     } elseif (is_string($resultado)) { // Se retornou uma mensagem de erro específica
          echo "Erro: " . $resultado;
     } else {

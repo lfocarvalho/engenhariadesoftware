@@ -1,37 +1,3 @@
-<?php
-require __DIR__ . '/../../config/config.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Simulação de usuário (remova isso quando implementar autenticação real)
-$_SESSION['usuario']['id'] = 1; // Exemplo: usuário ID 1
-
-$usuario_id = $_SESSION['usuario']['id'] ?? null;
-
-// Variáveis de controle
-$erro = '';
-$sucesso = false;
-
-// Processamento do formulário
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $senha = $_POST['senha'] ?? '';
-
-    // Validação simples (adicione mais conforme necessário)
-    if (empty($nome) || empty($email) || empty($senha)) {
-        $erro = 'Preencha todos os campos.';
-    } else {
-        // Aqui você faria o cadastro no banco de dados
-        // Exemplo de simulação de sucesso:
-        $sucesso = true;
-        // Se houver erro, defina $erro com a mensagem apropriada
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -261,11 +227,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1 class="register-title">Crie sua conta</h1>
             <p class="register-subtitle">Preencha os campos abaixo para começar</p>
 
-            <?php if (!empty($erro)): ?>
-                <p class="mensagem-erro"><?php echo $erro; ?></p>
-            <?php endif; ?>
+            <!-- Mensagem de erro pode ser exibida pelo controller via GET, se desejar -->
 
-            <form method="POST" class="register-form">
+            <form method="POST" class="register-form" action="../controllers/cadastrar_usuario.php">
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
@@ -290,8 +254,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <!-- Pop-up de sucesso -->
-    <div class="popup" id="success-popup">
+    <!-- Pop-up de sucesso pode ser tratado pelo controller, se desejar -->
+    <div class="popup" id="success-popup" style="display:none;">
         <div class="popup-content">
             <h2>Cadastro realizado com sucesso!</h2>
             <p>Você será redirecionado para a página de login.</p>
@@ -300,15 +264,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        // Exibe o pop-up se o cadastro foi bem-sucedido
-        <?php if ($sucesso): ?>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('success-popup').classList.add('active');
-                setTimeout(redirectToLogin, 2500); // Redireciona após 2,5 segundos
-            });
-        <?php endif; ?>
-
-        // Redireciona para a página de login
         function redirectToLogin() {
             window.location.href = 'login.php';
         }

@@ -234,12 +234,33 @@ body {
 .dashboard-grid {
     flex: 1;
     display: flex;
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     overflow: visible;
     min-height: 0;
+}
+
+/* Deixe o card da agenda mais largo */
+.dashboard-grid .card:first-child {
+    min-width: 420px;
+    width: 100%;
+    max-width: 600px;
+    flex: 2;
+    align-items: flex-start; /* Alinha o conteúdo ao topo/esquerda */
+    padding-top: 32px;       /* Mais espaço no topo */
+}
+
+/* Ajuste do título da agenda */
+.dashboard-grid .card:first-child h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #494542;
+    text-align: left; /* Alinha à esquerda, se preferir */
+    width: 100%;
 }
 
 /* Ajuste para telas menores */
@@ -261,13 +282,13 @@ body {
 }
 
 .agenda-list li {
-    display: flex;
+    display: grid;
     align-items: center;
     justify-content: space-between; /* Garante que o texto e o botão fiquem nas extremidades */
     gap: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding: 10px; /* Adiciona espaçamento interno */
-    background: #FFFCF8; /* Fundo para destacar cada tarefa */
+    background: #ffffff; /* Fundo para destacar cada tarefa */
     border-radius: 8px; /* Bordas arredondadas */
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
 }
@@ -479,6 +500,23 @@ body {
     font-weight: bold;
     color: #755F52;
     cursor: pointer;
+}
+
+.toggle-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #755F52; /* mesma cor do + e - */
+    margin-left: 10px;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 2px solid #604A3E;
+    transition: background 0.2s, border 0.2s;
+}
+.activity-header .toggle-dot.active {
+    background: #fff;
+    border: 2px solid #755F52;
 }
 
 .activity-details {
