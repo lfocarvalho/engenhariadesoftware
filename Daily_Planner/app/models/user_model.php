@@ -27,19 +27,16 @@ class UserModel {
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Alterado para FETCH_ASSOC para consistência
+        return $stmt->fetch(PDO::FETCH_ASSOC); 
     }
 
-    /**
-     * Cria um novo usuário.
-     * A senha fornecida ($senha_plana) será hasheada antes de ser armazenada.
-     */
+    
     public function criarUsuario($nome, $email, $senha_plana, $tipo = 'usuario') {
         try {
             if ($this->getUsuarioEmail($email)) {
-                // Considerar lançar uma exceção mais específica ou retornar uma mensagem de erro.
+               
                 error_log("Tentativa de criar usuário com email já existente: " . $email);
-                return "Email já está em uso"; // Ou false, ou lançar exceção
+                return "Email já está em uso"; 
             }
 
             $query = "INSERT INTO " . $this->table_name . " (nome, email, senha, tipo) VALUES (:nome, :email, :senha, :tipo)";
@@ -48,7 +45,6 @@ class UserModel {
             $nome_seguro = htmlspecialchars(strip_tags($nome));
             $email_seguro = htmlspecialchars(strip_tags($email));
             
-            // Gera o hash da senha aqui
             $senha_hash = password_hash($senha_plana, PASSWORD_DEFAULT);
 
             $stmt->bindParam(':nome', $nome_seguro);
@@ -72,7 +68,7 @@ class UserModel {
             $existingUser = $this->getUsuarioEmail($email);
             if ($existingUser && $existingUser['id'] != $id) {
                  error_log("Tentativa de atualizar para email já em uso por outro usuário. ID: $id, Email: $email");
-                return false; // Ou lançar exceção "Email já está em uso por outro usuário"
+                return false; 
             }
 
             $query = "UPDATE " . $this->table_name . " SET nome = :nome, email = :email";
@@ -90,7 +86,7 @@ class UserModel {
             $query .= " WHERE id = :id";
             $stmt = $this->db->prepare($query);
             
-            // Bind dos parâmetros
+        
             $stmt->bindParam(':id', $params[':id'], PDO::PARAM_INT);
             $stmt->bindParam(':nome', $params[':nome']);
             $stmt->bindParam(':email', $params[':email']);
@@ -108,9 +104,7 @@ class UserModel {
 
     public function atualizarSenha(int $id, string $senhaAtual, string $novaSenha): bool {
         try {
-            // Não precisa de transação explícita aqui se for apenas uma query,
-            // mas é bom para operações mais complexas.
-            // $this->db->beginTransaction(); 
+            
 
             $query = "SELECT senha FROM " . $this->table_name . " WHERE id = :id LIMIT 1";
             $stmt = $this->db->prepare($query);
@@ -121,7 +115,7 @@ class UserModel {
 
             if (!$stored_hash || !password_verify($senhaAtual, $stored_hash)) {
                 error_log("Tentativa de atualização de senha falhou para o usuário ID: $id. Senha atual incorreta.");
-                return false; // "Senha atual incorreta"
+                return false; 
             }
 
             $novaSenhaHash = password_hash($novaSenha, PASSWORD_DEFAULT);
@@ -131,11 +125,11 @@ class UserModel {
             $stmtUpdate->bindParam(':senha', $novaSenhaHash);
             
             $result = $stmtUpdate->execute();
-            // if ($result) $this->db->commit(); else $this->db->rollBack();
+          
             
             return $result;
         } catch (PDOException $e) {
-            // $this->db->rollBack();
+
             error_log("Erro PDO ao atualizar senha: " . $e->getMessage());
             return false;
         }
@@ -166,18 +160,17 @@ class UserModel {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("Erro PDO ao buscar todos os usuários: " . $e->getMessage());
-            return []; // Retorna array vazio em caso de erro
+            return []; 
         }
     }
 
     public function autenticarUsuario($email, $password) {
-        $user = $this->getUsuarioEmail($email); // getUsuarioEmail já retorna null ou o array do usuário
+        $user = $this->getUsuarioEmail($email); 
         
         if ($user && isset($user['senha']) && password_verify($password, $user['senha'])) {
-            unset($user['senha']); // Remove o hash da senha do array retornado
+            unset($user['senha']); 
             return $user;
         }
-        // Log para debug, pode ser removido em produção
         if (!$user) {
             error_log("Tentativa de login falhou: Email não encontrado - " . $email);
         } else if (!isset($user['senha'])) {

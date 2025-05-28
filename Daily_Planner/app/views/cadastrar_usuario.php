@@ -6,7 +6,7 @@
     <title>Cadastro - Daily Planner</title>
     <style>
         body {
-            background: url('img/cadastro.svg') no-repeat center center fixed;
+            background: url('/engenhariadesoftware/Daily_Planner/app/img/cadastro.svg') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Roboto', Arial, sans-serif;
             margin: 0;

@@ -1,5 +1,5 @@
 <?php
-require 'config.php'; // Aqui, config.php deve criar o objeto $pdo (PDO)
+require 'config.php'; 
 session_start();
 
 function editarSenhaUsuario($senhaAtual, $novaSenha) {
@@ -11,7 +11,6 @@ function editarSenhaUsuario($senhaAtual, $novaSenha) {
 
     $usuario_id = $_SESSION['usuario']['id'];
 
-    // Buscar hash da senha atual
     $stmt = $pdo->prepare("SELECT senha FROM usuarios WHERE id = ?");
     $stmt->execute([$usuario_id]);
     $senha_hash = $stmt->fetchColumn();
@@ -20,7 +19,6 @@ function editarSenhaUsuario($senhaAtual, $novaSenha) {
         return "Senha atual incorreta.";
     }
 
-    // Atualizar para a nova senha
     $novaSenhaHash = password_hash($novaSenha, PASSWORD_DEFAULT);
     $stmt = $pdo->prepare("UPDATE usuarios SET senha = ? WHERE id = ?");
     if ($stmt->execute([$novaSenhaHash, $usuario_id])) {

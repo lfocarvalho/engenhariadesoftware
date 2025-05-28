@@ -13,18 +13,18 @@ class SAC {
     private ?string $descricao = null;
     private ?DateTimeInterface $dataAbertura = null;
     private ?DateTimeInterface $dataFechamento = null;
-    private ?string $status = null; // Ex: ABERTO, EM_ATENDIMENTO, RESOLVIDO, FECHADO
-    private ?int $clienteId = null; // ID do cliente
-    private ?int $atendenteId = null; // ID do atendente
-    private ?string $tipo = null; // Ex: DUVIDA, RECLAMACAO, SUGESTAO
+    private ?string $status = null; 
+    private ?int $clienteId = null; 
+    private ?int $atendenteId = null; 
+    private ?string $tipo = null; 
 
-    // Constantes para status
+ 
     public const STATUS_ABERTO = 'ABERTO';
     public const STATUS_EM_ATENDIMENTO = 'EM_ATENDIMENTO';
     public const STATUS_RESOLVIDO = 'RESOLVIDO';
     public const STATUS_FECHADO = 'FECHADO';
 
-    // Constantes para tipo
+  
     public const TIPO_DUVIDA = 'DUVIDA';
     public const TIPO_RECLAMACAO = 'RECLAMACAO';
     public const TIPO_SUGESTAO = 'SUGESTAO';
@@ -38,7 +38,7 @@ class SAC {
         ?string $tipo = null,
         ?string $status = self::STATUS_ABERTO
     ) {
-        $this->protocolo = $protocolo ?? uniqid('SAC_'); // Gera um protocolo simples
+        $this->protocolo = $protocolo ?? uniqid('SAC_'); 
         $this->assunto = $assunto;
         $this->descricao = $descricao;
         $this->dataAbertura = new DateTime();
@@ -47,7 +47,6 @@ class SAC {
         $this->status = $status;
     }
 
-    // Getters e Setters
 
     public function getId(): ?int {
         return $this->id;
@@ -139,9 +138,7 @@ class SAC {
         return $this;
     }
 
-    /**
-     * Fecha o chamado de SAC.
-     */
+ 
     public function fecharChamado(): self {
         $this->status = self::STATUS_FECHADO;
         $this->dataFechamento = new DateTime();

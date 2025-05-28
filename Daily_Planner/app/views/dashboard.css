@@ -3,7 +3,7 @@ body, html {
     height: 100vh;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Impede scroll global */
+    overflow: hidden; 
 }
 
 body {
@@ -17,7 +17,7 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
-    overflow: hidden; /* Impede scroll interno */
+    overflow: hidden; 
 }
 
 .main-panel {
@@ -113,7 +113,7 @@ body {
 
 .sidebar nav ul li a.active,
 .sidebar nav ul li a:focus {
-    background: #fff7f7;
+    background: #bca18c;
     color: #604A3E;
     font-weight: 700;
     box-shadow: 0 2px 8px #bca18c44;
@@ -188,7 +188,7 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente */
+    justify-content: center; 
 }
 
 .dashboard-header h1 {
@@ -205,7 +205,7 @@ body {
     margin-top: 0;
 }
 
-/* Cards */
+
 .card {
     background: #FFFCF8;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -221,7 +221,7 @@ body {
     overflow-y: auto;
 }
 
-/* Ajuste do título do calendário */
+
 .card h2 {
     font-size: 20px;
     font-weight: 700;
@@ -230,7 +230,7 @@ body {
     text-align: center;
 }
 
-/* Estilo para o layout das seções (Agenda, Produtividade e Calendário) */
+
 .dashboard-grid {
     flex: 1;
     display: flex;
@@ -242,40 +242,38 @@ body {
     min-height: 0;
 }
 
-/* Deixe o card da agenda mais largo */
+
 .dashboard-grid .card:first-child {
     min-width: 420px;
     width: 100%;
     max-width: 600px;
     flex: 2;
-    align-items: flex-start; /* Alinha o conteúdo ao topo/esquerda */
-    padding-top: 32px;       /* Mais espaço no topo */
+    align-items: flex-start;
+    padding-top: 32px;       
 }
 
-/* Ajuste do título da agenda */
 .dashboard-grid .card:first-child h2 {
     margin-top: 0;
     margin-bottom: 18px;
     font-size: 22px;
     font-weight: 700;
     color: #494542;
-    text-align: left; /* Alinha à esquerda, se preferir */
+    text-align: left; 
     width: 100%;
 }
 
-/* Ajuste para telas menores */
 @media (max-width: 768px) {
     .dashboard-grid {
-        flex-direction: column; /* Empilha as seções verticalmente em telas menores */
-        gap: 15px; /* Reduz o espaçamento entre as seções */
+        flex-direction: column; 
+        gap: 15px;
     }
 
     .card {
-        max-width: 100%; /* Faz os cards ocuparem toda a largura disponível */
+        max-width: 100%;
     }
 }
 
-/* Agenda do dia */
+
 .agenda-list {
     list-style: none;
     padding: 0;
@@ -284,29 +282,29 @@ body {
 .agenda-list li {
     display: grid;
     align-items: center;
-    justify-content: space-between; /* Garante que o texto e o botão fiquem nas extremidades */
+    justify-content: space-between; 
     gap: 15px;
     margin-bottom: 10px;
-    padding: 10px; /* Adiciona espaçamento interno */
-    background: #ffffff; /* Fundo para destacar cada tarefa */
-    border-radius: 8px; /* Bordas arredondadas */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 8px; 
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .agenda-list li span {
-    flex: 1; /* Faz o texto ocupar o espaço disponível */
-    color: #494542; /* Cor do texto */
-    font-size: 16px; /* Tamanho do texto */
+    flex: 1; 
+    color: #494542; 
+    font-size: 16px; 
 }
 
 .agenda-list li.completed {
-    background: #E8E8E8; /* Fundo mais claro para indicar conclusão */
-    box-shadow: none; /* Remove a sombra para diferenciar */
+    background: #E8E8E8; 
+    box-shadow: none; 
 }
 
 .agenda-list li.completed span {
-    color: #99827A; /* Cor mais clara para o texto */
-    text-decoration: line-through; /* Texto riscado */
+    color: #99827A; 
+    text-decoration: line-through; 
 }
 
 .task-button {
@@ -325,12 +323,12 @@ body {
 }
 
 .task-button.completed {
-    background: #99827A; /* Cor diferente para o botão */
-    color: #FFFFFF; /* Texto branco */
-    cursor: default; /* Cursor padrão para indicar que não é clicável */
+    background: #99827A; 
+    color: #FFFFFF; 
+    cursor: default; 
 }
 
-/* Produtividade */
+
 .productivity-circle {
     width: 100px;
     height: 100px;
@@ -347,18 +345,18 @@ body {
     margin: 20px 0;
 }
 
-/* Calendário */
+
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%; /* Garante que os botões e o título ocupem toda a largura */
+    width: 100%; 
     margin-bottom: 15px;
 }
 
 .calendar-header button {
-    background: #755F52; /* Cor de fundo consistente */
-    color: #FFF; /* Texto branco */
+    background: #755F52;
+    color: #FFF; 
     border: none;
     border-radius: 5px;
     padding: 8px 15px;
@@ -369,60 +367,60 @@ body {
 }
 
 .calendar-header button:hover {
-    background: #604A3E; /* Cor mais escura ao passar o mouse */
-    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    background: #604A3E;
+    transform: scale(1.05); 
 }
 
 .calendar-header button:active {
-    transform: scale(0.95); /* Leve redução ao clicar */
+    transform: scale(0.95); 
 }
 
 .current-month {
     font-size: 18px;
     font-weight: 600;
-    color: #494542; /* Cor consistente com o texto */
+    color: #494542; 
     text-align: center;
 }
 
-/* Dias da semana */
+
 .week-days {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 colunas iguais */
+    grid-template-columns: repeat(7, 1fr); 
     text-align: center;
     margin: 10px 0;
     font-size: 14px;
     font-weight: 600;
-    color: #755F52; /* Cor mais escura */
-    width: 100%; /* Garante que os dias da semana ocupem toda a largura */
+    color: #755F52; 
+    width: 100%; 
 }
 
-/* Dias do calendário */
+
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 colunas iguais */
-    gap: 8px; /* Espaçamento entre os dias */
-    width: 100%; /* Garante que o calendário ocupe toda a largura */
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 8px; 
+    width: 100%;
     margin-top: 10px;
 }
 
 .day {
     width: 40px;
     height: 40px;
-    background: #FFF; /* Fundo branco */
-    border: 1px solid #E0E0E0; /* Borda leve */
-    border-radius: 5px; /* Bordas levemente arredondadas */
+    background: #FFF; 
+    border: 1px solid #E0E0E0; 
+    border-radius: 5px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #494542; /* Texto escuro */
+    color: #494542;
     font-size: 14px;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .day:hover {
-    background: #F2E7D9; /* Fundo mais claro ao passar o mouse */
-    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    background: #F2E7D9; 
+    transform: scale(1.05); 
 }
 
 .day.selected {
@@ -431,16 +429,15 @@ body {
     border-radius: 50%;
 }
 
-/* Dias vazios no início do mês */
+
 .empty-day {
     background: transparent;
-    pointer-events: none; /* Desativa interações */
+    pointer-events: none; 
 }
 
-/* Botões "Anterior" e "Próximo" no calendário */
 .calendar-header button {
-    background: #755F52; /* Cor de fundo consistente com o projeto */
-    color: #FFF7F7; /* Texto branco */
+    background: #755F52; 
+    color: #FFF7F7; 
     border: none;
     border-radius: 5px;
     padding: 8px 15px;
@@ -451,29 +448,29 @@ body {
 }
 
 .calendar-header button:hover {
-    background: #604A3E; /* Cor mais escura ao passar o mouse */
-    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    background: #604A3E; 
+    transform: scale(1.05);
 }
 
 .calendar-header button:active {
-    transform: scale(0.95); /* Leve redução ao clicar */
+    transform: scale(0.95); 
 }
 
-/* Estilo do título do mês no calendário */
+
 .current-month {
     font-size: 18px;
     font-weight: 600;
-    color: #494542; /* Cor consistente com o texto do projeto */
+    color: #494542; 
     margin: 0 10px;
 }
 
-/* Estilo para a lista de atividades */
+
 .activity {
-    border: 1px solid #CCC;
+    border: 1px solid  #bca18c;
     border-radius: 8px;
     margin-bottom: 15px;
     overflow: hidden;
-    background: #FFFCF8;
+    background:  #bca18c;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -482,6 +479,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
+    background:  #bca18c;
     cursor: pointer;
     background: #F7EADC;
     font-size: 16px;
@@ -507,7 +505,7 @@ body {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #755F52; /* mesma cor do + e - */
+    background: #755F52; 
     margin-left: 10px;
     vertical-align: middle;
     cursor: pointer;
@@ -569,7 +567,7 @@ body {
     background: #C9302C;
 }
 
-/* Botão de adicionar atividade */
+
 .add-button {
     width: 100%;
     padding: 10px;
@@ -587,7 +585,7 @@ body {
     background-color: #604A3E;
 }
 
-/* Modal */
+
 .popup {
     position: fixed;
     top: 0;
@@ -620,7 +618,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Estilo para o campo de data */
+
 .popup-content .form-group label {
     font-size: 14px;
     color: #806359;
@@ -671,7 +669,6 @@ body {
     background-color: #C9302C;
 }
 
-/* Scroll para atividades */
 .activity-container {
     max-height: 300px;
     overflow-y: auto;
@@ -789,14 +786,14 @@ body {
         }
     }
 
-/* Estilo para a mensagem de sucesso do SAC */
+
 .sac-success-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(60, 40, 20, 0.45); /* marrom translúcido */
+    background: rgba(60, 40, 20, 0.45); 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -804,7 +801,7 @@ body {
 }
 
 .sac-success-box {
-    background: #7c4a21; /* marrom principal */
+    background: #7c4a21; 
     color: #fff;
     padding: 40px 60px;
     border-radius: 18px;
@@ -836,7 +833,6 @@ body {
     background: #6b3d1a;
 }
 
-/* Botão de alterar senha no padrão do botão de sair */
 .change-password-button {
     width: 220px;
     height: 50px;
@@ -862,7 +858,6 @@ body {
     transform: scale(1.05);
 }
 
-/* Botão de deletar conta */
 .delete-account-button {
     width: 220px;
     height: 50px;
@@ -887,25 +882,22 @@ body {
     background: #6b3d1a;
     transform: scale(1.05);
 }
- /* Perfil - Estilo inspirado no dashboard.css */
 
-        /* Reset e fonte */
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Roboto', Arial, sans-serif;
-            background-color: #F7EADC;
+            background-color: ;
         }
 
-        /* Container principal */
         .dashboard-container {
             display: flex;
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
-            background: rgba(120, 90, 70, 0.95); /* tom terroso, levemente translúcido */
+            background: rgba(120, 90, 70, 0.95); 
     color: #fff7f7;
     width: 260px;
     min-height: 100vh;
@@ -1043,7 +1035,6 @@ body {
             color: #fff;
         }
 
-        /* Conteúdo principal */
         .main-content {
             flex: 1;
             padding: 50px 40px;
@@ -1105,9 +1096,8 @@ body {
             transform: scale(1.05);
         }
 
-        /* Modal de confirmação */
         .modal {
-            display: none; /* Será exibido via JS */
+            display: none; 
             position: fixed;
             z-index: 2000;
             left: 0;
@@ -1204,7 +1194,6 @@ body {
             color: #6b3d1a;
         }
 
-        /* Responsivo */
         @media (max-width: 900px) {
             .dashboard-container {
                 flex-direction: column;
@@ -1258,7 +1247,7 @@ body {
     color: #604A3E;
 }
 
-/* Sidebar colapsada */
+
 .sidebar.collapsed {
     width: 60px;
     min-width: 60px;
@@ -1307,7 +1296,6 @@ body {
     z-index: 100;
 }
 
-/* Sidebar */
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -1340,7 +1328,7 @@ body {
     gap: 10px;
     text-decoration: none;
     transition: background 0.2s, color 0.2s, transform 0.2s;
-    margin: 32px auto 0 auto; /* Espaço acima do botão */
+    margin: 32px auto 0 auto; 
 }
 
 .logout-btn:hover {
@@ -1349,7 +1337,6 @@ body {
     transform: scale(1.04);
 }
 
-/* Tema escuro */
 body.dark-mode {
     background-color: #2d221a;
 }
@@ -1483,4 +1470,46 @@ body.dark-mode .sac-success-btn:hover {
 .pic-options img:hover {
     border: 3px solid #604A3E;
     transform: scale(1.08);
+}
+
+/* Botão de concluir/desfazer */
+.done-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background: #a86f3c;
+    color: #fff7f7;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    font-weight: 600;
+}
+.done-button:hover {
+    background: #604A3E;
+    color: #fff;
+    transform: scale(1.05);
+}
+.done-button.completed {
+    background: #99827A;
+    color: #fff;
+    cursor: default;
+}
+
+/* Filtro de tarefas */
+#filtro-tarefas {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1.5px solid #bca18c;
+    background: #fff7f7;
+    color: #755F52;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 18px;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px #bca18c22;
+}
+#filtro-tarefas:focus {
+    border: 1.5px solid #a86f3c;
+    box-shadow: 0 2px 12px #bca18c44;
 }

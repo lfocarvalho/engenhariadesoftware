@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($novaSenha !== $repeteSenha) {
         $mensagem = "As novas senhas não coincidem.";
     } else {
-        // Ajuste para compatibilidade com a função
+
         $_SESSION['usuario_id'] = $_SESSION['usuario']['id'];
         $mensagem = editarSenhaUsuario($senhaAtual, $novaSenha);
         if ($mensagem === "Senha alterada com sucesso.") {

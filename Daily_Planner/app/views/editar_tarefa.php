@@ -1,4 +1,31 @@
 <?php
+require_once '../../config/config.php';
+require_once __DIR__ . '/../models/TarefaModel.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$erro = '';
+$tarefa = null;
+
+if (!isset($_SESSION['usuario']) || !isset($_SESSION['usuario']['id'])) {
+    $erro = 'Usuário não autenticado.';
+} else {
+    $usuario_id = $_SESSION['usuario']['id'];
+    $id = $_GET['id'] ?? null;
+
+    if (!$id) {
+        $erro = 'ID da tarefa não fornecido.';
+    } else {
+        $tarefaModel = new TarefaModel($pdo);
+        $tarefa = $tarefaModel->findById($id, $usuario_id);
+        if (!$tarefa) {
+            $erro = 'Tarefa não encontrada ou não pertence a você.';
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

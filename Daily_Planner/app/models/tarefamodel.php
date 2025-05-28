@@ -18,7 +18,7 @@ class TarefaModel {
             $sql .= " AND concluida = 1";
         }
 
-        $sql .= " ORDER BY data_vencimento DESC, id DESC"; // Mais recentes primeiro
+        $sql .= " ORDER BY data_vencimento DESC, id DESC"; 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
@@ -68,7 +68,6 @@ class TarefaModel {
         return false;
     }
 
-    // Para o painel admin
     public function getAllTarefasAdmin() {
         $stmt = $this->pdo->query("SELECT t.*, u.nome as usuario_nome FROM tarefas t JOIN usuarios u ON t.usuario_id = u.id ORDER BY t.data_criacao DESC");
         return $stmt->fetchAll();
@@ -82,6 +81,12 @@ class TarefaModel {
             ':data' => $data
         ]);
         return $stmt->fetchAll();
+    }
+
+    public function findById($id, $usuario_id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM tarefas WHERE id = ? AND usuario_id = ?");
+        $stmt->execute([$id, $usuario_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>

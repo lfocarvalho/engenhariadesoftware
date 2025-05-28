@@ -9,7 +9,6 @@
 </head>
 <body>
     <script>
-    // Exibe mensagem de sucesso do SAC se o parâmetro estiver na URL
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
         if (params.get('sucesso_sac') === '1') {
@@ -71,22 +70,20 @@
                 <p>Gerencie suas tarefas e produtividade</p>
             </header>
             <div class="dashboard-grid">
-                <!-- Seção de Agenda do Dia -->
                 <div class="card">
                     <h2>Agenda do Dia</h2>
-                    <!-- Adicione um seletor de filtro acima da lista de tarefas -->
+
                     <select id="filtro-tarefas" onchange="filtrarTarefas()">
                         <option value="todas">Todas</option>
                         <option value="pendentes">Pendentes</option>
                         <option value="concluidas">Concluídas</option>
                     </select>
                     <ul class="agenda-list" id="activity-list">
-                        <!-- As atividades serão carregadas dinamicamente aqui -->
+
                     </ul>
                     <button class="add-button" onclick="openAddActivityModal()">Adicionar Atividade</button>
                 </div>
 
-                <!-- Seção de Produtividade -->
                 <div class="card">
                     <h2>Produtividade</h2>
                     <div class="productivity-circle">
@@ -94,7 +91,6 @@
                     </div>
                 </div>
 
-                <!-- Seção de Calendário -->
                 <div class="card">
                     <h2>Calendário</h2>
                     <div class="calendar-header">
@@ -116,14 +112,14 @@
                         <div class="day">1</div>
                         <div class="day">2</div>
                         <div class="day">3</div>
-                        <!-- Continue com os dias do mês -->
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal para adicionar/editar atividade -->
+
     <div id="activity-modal" class="popup hidden">
         <div class="popup-content">
         <h2 id="modal-title">Adicionar Atividade</h2>
@@ -151,7 +147,6 @@
         </div>
     </div>
 
-    <!-- Modal de seleção de foto de perfil -->
     <div id="pic-modal" class="pic-modal hidden">
         <div class="pic-modal-content">
             <span class="close-pic-modal" onclick="closePicModal()">&times;</span>
@@ -170,14 +165,13 @@
     <script>
         let selectedDate = null;
 
-        // Função para carregar atividades do dia selecionado
         async function loadActivities(date = null) {
-            // Se não passar data, usa a de hoje
+
             if (!date) {
                 const today = new Date();
                 date = today.toISOString().split('T')[0];
             }
-            // Exemplo: busca atividades por data (ajuste para seu backend se necessário)
+
             const response = await fetch('../controllers/get_atividades.php?date=' + date);
             const activities = await response.json();
             const activityList = document.getElementById('activity-list');
@@ -190,13 +184,12 @@
                     const li = document.createElement('li');
                     li.classList.add('activity');
 
-                    // Cria o header com o título
                     const header = document.createElement('div');
                     header.classList.add('activity-header');
                     header.textContent = activity.titulo;
                     header.style.cursor = 'pointer';
 
-                    // Cria o container dos detalhes (inicialmente escondido)
+
                     const details = document.createElement('div');
                     details.classList.add('activity-details', 'hidden');
                     details.innerHTML = `
@@ -208,7 +201,7 @@
                         </div>
                     `;
 
-                    // Expande/recolhe ao clicar no header
+
                     header.addEventListener('click', function(e) {
                         if (e.target.tagName === 'BUTTON') return;
                         details.classList.toggle('hidden');
@@ -221,7 +214,7 @@
             }
         }
 
-        // Função para abrir o modal de adicionar atividade
+
         function openAddActivityModal() {
             document.getElementById('modal-title').textContent = 'Adicionar Atividade';
             document.getElementById('activity-form').reset();
@@ -229,12 +222,12 @@
             document.getElementById('activity-modal').classList.remove('hidden');
         }
 
-        // Função para fechar o modal
+
         function closeModal() {
             document.getElementById('activity-modal').classList.add('hidden');
         }
 
-        // Função para expandir/recolher detalhes da atividade
+
         function toggleActivity(header) {
             const details = header.nextElementSibling;
             const toggleButton = header.querySelector('.toggle-button');
@@ -294,7 +287,7 @@
 
             if (!activities || activities.length === 0) {
                 activityList.innerHTML = '<li class="activity">Nenhuma atividade encontrada.</li>';
-                // Se não há atividades, produtividade é 0%
+
                 updateProductivity(0, 0);
                 return;
             }
@@ -306,13 +299,13 @@
                 const li = document.createElement('li');
                 li.classList.add('activity');
 
-                // Header: só o título
+
                 const header = document.createElement('div');
                 header.classList.add('activity-header');
                 header.textContent = activity.titulo;
                 header.style.cursor = 'pointer';
 
-                // Detalhes (escondido inicialmente)
+
                 const details = document.createElement('div');
                 details.classList.add('activity-details', 'hidden');
                 details.innerHTML = `
@@ -338,7 +331,6 @@
             updateProductivity(concluidas, activities.length);
         }
 
-        // Função para atualizar a porcentagem de produtividade
         function updateProductivity(concluidas, total) {
             const circle = document.querySelector('.productivity-circle');
             let percent = 0;
@@ -348,7 +340,6 @@
             circle.textContent = percent + '%';
         }
 
-        // Chame filtrarTarefas ao carregar a página
         document.addEventListener('DOMContentLoaded', function() {
             const initialFilter = document.getElementById('filtro-tarefas').value;
             if (initialFilter && initialFilter !== 'todas') {
@@ -358,49 +349,44 @@
             }
 
             generateCalendar();
-            loadActivities(); // <-- Isso garante que as atividades de hoje aparecem ao entrar
+            loadActivities();
         });
 
-        // Função para gerar os dias do calendário
         function generateCalendar() {
             const calendarGrid = document.querySelector('.calendar-grid');
             const currentMonthElement = document.querySelector('.current-month');
 
-            // Obtém a data atual
             const today = new Date();
-            let currentMonth = today.getMonth(); // Mês atual (0-11)
-            let currentYear = today.getFullYear(); // Ano atual
+            let currentMonth = today.getMonth(); 
+            let currentYear = today.getFullYear(); 
 
-            // Função para atualizar o calendário
+
             function updateCalendar() {
-                // Limpa o calendário
                 calendarGrid.innerHTML = '';
 
-                // Define o primeiro dia do mês
-                const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // Dia da semana (0-6)
-                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Total de dias no mês
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay(); 
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-                // Atualiza o título do mês
                 const monthNames = [
                     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
                 ];
                 currentMonthElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
-                // Preenche os dias vazios antes do primeiro dia do mês
+       
                 for (let i = 0; i < firstDay; i++) {
                     const emptyCell = document.createElement('div');
                     emptyCell.classList.add('empty-day');
                     calendarGrid.appendChild(emptyCell);
                 }
 
-                // Preenche os dias do mês
+
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dayCell = document.createElement('div');
                     dayCell.classList.add('day');
                     dayCell.textContent = day;
 
-                    // Marca o dia atual
+
                     if (
                         day === today.getDate() &&
                         currentMonth === today.getMonth() &&
@@ -409,14 +395,12 @@
                         dayCell.classList.add('today');
                     }
 
-                    // Clique para selecionar o dia
+
                     dayCell.addEventListener('click', function() {
-                        // Formata a data para yyyy-mm-dd
                         const selected = new Date(currentYear, currentMonth, day);
                         selectedDate = selected.toISOString().split('T')[0];
                         loadActivities(selectedDate);
 
-                        // Destaca o dia selecionado
                         document.querySelectorAll('.calendar-grid .day').forEach(d => d.classList.remove('selected'));
                         dayCell.classList.add('selected');
                     });
@@ -425,7 +409,7 @@
                 }
             }
 
-            // Botões de navegação do calendário
+
             document.querySelector('.prev-button').addEventListener('click', () => {
                 currentMonth--;
                 if (currentMonth < 0) {
@@ -444,25 +428,24 @@
                 updateCalendar();
             });
 
-            // Gera o calendário inicial
+  
             updateCalendar();
         }
 
-        // Função para redirecionar ao clicar no botão "Sair"
         function redirectToIndex() {
             const confirmLogout = confirm("Você deseja mesmo sair da conta?");
             if (confirmLogout) {
-                // Redireciona para a página inicial (index.php)
+        
                 window.location.href = "index.php";
             } else {
-                // Permanece na página atual (dashboard.html)
+          
                 window.location.href = "dashboard.html";
             }
         }
 
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
-            // Troca o ícone do botão correto
+
             const btn = document.querySelector('.theme-toggle-container .theme-toggle i');
             if(document.body.classList.contains('dark-mode')) {
                 btn.classList.remove('fa-moon');
@@ -481,10 +464,10 @@
         }
         function selectProfilePic(src) {
             document.getElementById('profile-pic').src = src;
-            localStorage.setItem('profilePic', src); // Salva escolha no navegador
+            localStorage.setItem('profilePic', src); 
             closePicModal();
         }
-        // Carrega a foto escolhida ao abrir o dashboard
+    
         window.addEventListener('DOMContentLoaded', function() {
             const savedPic = localStorage.getItem('profilePic');
             if (savedPic) {
@@ -527,13 +510,68 @@
                 alert(res && res.error ? res.error : 'Erro ao salvar tarefa.');
             }
         };
+
+   
+        async function openEditActivityModal(id) {
+            try {
+                const response = await fetch(`../controllers/get_atividades.php?id=${id}`);
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    const tarefa = data[0];
+                    document.getElementById('modal-title').textContent = 'Editar Atividade';
+                    document.getElementById('activity-id').value = tarefa.id;
+                    document.getElementById('activity-title').value = tarefa.titulo;
+                    document.getElementById('activity-description').value = tarefa.descricao || '';
+                    if (tarefa.data_vencimento) {
+                        const [date, time] = tarefa.data_vencimento.split(' ');
+                        document.getElementById('activity-date').value = date;
+                        document.getElementById('activity-time').value = time ? time.substring(0,5) : '';
+                    }
+                    document.getElementById('activity-modal').classList.remove('hidden');
+                } else {
+                    alert('Tarefa não encontrada.');
+                }
+            } catch (e) {
+                alert('Erro ao buscar dados da tarefa.');
+            }
+        }
+
+  
+        async function deleteActivity(id) {
+            if (!confirm('Deseja realmente excluir esta atividade?')) return;
+            try {
+                const response = await fetch(`../controllers/excluir_tarefa.php?id=${id}`);
+                const res = await response.json();
+                if (res.success) {
+                    loadActivities(selectedDate);
+                } else {
+                    alert(res.error || 'Erro ao excluir tarefa.');
+                }
+            } catch (e) {
+                alert('Erro ao excluir tarefa.');
+            }
+        }
+
+        async function markAsDone(id) {
+            try {
+                const response = await fetch(`../controllers/alterar_status.php?id=${id}`);
+                const res = await response.json();
+                if (res.success) {
+                    loadActivities(selectedDate);
+                } else {
+                    alert(res.error || 'Erro ao alterar status da tarefa.');
+                }
+            } catch (e) {
+                alert('Erro ao alterar status da tarefa.');
+            }
+        }
     </script>
             <!-- Botão do SAC -->
     <div class="sac-flutuante">
         <button type="button" class="botao-sac" onclick="toggleModalSac()">SAC</button>
     </div>
 
-    <!-- Modal do SAC -->
+
     <div class="modal-sac" id="modalSac" style="display: none;">
         <div class="modal-conteudo">
             <span class="fechar-modal" onclick="toggleModalSac()">&times;</span>

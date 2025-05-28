@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Perfil - Estilo inspirado no dashboard.css */
 
-        /* Reset e fonte */
         body {
             margin: 0;
             padding: 0;
@@ -17,13 +15,13 @@
             background-color: #F7EADC;
         }
 
-        /* Container principal */
+
         .dashboard-container {
             display: flex;
             min-height: 100vh;
         }
 
-        /* Sidebar */
+
         .sidebar {
             width: 300px;
             background: #FBF2E5;
@@ -96,7 +94,6 @@
             font-weight: 600;
         }
 
-        /* Conteúdo principal */
         .main-content {
             flex: 1;
             padding: 50px 40px;
@@ -158,9 +155,8 @@
             transform: scale(1.05);
         }
 
-        /* Modal de confirmação */
         .modal {
-            display: none; /* Será exibido via JS */
+            display: none; 
             position: fixed;
             z-index: 2000;
             left: 0;
@@ -257,7 +253,6 @@
             color: #6b3d1a;
         }
 
-        /* Pop-up de sucesso */
         .popup {
             display: none;
             position: fixed;
@@ -282,7 +277,6 @@
             text-align: center;
         }
 
-        /* Responsivo */
         @media (max-width: 900px) {
             .dashboard-container {
                 flex-direction: column;
@@ -350,7 +344,7 @@
             </div>
         </main>
     </div>
- <!-- Pop-up de sucesso -->
+
     <div class="popup" id="success-popup">
         <div class="popup-content">
             <h2>Sua conta será apagada!</h2>
@@ -360,17 +354,16 @@
         </div>
     </div>
      <script>
-    // Exibe o pop-up ao clicar no botão "Apagar Minha Conta"
+
     document.getElementById('deleteAccountBtn').addEventListener('click', function() {
         document.getElementById('success-popup').classList.add('active');
     });
 
-    // Redireciona para a página de apagar conta
+
     function redirectToApagar() {
         window.location.href = '../controllers/apagar_conta.php';
     }
 
-    // Fecha o pop-up e permanece na página de perfil
     function closePopup() {
         document.getElementById('success-popup').classList.remove('active');
     }

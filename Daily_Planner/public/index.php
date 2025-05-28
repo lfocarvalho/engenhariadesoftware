@@ -281,7 +281,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         <a href="../app/views/cadastrar_usuario.php" class="button comecar-agora">Começar agora</a>
       </div>
       <div class="slogan-mascote-img">
-        <img src="img/mascote.svg" alt="Mascote Daily Planner" />
+        <img src="../app/img/mascote.svg" alt="Mascote Daily Planner" />
       </div>
     </section>
   </main>

@@ -1,13 +1,12 @@
 <?php
 require __DIR__ . '/../../config/config.php';
 
-// Verifica se uma sessão já foi iniciada
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Simulação de usuário (remova isso quando implementar autenticação real)
-$_SESSION['usuario']['id'] = 1; // Exemplo: usuário ID 1
+$_SESSION['usuario']['id'] = 1; 
 
 $usuario_id = $_SESSION['usuario']['id'] ?? null;
 ?>
@@ -19,12 +18,12 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
   <title>Daily Planner</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Estilos gerais */
+
     body {
         margin: 0;
         padding: 0;
         font-family: 'Roboto', sans-serif;
-        background-image: url('img/welcome.svg'); /* Caminho atualizado para a imagem SVG */
+        background-image: url('/engenhariadesoftware/Daily_Planner/app/img/welcome.svg'); 
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -34,17 +33,16 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         min-height: 100vh;
     }
 
-    /* Cabeçalho */
     .header-bg {
         width: 100%;
         height: 104px;
-        background: #FFFFFF; /* Define o fundo da barra como branco */
+        background: #FFFFFF; 
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 30px;
-        box-sizing: border-box; /* Garante que o padding não ultrapasse a largura */
+        box-sizing: border-box; 
     }
 
     .logo {
@@ -61,16 +59,16 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
     .menu a {
         font-size: 18px;
         font-weight: 500;
-        color: #755F52; /* Mantém a cor do texto harmoniosa com o design */
+        color: #755F52; 
         text-decoration: none;
         transition: color 0.3s ease;
     }
 
     .menu a:hover {
-        color: #604A3E; /* Cor ao passar o mouse */
+        color: #604A3E; 
     }
 
-    /* Botões */
+
     .login-button {
         padding: 8px 16px;
         background: transparent;
@@ -82,7 +80,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         border-radius: 8px;
         text-decoration: none;
         transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-        margin-right: 10px; /* Reduz o espaçamento entre os botões */
+        margin-right: 10px; 
     }
 
     .register-button {
@@ -114,9 +112,9 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         position: relative;
         z-index: 1;
         background: transparent;
-        max-width: 1200px;      /* Limite de largura para centralizar */
-        margin: 0 auto;         /* Centraliza na tela */
-        padding: 0 32px;        /* Espaço lateral responsivo */
+        max-width: 1200px;      
+        margin: 0 auto;         
+        padding: 0 32px;        
         text-align: left;
         flex: 1;
     }
@@ -125,7 +123,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         margin-top: 200px;
         position: relative;
         text-align: left;
-        max-width: none; /* Remove limite de largura */
+        max-width: none;
         margin-left: 0;
     }
 
@@ -142,7 +140,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         font-size: 20px;
         font-weight: 500;
         color: #755F52;
-        margin-bottom: 20px; /* Aproxima o botão do texto */
+        margin-bottom: 20px; 
         max-width: 527px;
     }
 
@@ -159,7 +157,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         text-decoration: none;
         box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
         transition: background 0.3s ease, transform 0.2s ease;
-        margin-left: 0; /* Alinha o botão com o texto */
+        margin-left: 0; 
     }
 
     .button.comecar-agora:hover {
@@ -179,16 +177,15 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         font-size: 14px;
     }
 
-    /* Novos estilos para a seção da mascote */
     .slogan-mascote {
         display: flex;
         align-items: center;
-        justify-content: flex-start; /* Alinha tudo à esquerda */
-        gap: 56px;                   /* Mais espaço entre texto e mascote */
+        justify-content: flex-start; 
+        gap: 56px;                  
         min-height: 70vh;
         margin-top: 0;
         margin-bottom: 0;
-        padding-left: 5vw;           /* Espaço da borda esquerda */
+        padding-left: 5vw;         
     }
 
     .slogan-texto {
@@ -207,7 +204,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         line-height: 1.1;
         margin-bottom: 18px;
         text-shadow: 0px 4px 12px rgba(0,0,0,0.10);
-        white-space: normal; /* Permite quebrar só se faltar espaço */
+        white-space: normal; 
     }
 
     .slogan-texto p {
@@ -230,7 +227,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
     }
 
     .slogan-mascote-img img {
-        width: 480px;                /* Mascote bem maior */
+        width: 480px;             
         max-width: 40vw;
         height: auto;
         filter: drop-shadow(0 8px 32px #bca18c55);
@@ -281,7 +278,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         <a href="cadastrar_usuario.php" class="button comecar-agora">Começar agora</a>
       </div>
       <div class="slogan-mascote-img">
-        <img src="img/mascote.svg" alt="Mascote Daily Planner" />
+        <img src="/engenhariadesoftware/Daily_Planner/app/img/mascote.svg" alt="Mascote Daily Planner" />
       </div>
     </section>
   </main>

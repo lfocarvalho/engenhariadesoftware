@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../models/user_model.php';
 
-// Verifica se uma sessão já foi iniciada
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userModel = new UserModel();
         $usuario = $userModel->autenticarUsuario($email, $senha);
 
-        // só faz login se $usuario for array (usuário válido)
+
         if (is_array($usuario) && isset($usuario['id'])) {
             $_SESSION["usuario"] = [
                 "id" => $usuario["id"],
@@ -37,5 +37,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Inclui a view (apenas HTML)
+
 require_once __DIR__ . '/../views/login.php';
