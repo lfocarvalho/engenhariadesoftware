@@ -277,6 +277,42 @@
             text-align: center;
         }
 
+        /* Botões do popup de apagar conta */
+        #success-popup .popup-content button {
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+            outline: none;
+        }
+
+        #success-popup .popup-content button:first-child {
+            background: #a86f3c;
+            color: #fff;
+        }
+
+        #success-popup .popup-content button:first-child:hover {
+            background: #6b3d1a;
+            transform: scale(1.05);
+        }
+
+        #success-popup .popup-content .btn-cancel {
+            background: #F2E7D9;
+            color: #a86f3c;
+            border: 1.5px solid #a86f3c;
+        }
+
+        #success-popup .popup-content .btn-cancel:hover {
+            background: #f7ede3;
+            color: #6b3d1a;
+        }
+
         @media (max-width: 900px) {
             .dashboard-container {
                 flex-direction: column;
