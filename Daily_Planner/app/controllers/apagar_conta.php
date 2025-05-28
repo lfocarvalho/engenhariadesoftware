@@ -1,27 +1,33 @@
 <?php
-require 'config.php';
+require_once __DIR__ . '/../models/user_model.php';
+require_once __DIR__ . '/../../config/config.php'; // Ajuste se o config estiver em outro local relativo a Daily_Planner
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
-    header('Location: login.php'); // ou index.php, dependendo do seu fluxo
+    header('Location: ../views/login.php');
     exit;
 }
 
-$usuario_id = $_SESSION['usuario']['id'];
+if (!isset($_SESSION['usuario']['id']) || !is_numeric($_SESSION['usuario']['id'])) {
+    header('Location: ../views/login.php');
+    exit;
+}
+$usuario_id = (int)$_SESSION['usuario']['id'];
 
 try {
-    // Exclui o usuário (as tarefas serão apagadas automaticamente via ON DELETE CASCADE)
-    $stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
-    $stmt->execute([$usuario_id]);
+    $userModel = new UserModel();
+    $apagado = $userModel->excluirUsuario($usuario_id);
 
-    // Destroi a sessão
-    session_destroy();
-
-    // Redireciona para a página inicial ou de login
-    header('Location: index.php?msg=conta_excluida');
-    exit;
-} catch (PDOException $e) {
-    // Você pode logar o erro em error_log() se desejar
-    header('Location: perfil.php?erro=nao_excluiu');
+    if ($apagado) {
+        session_destroy();
+        // Redireciona para o index público após apagar a conta
+        header('Location: ..\..\public\index.php');
+        exit;
+    } else {
+        header('Location: ../views/perfil.php?erro=nao_excluiu');
+        exit;
+    }
+} catch (Exception $e) {
+    header('Location: ../views/perfil.php?erro=nao_excluiu');
     exit;
 }

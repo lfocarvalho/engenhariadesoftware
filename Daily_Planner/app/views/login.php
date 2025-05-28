@@ -2,8 +2,11 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Daily Planner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bem-vindo</title>
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">

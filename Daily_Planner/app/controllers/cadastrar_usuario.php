@@ -1,51 +1,27 @@
 <?php
-require_once __DIR__ . '/../models/user_model.php';
+require_once __DIR__ . '/../../config/config.php'; // Ajuste se o config estiver em outro local relativo a Daily_Planner
+require_once '../models/user_model.php';
+$userModel = new UserModel();
 
-$erro = '';
-$mensagem = '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $senha_plana = $_POST['senha']; // Senha vinda diretamente do formulário
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = trim($_POST['nome']);
-    $email = trim($_POST['email']);
-    $senha = trim($_POST['senha']);
+    $resultado = $userModel->criarUsuario($nome, $email, $senha_plana, 'usuario');
 
-    if (empty($nome) || empty($email) || empty($senha)) {
-        $erro = "Por favor, preencha todos os campos.";
+    if (is_numeric($resultado)) { // Se retornou o ID do usuário
+        echo "Usuário criado com sucesso! ID: " . $resultado;
+        // Redirecionar para login ou dashboard
+    } elseif (is_string($resultado)) { // Se retornou uma mensagem de erro específica
+         echo "Erro: " . $resultado;
     } else {
-        $userModel = new UserModel();
-        $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-        $resultado = $userModel->criarUsuario($nome, $email, $senha_hash);
-
-        if ($resultado) {
-            $mensagem = "Usuário cadastrado com sucesso! <a href='login.php'>Clique aqui para fazer login</a>.";
-        } else {
-            $erro = "Erro ao cadastrar usuário. Verifique se o email já está cadastrado.";
-        }
+        echo "Erro ao criar usuário.";
     }
 }
 
 // Inclui a view (apenas HTML)
 require_once __DIR__ . '/../views/cadastrar_usuario.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Usuario</title>
-    <link rel="stylesheet" href="estilo.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Cadastrar Usuario</h1>
-        <form method="POST">
-            <br>Nome de Usuario:  <input type="text" name="nome" placeholder="Nome" required><br>
-            <br>E-mail:  <input type="email" name="email" placeholder="Email" required><br>
-            <br>Senha:  <input type="password" name="senha" placeholder="Senha" required><br>
-            <br><button type="submit">Cadastrar</button>
-        </form>
-        <br><a href="index.php">Voltar para página inicial</a>
-    </div>
 
-</body>
-</html>
+

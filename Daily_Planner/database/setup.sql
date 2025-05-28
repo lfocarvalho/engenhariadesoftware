@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
     tipo ENUM('admin', 'usuario') DEFAULT 'usuario',
     data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-);
 
 -- Tabela de tarefas
 CREATE TABLE IF NOT EXISTS tarefas (

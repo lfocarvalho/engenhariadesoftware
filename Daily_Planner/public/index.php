@@ -266,8 +266,8 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
       <a href="#contato">Contato</a>
     </nav>
     <div>
-      <a href="../app/controllers/login.php" class="login-button">Login</a>
-      <a href="../app/controllers/cadastrar_usuario.php" class="register-button">Cadastre-se</a>
+      <a href="../app/views/login.php" class="login-button">Login</a>
+      <a href="../app/views/cadastrar_usuario.php" class="register-button">Cadastre-se</a>
     </div>
   </header>
 
@@ -278,7 +278,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         <p>
           Organize seu dia com ajuda da nossa mascote e descubra o poder de pequenos hábitos. Tudo de forma simples e eficiente.
         </p>
-        <a href="../app/controllers/cadastrar_usuario.php" class="button comecar-agora">Começar agora</a>
+        <a href="../app/views/cadastrar_usuario.php" class="button comecar-agora">Começar agora</a>
       </div>
       <div class="slogan-mascote-img">
         <img src="img/mascote.svg" alt="Mascote Daily Planner" />

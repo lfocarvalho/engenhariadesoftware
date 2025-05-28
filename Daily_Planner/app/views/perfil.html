@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Perfil - Estilo inspirado no dashboard.css */
+
+        /* Reset e fonte */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #F7EADC;
+        }
+
+        /* Container principal */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: #FBF2E5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.07);
+        }
+
+        .user-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #F8F0E1;
+            margin-bottom: 15px;
+            border: 3px solid #F2E7D9;
+        }
+
+        #username {
+            color: #755F52;
+            font-size: 1.3rem;
+            margin: 0 0 5px 0;
+            font-weight: 600;
+        }
+
+        #user-email {
+            color: #99827A;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 18px;
+        }
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #99827A;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .sidebar nav ul li a:hover,
+        .sidebar nav ul li.logout a {
+            background: #F2E7D9;
+            color: #755F52;
+        }
+
+        .sidebar nav ul li.logout a {
+            color: #a86f3c;
+            font-weight: 600;
+        }
+
+        /* Conteúdo principal */
+        .main-content {
+            flex: 1;
+            padding: 50px 40px;
+            background: #FFFCF8;
+            min-height: 100vh;
+        }
+
+        .account-actions h2 {
+            color: #755F52;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .danger-zone {
+            background: #F7EADC;
+            border: 1.5px solid #F6C4B7;
+            border-radius: 18px;
+            padding: 32px 28px;
+            margin-top: 40px;
+            box-shadow: 0 2px 12px #f6c4b71a;
+        }
+
+        .danger-zone h3 {
+            color: #a86f3c;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .danger-zone p {
+            color: #755F52;
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        .btn-danger {
+            background: #a86f3c;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-danger:hover {
+            background: #6b3d1a;
+            transform: scale(1.05);
+        }
+
+        /* Modal de confirmação */
+        .modal {
+            display: none; /* Será exibido via JS */
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            background: rgba(60, 40, 20, 0.35);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 32px 36px;
+            border-radius: 18px;
+            border: 1.5px solid #F6C4B7;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 2px 18px #0002;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            font-size: 1.5rem;
+            color: #a86f3c;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #6b3d1a;
+        }
+
+        .modal-content h3 {
+            color: #a86f3c;
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .modal-content p {
+            color: #755F52;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .modal-buttons a,
+        .modal-buttons .btn-cancel {
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .modal-buttons a {
+            background: #a86f3c;
+            color: #fff;
+        }
+
+        .modal-buttons a:hover {
+            background: #6b3d1a;
+        }
+
+        .btn-cancel {
+            background: #F2E7D9;
+            color: #a86f3c;
+            border: 1.5px solid #a86f3c;
+        }
+
+        .btn-cancel:hover {
+            background: #f7ede3;
+            color: #6b3d1a;
+        }
+
+        /* Pop-up de sucesso */
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(60, 40, 20, 0.35);
+            justify-content: center;
+            align-items: center;
+        }
+        .popup.active {
+            display: flex;
+        }
+        .popup-content {
+            background: #fff;
+            padding: 32px 36px;
+            border-radius: 18px;
+            border: 1.5px solid #F6C4B7;
+            box-shadow: 0 2px 18px #0002;
+            text-align: center;
+        }
+
+        /* Responsivo */
+        @media (max-width: 900px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 20px 10px;
+            }
+            .main-content {
+                padding: 30px 10px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                padding: 20px 0;
+            }
+            .main-content {
+                padding: 15px 2vw;
+            }
+            .danger-zone {
+                padding: 18px 8px;
+            }
+            .modal-content {
+                padding: 18px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/80" alt="Foto do usuário" class="profile-pic">
+                <h3 id="username">Nome do Usuário</h3>
+                <p id="user-email">usuario@email.com</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Perfil</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+                    <li class="logout"><a href="#" onclick="redirectToIndex()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="account-actions">
+                <h2><i class="fas fa-user-cog"></i> Configurações da Conta</h2>
+                
+                <div class="danger-zone">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h3>
+                    <p>Ao apagar sua conta, todos os seus dados serão permanentemente removidos e não poderão ser recuperados.</p>
+                    
+                    <button id="deleteAccountBtn" class="btn-danger">
+                        <i class="fas fa-trash-alt"></i> Apagar Minha Conta
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+ <!-- Pop-up de sucesso -->
+    <div class="popup" id="success-popup">
+        <div class="popup-content">
+            <h2>Sua conta será apagada!</h2>
+            <p>Uma vez que apagar sua conta, suas atividades não serão salvas.</p>
+            <button onclick="redirectToApagar()">OK</button>
+            <button onclick="closePopup()" class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
+     <script>
+    // Exibe o pop-up ao clicar no botão "Apagar Minha Conta"
+    document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+        document.getElementById('success-popup').classList.add('active');
+    });
+
+    // Redireciona para a página de apagar conta
+    function redirectToApagar() {
+        window.location.href = '../controllers/apagar_conta.php';
+    }
+
+    // Fecha o pop-up e permanece na página de perfil
+    function closePopup() {
+        document.getElementById('success-popup').classList.remove('active');
+    }
+</script>
+</body>
+</html>
