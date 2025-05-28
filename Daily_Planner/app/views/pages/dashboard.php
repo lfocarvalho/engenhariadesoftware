@@ -172,18 +172,18 @@
                     const li = document.createElement('li');
                     li.classList.add('activity');
                     li.innerHTML = `
-    <div class="activity-header" onclick="toggleActivity(this)">
-        <span class="activity-title">${activity.data_vencimento} - ${activity.titulo}</span>
-        <button class="toggle-button">+</button>
-    </div>
-    <div class="activity-details hidden">
-        <p class="activity-description">${activity.descricao}</p>
-        <div class="activity-actions">
-            <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
-            <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
-        </div>
-    </div>
-`;
+                        <div class="activity-header" onclick="toggleActivity(this)">
+                            <span class="activity-title">${activity.time} - ${activity.title}</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="activity-details hidden">
+                            <p class="activity-description">${activity.description}</p>
+                            <div class="activity-actions">
+                                <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
+                                <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
+                            </div>
+                        </div>
+                    `;
                     activityList.appendChild(li);
                 });
             }
@@ -352,41 +352,6 @@
                 document.getElementById('profile-pic').src = savedPic;
             }
         });
-
-        async function openEditActivityModal(id) {
-            // Busca os dados da tarefa
-            const response = await fetch('get_atividades.php?id=' + id);
-            if (!response.ok) {
-                alert('Erro ao buscar atividade.');
-                return;
-            }
-            const atividade = await response.json();
-
-            document.getElementById('modal-title').textContent = 'Editar Atividade';
-            document.getElementById('activity-id').value = atividade.id;
-            document.getElementById('activity-title').value = atividade.titulo;
-            document.getElementById('activity-description').value = atividade.descricao;
-            if (atividade.data_vencimento) {
-                // Separa data e hora
-                const [data, hora] = atividade.data_vencimento.split(' ');
-                document.getElementById('activity-date').value = data;
-                document.getElementById('activity-time').value = hora ? hora.substring(0,5) : '';
-            }
-            document.getElementById('activity-modal').classList.remove('hidden');
-        }
-
-        async function deleteActivity(id) {
-            if (confirm("Tem certeza que deseja excluir esta atividade?")) {
-                const response = await fetch('excluir_tarefa.php?id=' + id, { method: 'GET' });
-                const result = await response.json();
-                if (result.success) {
-                    loadActivities(selectedDate); // Atualiza a lista após excluir
-                } else {
-                    alert(result.message || 'Erro ao excluir atividade.');
-                }
-            }
-        }
-
     </script>
             <!-- Botão do SAC -->
     <div class="sac-flutuante">
@@ -419,3 +384,4 @@
     </script>
 </body>
 </html>
+``` 
