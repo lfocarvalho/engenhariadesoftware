@@ -6,6 +6,7 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <script>
@@ -87,11 +88,12 @@
                 <div class="card">
                     <h2>Produtividade</h2>
                     <div class="productivity-circle">
-                        75%
+                        <canvas id="productivityChart" width="120" height="120"></canvas>
+                        <div id="productivityPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.5rem;font-weight:700;color:#604A3E;"></div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card calendar-card">
                     <h2>Calendário</h2>
                     <div class="calendar-header">
                         <button class="prev-button">Anterior</button>
@@ -164,6 +166,7 @@
 
     <script>
         let selectedDate = null;
+        let productivityChart = null;
 
         async function loadActivities(date = null) {
 
@@ -204,7 +207,13 @@
 
                     header.addEventListener('click', function(e) {
                         if (e.target.tagName === 'BUTTON') return;
-                        details.classList.toggle('hidden');
+                        const isOpen = !details.classList.contains('hidden');
+                        document.querySelectorAll('.activity-details').forEach(d => d.classList.add('hidden'));
+                        document.querySelectorAll('.agenda-list li').forEach(li => li.classList.remove('open'));
+                        if (!isOpen) {
+                            details.classList.remove('hidden');
+                            li.classList.add('open');
+                        }
                     });
 
                     li.appendChild(header);
@@ -320,7 +329,13 @@
 
                 header.addEventListener('click', function(e) {
                     if (e.target.tagName === 'BUTTON') return;
-                    details.classList.toggle('hidden');
+                    const isOpen = !details.classList.contains('hidden');
+                    document.querySelectorAll('.activity-details').forEach(d => d.classList.add('hidden'));
+                    document.querySelectorAll('.agenda-list li').forEach(li => li.classList.remove('open'));
+                    if (!isOpen) {
+                        details.classList.remove('hidden');
+                        li.classList.add('open');
+                    }
                 });
 
                 li.appendChild(header);
@@ -332,12 +347,38 @@
         }
 
         function updateProductivity(concluidas, total) {
-            const circle = document.querySelector('.productivity-circle');
             let percent = 0;
             if (total > 0) {
                 percent = Math.round((concluidas / total) * 100);
             }
-            circle.textContent = percent + '%';
+            renderProductivityChart(percent);
+        }
+
+        function renderProductivityChart(percent) {
+            const ctx = document.getElementById('productivityChart').getContext('2d');
+            if (productivityChart) {
+                productivityChart.data.datasets[0].data = [percent, 100 - percent];
+                productivityChart.update();
+            } else {
+                productivityChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [percent, 100 - percent],
+                            backgroundColor: ['#a86f3c', '#f7eadc'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        cutout: '70%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            }
+            document.getElementById('productivityPercent').textContent = percent + '%';
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -373,7 +414,6 @@
                 ];
                 currentMonthElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
-       
                 for (let i = 0; i < firstDay; i++) {
                     const emptyCell = document.createElement('div');
                     emptyCell.classList.add('empty-day');
@@ -428,7 +468,7 @@
                 updateCalendar();
             });
 
-  
+
             updateCalendar();
         }
 
@@ -438,7 +478,7 @@
         
                 window.location.href = "index.php";
             } else {
-          
+
                 window.location.href = "dashboard.html";
             }
         }
@@ -511,7 +551,7 @@
             }
         };
 
-   
+
         async function openEditActivityModal(id) {
             try {
                 const response = await fetch(`../controllers/get_atividades.php?id=${id}`);
@@ -536,7 +576,7 @@
             }
         }
 
-  
+
         async function deleteActivity(id) {
             if (!confirm('Deseja realmente excluir esta atividade?')) return;
             try {
@@ -565,8 +605,10 @@
                 alert('Erro ao alterar status da tarefa.');
             }
         }
+
+
     </script>
-            <!-- Botão do SAC -->
+    
     <div class="sac-flutuante">
         <button type="button" class="botao-sac" onclick="toggleModalSac()">SAC</button>
     </div>

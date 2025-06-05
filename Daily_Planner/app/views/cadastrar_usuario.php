@@ -91,7 +91,7 @@
             margin-bottom: 5px;
             font-weight: 500;
             color: #604A3E;
-            text-align: left; /* Garante alinhamento à esquerda */
+            text-align: left; 
         }
 
         .form-group input {
@@ -152,7 +152,7 @@
             font-weight: 500;
         }
 
-        /* Estilo do pop-up */
+    
         .popup {
             position: fixed;
             top: 0;
@@ -227,7 +227,7 @@
             <h1 class="register-title">Crie sua conta</h1>
             <p class="register-subtitle">Preencha os campos abaixo para começar</p>
 
-            <!-- Mensagem de erro pode ser exibida pelo controller via GET, se desejar -->
+           
 
             <form method="POST" class="register-form" action="../controllers/cadastrar_usuario.php">
                 <div class="form-group">
@@ -254,7 +254,7 @@
         </div>
     </div>
 
-    <!-- Pop-up de sucesso pode ser tratado pelo controller, se desejar -->
+  
     <div class="popup" id="success-popup" style="display:none;">
         <div class="popup-content">
             <h2>Cadastro realizado com sucesso!</h2>
