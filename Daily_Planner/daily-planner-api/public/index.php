@@ -1,6 +1,9 @@
 <?php
 require __DIR__ . '/../config/config.php'; // Include your configuration file
 require __DIR__ . '/../app/daily-planner-api/src/controllers/EmailController.php'; // Include the EmailController
+require_once __DIR__ . '/../src/Security/errors.php';
+require_once __DIR__ . '/../src/Security/auth.php';
+autenticar();
 
 // Simple routing mechanism
 $requestMethod = $_SERVER['REQUEST_METHOD'];
