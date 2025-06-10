@@ -1,0 +1,20 @@
+{
+    "name": "daily-planner/api",
+    "description": "Daily Planner API project",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "DailyPlannerApi\\": "src/",      
+            "DailyPlannerApi\\Config\\": "config/" 
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
