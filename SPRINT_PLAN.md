@@ -9,40 +9,40 @@ O foco desta sprint foi estabelecer as funcionalidades essenciais de gerenciamen
 ### Funcionalidades Implementadas
 * **CRUD de Tarefas:**
     * **Criação:** Usuários podem salvar novas tarefas com título, descrição e data de vencimento.
-    * [cite_start]**Leitura:** As tarefas são carregadas dinamicamente no dashboard do usuário.
-    * [cite_start]**Atualização:** Tarefas existentes podem ser editadas. [cite_start]O teste unitário em `EdicaoConclusaoTarefaTest.php` garante que um usuário não pode editar a tarefa de outro.
+    * **Leitura:** As tarefas são carregadas dinamicamente no dashboard do usuário.
+    * **Atualização:** Tarefas existentes podem ser editadas. [cite_start]O teste unitário em `EdicaoConclusaoTarefaTest.php` garante que um usuário não pode editar a tarefa de outro.
     * **Remoção:** Tarefas podem ser excluídas de forma segura.
 
 * **Gerenciamento de Status:**
-    * [cite_start]Usuários podem marcar tarefas como "concluídas" ou reabri-las como "pendentes".
-    * [cite_start]O dashboard permite filtrar a visualização de tarefas por status (todas, pendentes, concluídas) através do controller `filtros.php`.
+    * Usuários podem marcar tarefas como "concluídas" ou reabri-las como "pendentes".
+    * O dashboard permite filtrar a visualização de tarefas por status (todas, pendentes, concluídas) através do controller `filtros.php`.
 
 ### Análise das User Stories
 
 As user stories do planejamento original foram adaptadas para refletir a mudança de foco de "senhas" para "tarefas".
 
-* [cite_start]**User Story: Cadastrar Tarefas** 
+* **User Story: Cadastrar Tarefas** 
     > **Planejado:** "Eu, como usuário autenticado, desejo cadastrar novas senhas com detalhes (plataforma, usuário, senha, apelido)." 
     > **Implementado:** A funcionalidade foi implementada, mas para "tarefas". O controller `salvar_tarefa.php` recebe os dados do formulário do dashboard e utiliza o `TarefaModel` para persistir a tarefa no banco de dados.
 
-* [cite_start]**User Story: Visualizar Tarefas Cadastradas** 
-    > [cite_start]**Planejado:** "Eu, como usuário autenticado, desejo visualizar as senhas que cadastrei com todos os detalhes." 
+* **User Story: Visualizar Tarefas Cadastradas** 
+    > **Planejado:** "Eu, como usuário autenticado, desejo visualizar as senhas que cadastrei com todos os detalhes." 
     > **Implementado:** Totalmente. O `dashboard.html`  utiliza JavaScript para fazer requisições via `fetch` ao `get_atividades.php`, que retorna as tarefas do usuário logado em formato JSON.
 
-* [cite_start]**User Story: Autenticar para Exibir Tarefas** 
-    > [cite_start]**Planejado:** "Para isso devo realizar uma nova autenticação." 
+* **User Story: Autenticar para Exibir Tarefas** 
+    > **Planejado:** "Para isso devo realizar uma nova autenticação." 
     > **Implementado:** A segurança foi implementada através do sistema de sessão. Todos os controllers de tarefas (`get_atividades.php`, `editar_tarefa.php`, etc.) verificam se `$_SESSION['usuario']` existe. Não foi implementada uma *segunda* autenticação, mas o objetivo principal de garantir o acesso apenas ao usuário logado foi cumprido.
 
-* [cite_start]**User Story: Editar Tarefas** 
-    > [cite_start]**Planejado:** "Eu, como usuário, desejo editar os detalhes de uma tarefa já cadastrada." 
+* **User Story: Editar Tarefas** 
+    > **Planejado:** "Eu, como usuário, desejo editar os detalhes de uma tarefa já cadastrada." 
     > **Implementado:** Sim. O `dashboard.html`  possui um modal de edição que envia os dados para `editar_tarefa.php`, atualizando a tarefa no banco de dados.
 
-* [cite_start]**User Story: Excluir Tarefas** 
-    > [cite_start]**Planejado:** "Eu, como usuário, desejo excluir tarefas que não uso mais." 
+* **User Story: Excluir Tarefas** 
+    > **Planejado:** "Eu, como usuário, desejo excluir tarefas que não uso mais." 
     > **Implementado:** Sim, através do controller `excluir_tarefa.php`.
 
-* [cite_start]**User Story: Confirmar Exclusão de Tarefas** 
-    > [cite_start]**Planejado:** "Eu, como usuário, desejo ser solicitado a confirmar antes de excluir uma tarefa." 
+* **User Story: Confirmar Exclusão de Tarefas** 
+    > **Planejado:** "Eu, como usuário, desejo ser solicitado a confirmar antes de excluir uma tarefa." 
     > **Implementado:** Sim. A função `deleteActivity` no JavaScript do `dashboard.html` utiliza um `confirm()` do navegador antes de prosseguir com a exclusão.
 
 ---
@@ -57,28 +57,28 @@ Esta sprint focou em criar um ambiente seguro e personalizado para cada usuário
 * **Cadastro e Login:**
     * Formulário de cadastro para novos usuários.
     * Sistema de login seguro que autentica o usuário e inicia uma sessão.
-    * [cite_start]As senhas são armazenadas de forma segura no banco usando `password_hash()`.
+    * As senhas são armazenadas de forma segura no banco usando `password_hash()`.
 
 * **Gestão de Conta:**
-    * [cite_start]Página de perfil onde o usuário pode alterar sua senha (`perfil.php`).
+    * Página de perfil onde o usuário pode alterar sua senha (`perfil.php`).
     * Funcionalidade para apagar a própria conta, o que remove todos os dados do usuário do sistema.
 
 * **Personalização e Notificações:**
-    * [cite_start]Envio de um e-mail de boas-vindas no momento do cadastro.
-    * [cite_start]Opção para o usuário selecionar uma foto de perfil a partir de avatares pré-definidos.
+    * Envio de um e-mail de boas-vindas no momento do cadastro.
+    * Opção para o usuário selecionar uma foto de perfil a partir de avatares pré-definidos.
 
 ### Análise das User Stories
 
-* [cite_start]**User Story: Acessar a Tela Inicial** 
+* **User Story: Acessar a Tela Inicial** 
     > **Planejado:** "Eu, como usuário, desejo acessar a tela inicial do site. Para isso, não preciso estar logado..." 
     > **Implementado:** Sim. O arquivo `public/index.php` serve como a página de boas-vindas pública, com opções para login ou cadastro.
 
-* [cite_start]**User Story: Cadastrar um Novo Usuário** 
-    > [cite_start]**Planejado:** "Eu, como novo usuário, desejo me cadastrar na plataforma." 
+* **User Story: Cadastrar um Novo Usuário** 
+    > **Planejado:** "Eu, como novo usuário, desejo me cadastrar na plataforma." 
     > **Implementado:** Totalmente. O fluxo de cadastro é gerenciado por `cadastrar_usuario.php` e `user_model.php`, que também verifica se o e-mail já existe.
 
-* [cite_start]**User Story: Efetuar Login** 
-    > [cite_start]**Planejado:** "Eu, como usuário registrado, desejo fazer login de forma segura." 
+* **User Story: Efetuar Login** 
+    > **Planejado:** "Eu, como usuário registrado, desejo fazer login de forma segura." 
     > **Implementado:** Sim. O `login.php` lida com a submissão do formulário, e o `UserModel`  realiza a autenticação comparando a senha fornecida com o hash armazenado.
 
 ---
@@ -92,15 +92,15 @@ Esta sprint não estava detalhada no planejamento original, mas emergiu da neces
 ### Funcionalidades Implementadas
 * **Estrutura da API:**
     * API autônoma localizada em `DailyPlannerApi/` com gerenciamento de dependências via **Composer**.
-    * [cite_start]Roteamento de requisições para controladores específicos.
+    * Roteamento de requisições para controladores específicos.
 
 * **Serviço de E-mail:**
-    * [cite_start]Endpoint `POST /api/send-email` para o envio de e-mails.
+    * Endpoint `POST /api/send-email` para o envio de e-mails.
     * Utiliza a biblioteca **PHPMailer** (`^6.9`) configurada para envio via SMTP.
     * A configuração de credenciais SMTP é carregada de forma segura a partir de um arquivo `.env`.
 
 * **Segurança da API:**
-    * [cite_start]Implementação de uma verificação de **API Key** via `Authorization: Bearer` para proteger o acesso aos endpoints.
+    * Implementação de uma verificação de **API Key** via `Authorization: Bearer` para proteger o acesso aos endpoints.
 
 ### Análise das User Stories
 
@@ -122,12 +122,12 @@ O escopo original da Sprint 4 focava no compartilhamento de tarefas. No entanto,
 
 ### Funcionalidades Implementadas
 * **Dashboard Interativo (`dashboard.html` e `dashboard.css`):**
-    * [cite_start]**Gráfico de Produtividade:** Um gráfico de rosca renderizado com **Chart.js** mostra a porcentagem de tarefas concluídas.
-    * [cite_start]**Calendário Dinâmico:** Um calendário interativo permite que o usuário selecione um dia para visualizar as tarefas correspondentes.
-    * [cite_start]**Tema Claro/Escuro:** Um botão permite ao usuário alternar entre os temas para melhor conforto visual.
+    * **Gráfico de Produtividade:** Um gráfico de rosca renderizado com **Chart.js** mostra a porcentagem de tarefas concluídas.
+    * **Calendário Dinâmico:** Um calendário interativo permite que o usuário selecione um dia para visualizar as tarefas correspondentes.
+    * **Tema Claro/Escuro:** Um botão permite ao usuário alternar entre os temas para melhor conforto visual.
 
 * **Suporte ao Cliente (SAC):**
-    * [cite_start]Implementação de um formulário de contato (SAC) flutuante no dashboard.
+    * Implementação de um formulário de contato (SAC) flutuante no dashboard.
     * Criação de um modelo de dados para gerenciar os tickets (`sac_model.php`).
 
 * **Painel Administrativo:**
@@ -138,12 +138,12 @@ O escopo original da Sprint 4 focava no compartilhamento de tarefas. No entanto,
 
 As user stories planejadas para a Sprint 4 no documento original **não foram implementadas**.
 
-* [cite_start]**User Story: Compartilhar Tarefas** 
-    > [cite_start]**Planejado:** "Eu, como usuário, desejo compartilhar minhas tarefas com outras pessoas." 
+* **User Story: Compartilhar Tarefas** 
+    > **Planejado:** "Eu, como usuário, desejo compartilhar minhas tarefas com outras pessoas." 
     > **Status:** **Não implementado.** Não há evidências no código de funcionalidades de compartilhamento.
 
-* [cite_start]**User Story: Gerenciar Permissões de Acesso** 
-    > [cite_start]**Planejado:** "Eu, como usuário, desejo definir quem pode visualizar ou editar minhas tarefas compartilhadas." 
+* **User Story: Gerenciar Permissões de Acesso** 
+    > **Planejado:** "Eu, como usuário, desejo definir quem pode visualizar ou editar minhas tarefas compartilhadas." 
     > **Status:** **Não implementado.**
 
 Em vez disso, as seguintes user stories (inferidas do código) foram implementadas:
