@@ -1,10 +1,17 @@
-![Logo do Projeto](https://github.com/user-attachments/assets/ee2f4e34-782b-406d-9a69-06290025e412)
+![Logo do Projeto](https://github.com/user-attachments/assets/e6fa9761-08d9-4938-af4f-1b137490df52)
 
 # Daily Planner
 
 O Daily Planner é uma aplicação de agenda pessoal online, inspirada em ferramentas como o Notion, mas com foco em simplicidade e objetividade. O projeto permite que os usuários gerenciem tarefas, organizem suas atividades diárias e acompanhem sua produtividade através de uma interface limpa e responsiva.
 
 Este projeto foi desenvolvido como parte da disciplina de Engenharia de Software da Universidade Federal do Tocantins.
+
+### Imagens do Projeto
+
+![image](https://github.com/user-attachments/assets/12087f9c-6390-42ef-9b0c-6f4acc55437d)
+![image](https://github.com/user-attachments/assets/17baa311-da0e-4ce6-b5e2-c6f370e6fab9)
+
+
 
 ### Links Rápidos
 * **[Planejamento de Sprints e Evolução do Projeto](SPRINT_PLAN.md)**
