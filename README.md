@@ -1,4 +1,4 @@
-![Logo do Projeto](https://github.com/user-attachments/assets/7dcb55c4-6fe8-4dcb-b55f-b83438be5bed)
+![Logo do Projeto](https://github.com/user-attachments/assets/ee2f4e34-782b-406d-9a69-06290025e412)
 
 # Daily Planner
 
@@ -8,7 +8,7 @@ Este projeto foi desenvolvido como parte da disciplina de Engenharia de Software
 
 ### Links Rápidos
 * **[Planejamento de Sprints e Evolução do Projeto](SPRINT_PLAN.md)**
-* **[Protótipo no Figma](https://www.figma.com/design/jv0gykfRstoIKWcypGvp1A/Untitled?node-id=1-2&t=cr9aatuTIzlfmUJu-1)**
+* **[Protótipo no Figma]([https://www.figma.com/design/jv0gykfRstoIKWcypGvp1A/Untitled?node-id=1-2&t=cr9aatuTIzlfmUJu-1](https://www.figma.com/design/dWx1QhkWDqtIrZCTiXHCmC/Untitled?node-id=0-1&t=SPjJd34N8xG4ibq2-1))**
 
 ---
 
