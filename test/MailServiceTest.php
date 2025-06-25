@@ -134,4 +134,4 @@ class MailServiceTest extends TestCase
 
         $this->mailService->sendEmail($toEmail, $subject, $body, $toName, true, $fromEmail, $fromName);
     }
-}
+}  
