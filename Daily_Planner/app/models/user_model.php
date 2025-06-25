@@ -9,6 +9,57 @@ class UserModel {
         $this->db = Database::getInstance()->getConnection();
     }
 
+    /**
+     * Realiza o login do usuário (compatível com LoginTest)
+     */
+    public function login(string $email, string $senha) {
+        return $this->autenticarUsuario($email, $senha);
+    }
+
+    /**
+     * Gera token de sessão e armazena dados do usuário na sessão
+     */
+    public function gerarTokenSessao(int $id, string $email): string {
+        $token = bin2hex(random_bytes(32));
+        
+        $_SESSION['usuario'] = [
+            'id' => $id,
+            'email' => $email,
+            'token' => $token,
+            'expira' => time() + 3600 // 1 hora de expiração
+        ];
+        
+        return $token;
+    }
+
+    /**
+     * Remove os dados de autenticação da sessão
+     */
+    public function logout(): void {
+        unset($_SESSION['usuario']);
+    }
+
+    /**
+     * Autentica um usuário (método existente adaptado)
+     */
+    public function autenticarUsuario($email, $password) {
+        $user = $this->getUsuarioEmail($email); 
+        
+        if ($user && isset($user['senha']) && password_verify($password, $user['senha'])) {
+            unset($user['senha']); 
+            return $user;
+        }
+        
+        if (!$user) {
+            error_log("Tentativa de login falhou: Email não encontrado - " . $email);
+        } else if (!password_verify($password, $user['senha'])) {
+            error_log("Tentativa de login falhou: Senha incorreta para o email - " . $email);
+        }
+        
+        return false;
+    }
+
+    // Métodos existentes mantidos conforme seu código original
     public function getUsuarioEmail($email) {
         try {
             $query = "SELECT id, nome, email, senha, tipo, data_criacao FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
@@ -30,11 +81,9 @@ class UserModel {
         return $stmt->fetch(PDO::FETCH_ASSOC); 
     }
 
-    
     public function criarUsuario($nome, $email, $senha_plana, $tipo = 'usuario') {
         try {
             if ($this->getUsuarioEmail($email)) {
-               
                 error_log("Tentativa de criar usuário com email já existente: " . $email);
                 return "Email já está em uso"; 
             }
@@ -67,7 +116,7 @@ class UserModel {
         try {
             $existingUser = $this->getUsuarioEmail($email);
             if ($existingUser && $existingUser['id'] != $id) {
-                 error_log("Tentativa de atualizar para email já em uso por outro usuário. ID: $id, Email: $email");
+                error_log("Tentativa de atualizar para email já em uso por outro usuário. ID: $id, Email: $email");
                 return false; 
             }
 
@@ -86,14 +135,12 @@ class UserModel {
             $query .= " WHERE id = :id";
             $stmt = $this->db->prepare($query);
             
-        
             $stmt->bindParam(':id', $params[':id'], PDO::PARAM_INT);
             $stmt->bindParam(':nome', $params[':nome']);
             $stmt->bindParam(':email', $params[':email']);
             if ($tipo !== null) {
                 $stmt->bindParam(':tipo', $params[':tipo']);
             }
-
 
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -104,8 +151,6 @@ class UserModel {
 
     public function atualizarSenha(int $id, string $senhaAtual, string $novaSenha): bool {
         try {
-            
-
             $query = "SELECT senha FROM " . $this->table_name . " WHERE id = :id LIMIT 1";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -124,17 +169,12 @@ class UserModel {
             $stmtUpdate->bindParam(':id', $id, PDO::PARAM_INT);
             $stmtUpdate->bindParam(':senha', $novaSenhaHash);
             
-            $result = $stmtUpdate->execute();
-          
-            
-            return $result;
+            return $stmtUpdate->execute();
         } catch (PDOException $e) {
-
             error_log("Erro PDO ao atualizar senha: " . $e->getMessage());
             return false;
         }
     }
-
 
     public function excluirUsuario($id) {
         if (!$id || !is_numeric($id)) {
@@ -154,7 +194,7 @@ class UserModel {
 
     public function getUsuarios() {
         try {
-            $query = "SELECT id, nome, email, tipo, created_at FROM " . $this->table_name . " ORDER BY created_at DESC";
+            $query = "SELECT id, nome, email, tipo, data_criacao FROM " . $this->table_name . " ORDER BY data_criacao DESC";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -162,23 +202,5 @@ class UserModel {
             error_log("Erro PDO ao buscar todos os usuários: " . $e->getMessage());
             return []; 
         }
-    }
-
-    public function autenticarUsuario($email, $password) {
-        $user = $this->getUsuarioEmail($email); 
-        
-        if ($user && isset($user['senha']) && password_verify($password, $user['senha'])) {
-            unset($user['senha']); 
-            return $user;
-        }
-        if (!$user) {
-            error_log("Tentativa de login falhou: Email não encontrado - " . $email);
-        } else if (!isset($user['senha'])) {
-            error_log("Tentativa de login falhou: Campo senha não encontrado para o email - " . $email);
-        }
-        else if (!password_verify($password, $user['senha'])) {
-            error_log("Tentativa de login falhou: Senha incorreta para o email - " . $email);
-        }
-        return false;
     }
 }
