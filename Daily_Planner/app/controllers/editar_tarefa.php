@@ -1,6 +1,6 @@
 <?php
 // Caminho: Daily_Planner/app/controllers/editar_tarefa.php
-require_once '../../config/config.php';
+require_once __DIR__ . '/../../config/config.php'; // CAMINHO CORRIGIDO
 require_once __DIR__ . '/../models/TarefaModel.php';
 
 

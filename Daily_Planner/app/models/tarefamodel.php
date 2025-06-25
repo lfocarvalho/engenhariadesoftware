@@ -40,19 +40,21 @@ class TarefaModel {
             ':usuario_id' => $usuario_id
         ]);
     }
-
-    public function update($id, $titulo, $descricao, $data_vencimento, $usuario_id) {
+public function update($id, $titulo, $descricao, $data_vencimento, $usuario_id) {
         $sql = "UPDATE tarefas SET titulo = :titulo, descricao = :descricao, data_vencimento = :data_vencimento WHERE id = :id AND usuario_id = :usuario_id";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
+        
+        $stmt->execute([
             ':titulo' => $titulo,
             ':descricao' => $descricao,
             ':data_vencimento' => $data_vencimento,
             ':id' => $id,
             ':usuario_id' => $usuario_id
         ]);
-    }
 
+        // CORREÇÃO: Retorna true somente se uma linha (ou mais) for realmente alterada.
+        return $stmt->rowCount() > 0;
+    }
     public function delete($id, $usuario_id) {
         $stmt = $this->pdo->prepare("DELETE FROM tarefas WHERE id = :id AND usuario_id = :usuario_id");
         return $stmt->execute([':id' => $id, ':usuario_id' => $usuario_id]);
