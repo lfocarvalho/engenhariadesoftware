@@ -18,21 +18,19 @@
                     <i class="fas fa-camera"></i>
                 </button>
                 <h3 id="username">Carregando...</h3>
-                <p id="user-email">...</p>
+                <p id="user-email">Carregando...</p>
             </div>
             <nav>
                 <ul>
                     <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
                     <li><a href="progresso.html" class="active"><i class="fas fa-chart-line"></i> <span>Progresso</span></a></li>
                     <li><a href="perfil.html"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
-                    <li><a href="config.html"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
                 </ul>
             </nav>
             <a href="#" class="logout-btn" onclick="redirectToIndex()">
                 <i class="fas fa-sign-out-alt"></i> Sair
             </a>
         </div>
-
         <div class="content-area">
             
             <h1>Seu Progresso</h1>
@@ -106,25 +104,28 @@
 
     <script src="progresso.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const res = await fetch('../controllers/get_usuario.php');
+                const user = await res.json();
+                if (user && user.nome && user.email) {
+                    document.getElementById('username').textContent = user.apelido && user.apelido.trim() !== '' ? user.apelido : user.nome;
+                    document.getElementById('user-email').textContent = user.email;
+                } else {
+                    document.getElementById('username').textContent = 'Erro ao carregar';
+                    document.getElementById('user-email').textContent = 'Erro ao carregar';
+                }
+            } catch (e) {
+                document.getElementById('username').textContent = 'Erro ao carregar';
+                document.getElementById('user-email').textContent = 'Erro ao carregar';
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
             const savedPic = localStorage.getItem('profilePic');
             if (savedPic) {
                 document.getElementById('profile-pic').src = savedPic;
             }
-
-            fetch('../controllers/get_user_info.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('username').textContent = data.nome;
-                        document.getElementById('user-email').textContent = data.email;
-                    } else {
-                        console.error('Erro ao buscar informações do usuário:', data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Falha na comunicação com o servidor:', error);
-                });
         });
 
         function redirectToIndex() {
