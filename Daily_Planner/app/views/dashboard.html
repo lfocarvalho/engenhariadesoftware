@@ -46,12 +46,13 @@
                 <button class="change-pic-btn" onclick="openPicModal()" title="Alterar foto de perfil">
                     <i class="fas fa-camera"></i>
                 </button>
-                <h3 id="username">Nando</h3>
-                <p id="user-email">nandooliver120@gmail.com</p>
+                <h3 id="username">Carregando...</h3>
+                <p id="user-email">...</p>
             </div>
             <nav>
                 <ul>
-                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> <span>Início</span></a></li>
+                    <li><a href="progresso.html"><i class="fas fa-chart-line"></i> <span>Progresso</span></a></li>
                     <li><a href="perfil.html"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
                     <li><a href="config.html"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
                 </ul>
@@ -110,11 +111,6 @@
                         <span>Sáb</span>
                     </div>
                     <div class="calendar-grid">
-                        <div class="empty-day"></div>
-                        <div class="day">1</div>
-                        <div class="day">2</div>
-                        <div class="day">3</div>
-
                     </div>
                 </div>
             </div>
@@ -382,6 +378,27 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Carrega a foto de perfil salva
+            const savedPic = localStorage.getItem('profilePic');
+            if (savedPic) {
+                document.getElementById('profile-pic').src = savedPic;
+            }
+
+            // Busca e exibe as informações do usuário
+            fetch('../controllers/get_user_info.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('username').textContent = data.nome;
+                        document.getElementById('user-email').textContent = data.email;
+                    } else {
+                        console.error('Erro ao buscar informações do usuário:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Falha na comunicação com o servidor:', error);
+                });
+            
             const initialFilter = document.getElementById('filtro-tarefas').value;
             if (initialFilter && initialFilter !== 'todas') {
                 filtrarTarefas();
@@ -507,13 +524,6 @@
             localStorage.setItem('profilePic', src); 
             closePicModal();
         }
-    
-        window.addEventListener('DOMContentLoaded', function() {
-            const savedPic = localStorage.getItem('profilePic');
-            if (savedPic) {
-                document.getElementById('profile-pic').src = savedPic;
-            }
-        });
 
         document.getElementById('activity-form').onsubmit = async function(e) {
             e.preventDefault();
@@ -605,8 +615,6 @@
                 alert('Erro ao alterar status da tarefa.');
             }
         }
-
-
     </script>
     
     <div class="sac-flutuante">

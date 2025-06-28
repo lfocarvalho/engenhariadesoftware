@@ -305,12 +305,6 @@ body {
     max-width: 320px;
 }
 
-@media (min-height: 700px) {
-    .content-area {
-        justify-content: center;
-    }
-}
-
 @media (max-width: 1100px) {
     .dashboard-grid {
         grid-template-columns: 1fr 1fr;
