@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresso - Daily Planner</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="progresso.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="user-profile">
+                <img id="profile-pic" src="../img/foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
+                <button class="change-pic-btn" onclick="openPicModal()" title="Alterar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <h3 id="username">Carregando...</h3>
+                <p id="user-email">...</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
+                    <li><a href="progresso.html" class="active"><i class="fas fa-chart-line"></i> <span>Progresso</span></a></li>
+                    <li><a href="perfil.html"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+                    <li><a href="config.html"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
+                </ul>
+            </nav>
+            <a href="#" class="logout-btn" onclick="redirectToIndex()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </div>
+
+        <div class="content-area">
+            
+            <h1>Seu Progresso</h1>
+
+            <div class="progress-wrapper">
+                
+                <div class="tabs-header-container">
+                    <div class="tabs-container">
+                        <div class="tab active" onclick="changeView('semanal')">Semanal</div>
+                        <div class="tab" onclick="changeView('mensal')">Mensal</div>
+                    </div>
+                    <img src="../img/mascoteOla.svg" alt="Mascote Daily Planner" class="tabs-mascote">
+                </div>
+
+                <div class="progress-content-grid">
+                    <div class="card chart-card">
+                        <div class="chart-container">
+                            <canvas id="progressLineChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card stats-card">
+                        <h3>Tarefas Concluídas</h3>
+                        <span class="stat-value" id="completed-tasks">0</span>
+                        <span class="stat-description">Todo o seu histórico.</span>
+                    </div>
+                    <div class="card stats-card">
+                        <h3>Tarefas Pendentes</h3>
+                        <span class="stat-value" id="pending-tasks">0</span>
+                        <span class="stat-description">Não se esqueça delas!</span>
+                    </div>
+                    <div class="card stats-card">
+                        <h3>Total de Tarefas</h3>
+                        <span class="stat-value" id="total-tasks">0</span>
+                        <span class="stat-description">Seu engajamento total.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pic-modal" class="pic-modal hidden">
+        <div class="pic-modal-content">
+            <span class="close-pic-modal" onclick="closePicModal()">&times;</span>
+            <h3>Escolha sua foto de perfil</h3>
+            <div class="pic-options">
+                <img src="../img/foto perfil/perfil 1.svg" onclick="selectProfilePic('../img/foto perfil/perfil 1.svg')" alt="Perfil 1">
+                <img src="../img/foto perfil/perfil 2.svg" onclick="selectProfilePic('../img/foto perfil/perfil 2.svg')" alt="Perfil 2">
+                <img src="../img/foto perfil/perfil 3.svg" onclick="selectProfilePic('../img/foto perfil/perfil 3.svg')" alt="Perfil 3">
+                <img src="../img/foto perfil/perfil 4.svg" onclick="selectProfilePic('../img/foto perfil/perfil 4.svg')" alt="Perfil 4">
+                <img src="../img/foto perfil/perfil 5.svg" onclick="selectProfilePic('../img/foto perfil/perfil 5.svg')" alt="Perfil 5">
+                <img src="../img/foto perfil/perfil 6.svg" onclick="selectProfilePic('../img/foto perfil/perfil 6.svg')" alt="Perfil 6">
+            </div>
+        </div>
+    </div>
+
+    <div class="sac-flutuante">
+        <button type="button" class="botao-sac" onclick="toggleModalSac()">SAC</button>
+    </div>
+
+    <div class="modal-sac" id="modalSac" style="display: none;">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="toggleModalSac()">&times;</span>
+            <h2>Enviar Mensagem ao SAC</h2>
+            <form method="post" action="salvar_sac.php">
+                <input type="text" name="titulo" placeholder="Assunto" required><br>
+                <textarea name="descricao" placeholder="Sua mensagem..." required rows="5"></textarea><br>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="progresso.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedPic = localStorage.getItem('profilePic');
+            if (savedPic) {
+                document.getElementById('profile-pic').src = savedPic;
+            }
+
+            fetch('../controllers/get_user_info.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('username').textContent = data.nome;
+                        document.getElementById('user-email').textContent = data.email;
+                    } else {
+                        console.error('Erro ao buscar informações do usuário:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Falha na comunicação com o servidor:', error);
+                });
+        });
+
+        function redirectToIndex() {
+            const confirmLogout = confirm("Você deseja mesmo sair da conta?");
+            if (confirmLogout) {
+                window.location.href = "index.php";
+            }
+        }
+
+        function openPicModal() {
+            document.getElementById('pic-modal').classList.remove('hidden');
+        }
+        function closePicModal() {
+            document.getElementById('pic-modal').classList.add('hidden');
+        }
+        function selectProfilePic(src) {
+            document.getElementById('profile-pic').src = src;
+            localStorage.setItem('profilePic', src); 
+            closePicModal();
+        }
+
+        function toggleModalSac() {
+            var modal = document.getElementById('modalSac');
+            if (modal.style.display === 'none' || modal.style.display === '') {
+                modal.style.display = 'block';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+/* ---- PADRÃO DE LAYOUT (Do Dashboard) ---- */
+
+body, html {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(120deg, #f7eadc 60%, #fffdf8 100%);
+}
+
+.dashboard-container {
+    height: 100vh;
+    display: flex;
+}
+
+/* ---- LAYOUT GERAL E ESPAÇAMENTO (Específico do Progresso) ---- */
+
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px !important;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.content-area h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 38px;
+    font-weight: 600;
+    color: #494542;
+    text-align: left;
+    width: 85%;
+    margin: 0 auto 25px auto;
+}
+
+.progress-wrapper {
+    width: 85%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* ---- CABEÇALHO COM ABAS E MASCOTE ---- */
+
+.tabs-header-container {
+    display: flex;
+    align-items: flex-end;
+    position: relative; 
+    z-index: 1; 
+}
+
+.tabs-container {
+    display: flex;
+    width: calc(100% - 160px); 
+}
+
+.tabs-mascote {
+    position: absolute; 
+    right: -30px;
+    bottom: -15px;      
+    height: auto;
+    max-width: 231px; 
+}
+
+
+/* ---- COMPONENTE DE ABAS E GRÁFICO ---- */
+
+.tab {
+    flex-grow: 1;
+    text-align: center;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    color: #99827A;
+    background-color: #FBF2E5;
+    border: 4px solid #99827A;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    position: relative;
+    z-index: 1;
+}
+
+.tab + .tab {
+    margin-left: -25px;
+}
+
+.tab.active {
+    font-weight: 700;
+    background-color: #FFFCF8;
+    color: #604A3E;
+    margin-bottom: -4px;
+    z-index: 2; 
+}
+
+
+/* ---- GRID E CARDS ---- */
+
+.progress-content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    position: relative;
+    z-index: 2; 
+}
+
+/* Card do gráfico principal (ESTÁTICO) */
+.card.chart-card {
+    grid-column: 1 / -1;
+    height: 424px;
+    
+    /* --- MÉTODO DE POSICIONAMENTO MANUAL --- */
+    position: relative; /* 1. Define este card como o "pai" para o posicionamento */
+    
+    border: 4px solid #99827A;
+    background-color: #FFFCF8;
+    border-radius: 12px;
+    border-top-left-radius: 0;
+    box-sizing: border-box;
+}
+
+/* REGRA CORRETA PARA O CONTÊINER DO GRÁFICO */
+.chart-container {
+    height: 90%;
+    width: 95%;
+
+    /* --- MÉTODO DE POSICIONAMENTO MANUAL --- */
+    position: absolute;                 /* 2. Define o posicionamento como "absoluto" em relação ao pai */
+    top: 50%;                           /* 3. Move o topo do gráfico para o meio do card */
+    left: 50%;                          /* 4. Move a esquerda do gráfico para o meio do card */
+    transform: translate(-50%, -50%);   /* 5. Ajusta a posição para centralizar perfeitamente */
+}
+
+
+.card.chart-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Cards de estatísticas (INTERATIVOS) */
+.card.stats-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    min-height: 120px;
+    border: 4px solid #99827A;
+    background-color: #FFFCF8;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card.stats-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+}
+
+
+/* ---- TEXTOS DENTRO DOS CARDS ---- */
+
+.stats-card h3 { margin-top: 0; font-size: 16px; color: #604A3E; font-weight: 500; }
+.stat-value { font-size: 48px; font-weight: 700; color: #604A3E; margin-top: 8px; }
+.stat-description { font-size: 13px; color: #755F52; margin-top: 5px; }
+
+
+/* ---- RESPONSIVIDADE ---- */
+
+@media (max-width: 900px) {
+    .content-area h1 {
+        font-size: 36px;
+        text-align: center;
+        width: 95%;
+    }
+    .progress-wrapper {
+        width: 95%;
+    }
+    .progress-content-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .card.chart-card {
+        grid-column: auto;
+    }
+    .tabs-mascote {
+        display: none;
+    }
+    .tabs-container {
+        width: 100%;
+    }
+}
