@@ -4,405 +4,534 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Conta</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #F7EADC;
-        }
-
-
+    body {
+        background: linear-gradient(120deg, #f7eadc 60%, #fffdf8 100%);
+        font-family: 'Inter', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+        align-items: flex-start;
+        background: none;
+    }
+    .sidebar {
+        background: linear-gradient(135deg, #8d6e5c 0%, #604A3E 100%);
+        color: #fff7f7;
+        width: 270px;
+        min-height: 100vh;
+        border-radius: 0 24px 24px 0;
+        box-shadow: 6px 0 24px rgba(120, 90, 70, 0.13), 0 1.5px 0 #bca18c inset;
+        border-right: 2px solid #bca18c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 32px 18px 24px 18px;
+        position: relative;
+        transition: background 0.3s;
+    }
+    .user-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 3px solid #fff7f7;
+        box-shadow: 0 2px 8px rgba(120, 90, 70, 0.13);
+        margin-bottom: 12px;
+        object-fit: cover;
+    }
+    .change-pic-btn {
+        background: none;
+        border: none;
+        color: #bca18c;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .change-pic-btn:hover {
+        color: #fff7f7;
+    }
+    #username {
+        color: #fff !important;
+        font-size: 1.3rem;
+        margin: 0 0 5px 0;
+        font-weight: 600;
+        text-align: center;
+    }
+    #user-email {
+        color: #e3d9d2 !important;
+        font-size: 1rem;
+        margin: 0;
+        text-align: center;
+    }
+    .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px 0;
+        width: 100%;
+    }
+    .sidebar nav ul li {
+        margin-bottom: 12px;
+    }
+    .sidebar nav ul li a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #fff7f7;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 10px 18px;
+        border-radius: 8px;
+        transition: background 0.2s, color 0.2s;
+    }
+    .sidebar nav ul li a.active,
+    .sidebar nav ul li a:focus {
+        background: #bca18c;
+        color: #604A3E;
+        font-weight: 700;
+        box-shadow: 0 2px 8px #bca18c44;
+    }
+    .sidebar nav ul li a:hover {
+        background: #bca18c;
+        color: #604A3E;
+    }
+    .logout-btn {
+        background: linear-gradient(90deg, #a86f3c 60%, #755F52 100%);
+        color: #fff;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 14px 0;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 2px 8px #0001;
+        gap: 10px;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s, transform 0.2s;
+        margin: 32px auto 0 auto;
+    }
+    .logout-btn:hover {
+        background: #604A3E;
+        color: #fff7f7;
+    }
+    .perfil-content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        padding: 40px 0;
+        position: relative;
+    }
+    .perfil-center-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .dashboard-header {
+        width: 100%;
+        max-width: 540px;
+        margin: 0 0 24px 0;
+        text-align: left;
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .perfil-card {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 6px 32px #0002;
+        padding: 2.5rem 3rem;
+        max-width: 540px;
+        width: 100%;
+        margin: 0;
+        transition: box-shadow .2s;
+    }
+    .perfil-card:hover {
+        box-shadow: 0 10px 40px #0003;
+    }
+    h2, h1 {
+        color: #7c5a3a;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: .4rem;
+        color: #7c5a3a;
+        font-size: 1.08rem;
+        letter-spacing: 0.01em;
+    }
+    .form-group input {
+        width: 100%;
+        padding: .7rem 1rem;
+        border-radius: 10px;
+        border: 1.5px solid #e0d6c3;
+        font-size: 1.08rem;
+        background: #faf7f3;
+        transition: border-color .2s, box-shadow .2s;
+        outline: none;
+        color: #3d2c1e;
+        box-shadow: 0 1px 2px #0001;
+    }
+    .form-group input:focus {
+        border-color: #a86f3c;
+        background: #fff;
+        box-shadow: 0 2px 8px #a86f3c22;
+    }
+    .perfil-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .perfil-row .form-group {
+        margin-bottom: 0;
+    }
+    .perfil-row .form-group input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+    .save-profile-button {
+        background: linear-gradient(90deg, #4caf50 60%, #388e3c 100%);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: .8rem 1.5rem;
+        font-size: 1.08rem;
+        cursor: pointer;
+        transition: background .2s, box-shadow .2s;
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        box-shadow: 0 2px 8px #4caf5022;
+        font-weight: 600;
+    }
+    .save-profile-button:hover {
+        background: linear-gradient(90deg, #388e3c 60%, #4caf50 100%);
+        box-shadow: 0 4px 16px #4caf5044;
+    }
+    .change-password-button, .delete-account-button {
+        border: none;
+        border-radius: 10px;
+        padding: .8rem 1.5rem;
+        font-size: 1.08rem;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        background: #f7ede3;
+        color: #a86f3c;
+        transition: background .2s, color .2s;
+    }
+    .change-password-button:hover {
+        background: #e0d6c3;
+        color: #7c5a3a;
+    }
+    .delete-account-button {
+        background: #ffeaea;
+        color: #d32f2f;
+    }
+    .delete-account-button:hover {
+        background: #ffd6d6;
+        color: #b71c1c;
+    }
+    @media (max-width: 900px) {
         .dashboard-container {
-            display: flex;
-            min-height: 100vh;
+            flex-direction: column;
         }
-
-
         .sidebar {
-            width: 300px;
-            background: #FBF2E5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 40px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.07);
-        }
-
-        .user-profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .profile-pic {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: #F8F0E1;
-            margin-bottom: 15px;
-            border: 3px solid #F2E7D9;
-        }
-
-        #username {
-            color: #755F52;
-            font-size: 1.3rem;
-            margin: 0 0 5px 0;
-            font-weight: 600;
-        }
-
-        #user-email {
-            color: #99827A;
-            font-size: 1rem;
-            margin: 0;
-        }
-
-        .sidebar nav ul {
-            list-style: none;
-            padding: 0;
             width: 100%;
+            min-height: unset;
+            border-radius: 0 0 24px 24px;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 18px 8px;
         }
-
-        .sidebar nav ul li {
-            margin-bottom: 18px;
+        .perfil-content-area {
+            padding: 24px 0;
         }
-
-        .sidebar nav ul li a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #99827A;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 12px;
-            transition: background 0.2s, color 0.2s;
+        .dashboard-header, .perfil-card {
+            max-width: 98vw;
         }
-
-        .sidebar nav ul li a:hover,
-        .sidebar nav ul li.logout a {
-            background: #F2E7D9;
-            color: #755F52;
+        .dashboard-header {
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        .sidebar nav ul li.logout a {
-            color: #a86f3c;
-            font-weight: 600;
+    }
+    @media (max-width: 700px) {
+        .perfil-card {
+            padding: 1.2rem .5rem;
         }
-
-        .main-content {
-            flex: 1;
-            padding: 50px 40px;
-            background: #FFFCF8;
-            min-height: 100vh;
+        .perfil-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
-
-        .account-actions h2 {
-            color: #755F52;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .perfil-row .form-group[style*="grid-column"] {
+            grid-column: auto !important;
         }
-
-        .danger-zone {
-            background: #F7EADC;
-            border: 1.5px solid #F6C4B7;
-            border-radius: 18px;
-            padding: 32px 28px;
-            margin-top: 40px;
-            box-shadow: 0 2px 12px #f6c4b71a;
+    }
+    @media (min-width: 900px) {
+        .dashboard-header {
+            padding-left: 60px;
         }
-
-        .danger-zone h3 {
-            color: #a86f3c;
-            font-size: 1.3rem;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .perfil-card {
+            margin-left: 60px;
         }
-
-        .danger-zone p {
-            color: #755F52;
-            font-size: 1rem;
-            margin-bottom: 24px;
-        }
-
-        .btn-danger {
-            background: #a86f3c;
-            color: #fff;
-            border: none;
-            border-radius: 15px;
-            padding: 14px 32px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .btn-danger:hover {
-            background: #6b3d1a;
-            transform: scale(1.05);
-        }
-
-        .modal {
-            display: none; 
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: auto;
-            background: rgba(60, 40, 20, 0.35);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #fff;
-            margin: 10% auto;
-            padding: 32px 36px;
-            border-radius: 18px;
-            border: 1.5px solid #F6C4B7;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 2px 18px #0002;
-            text-align: center;
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 1.5rem;
-            color: #a86f3c;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .close-modal:hover {
-            color: #6b3d1a;
-        }
-
-        .modal-content h3 {
-            color: #a86f3c;
-            margin-bottom: 18px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .modal-content p {
-            color: #755F52;
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            align-items: center;
-        }
-
-        .modal-buttons a,
-        .modal-buttons .btn-cancel {
-            width: 100%;
-            padding: 12px 0;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 500;
-            text-align: center;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .modal-buttons a {
-            background: #a86f3c;
-            color: #fff;
-        }
-
-        .modal-buttons a:hover {
-            background: #6b3d1a;
-        }
-
-        .btn-cancel {
-            background: #F2E7D9;
-            color: #a86f3c;
-            border: 1.5px solid #a86f3c;
-        }
-
-        .btn-cancel:hover {
-            background: #f7ede3;
-            color: #6b3d1a;
-        }
-
-        .popup {
-            display: none;
-            position: fixed;
-            z-index: 3000;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(60, 40, 20, 0.35);
-            justify-content: center;
-            align-items: center;
-        }
-        .popup.active {
-            display: flex;
-        }
-        .popup-content {
-            background: #fff;
-            padding: 32px 36px;
-            border-radius: 18px;
-            border: 1.5px solid #F6C4B7;
-            box-shadow: 0 2px 18px #0002;
-            text-align: center;
-        }
-
-        /* Botões do popup de apagar conta */
-        #success-popup .popup-content button {
-            width: 100%;
-            padding: 12px 0;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 500;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-            margin-bottom: 10px;
-            transition: background 0.2s, color 0.2s, transform 0.2s;
-            outline: none;
-        }
-
-        #success-popup .popup-content button:first-child {
-            background: #a86f3c;
-            color: #fff;
-        }
-
-        #success-popup .popup-content button:first-child:hover {
-            background: #6b3d1a;
-            transform: scale(1.05);
-        }
-
-        #success-popup .popup-content .btn-cancel {
-            background: #F2E7D9;
-            color: #a86f3c;
-            border: 1.5px solid #a86f3c;
-        }
-
-        #success-popup .popup-content .btn-cancel:hover {
-            background: #f7ede3;
-            color: #6b3d1a;
-        }
-
-        @media (max-width: 900px) {
-            .dashboard-container {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 20px 10px;
-            }
-            .main-content {
-                padding: 30px 10px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .sidebar {
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                padding: 20px 0;
-            }
-            .main-content {
-                padding: 15px 2vw;
-            }
-            .danger-zone {
-                padding: 18px 8px;
-            }
-            .modal-content {
-                padding: 18px 8px;
-            }
-        }
+    }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
-        <aside class="sidebar">
+        <!-- Sidebar moderna e padronizada -->
+        <div class="sidebar">
             <div class="user-profile">
-                <img src="../img/foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
-                <h3 id="username">Nome do Usuário</h3>
-                <p id="user-email">usuario@email.com</p>
+                <img id="profile-pic" src="../img/foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
+                <button class="change-pic-btn" onclick="openPicModal()" title="Alterar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <h3 id="username">Carregando...</h3>
+                <p id="user-email">Carregando...</p>
             </div>
             <nav>
                 <ul>
-                    <li class="dashboard"><a href="dashboard.html" onclick="redirectToIndex()"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#"><i class="fas fa-user"></i> Perfil</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
-                    <li class="logout"><a href="#" onclick="redirectToIndex()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
+                    <li><a href="progresso.html"><i class="fas fa-chart-line"></i> <span>Progresso</span></a></li>
+                    <li><a href="perfil.html" class="active"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
                 </ul>
             </nav>
-        </aside>
-
-        <main class="main-content">
-            <div class="account-actions">
-                <h2><i class="fas fa-user-cog"></i> Configurações da Conta</h2>
-                
-                <div class="danger-zone">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h3>
-                    <p>Ao apagar sua conta, todos os seus dados serão permanentemente removidos e não poderão ser recuperados.</p>
-                    
-                    <button id="deleteAccountBtn" class="btn-danger">
-                        <i class="fas fa-trash-alt"></i> Apagar Minha Conta
-                    </button>
+            <a href="#" class="logout-btn" onclick="redirectToIndex()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </div>
+        <div class="perfil-content-area">
+            <div class="perfil-center-container">
+                <header class="dashboard-header">
+                    <h1>Perfil do Usuário</h1>
+                    <p>Gerencie suas informações pessoais</p>
+                </header>
+                <div class="card perfil-card">
+                    <h2 style="text-align:center;margin-bottom:2rem;">Informações da Conta</h2>
+                    <form id="perfil-form" onsubmit="return salvarPerfil(event)">
+                        <div class="perfil-row">
+                            <div class="form-group" style="grid-column: 1 / span 2;">
+                                <label for="nome">Nome completo:</label>
+                                <input type="text" id="nome" name="nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="apelido">Apelido (opcional):</label>
+                                <input type="text" id="apelido" name="apelido" maxlength="20" placeholder="Como prefere ser chamado">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_nascimento">Data de nascimento:</label>
+                                <input type="date" id="data_nascimento" name="data_nascimento">
+                            </div>
+                            <div class="form-group" style="grid-column: 1 / span 2;">
+                                <label for="email">E-mail:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:1rem;justify-content:center;margin-top:2rem;">
+                            <button type="submit" class="save-profile-button">
+                                <i class="fas fa-save"></i> Salvar Alterações
+                            </button>
+                            <button type="button" class="change-password-button" onclick="window.location.href='alterar_senha.html'">
+                                <i class="fas fa-key"></i> Alterar Senha
+                            </button>
+                            <button type="button" class="delete-account-button" onclick="openDeleteModal()">
+                                <i class="fas fa-trash-alt"></i> Apagar Conta
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
-    <div class="popup" id="success-popup">
+    <!-- Modal para apagar conta -->
+    <div class="popup hidden" id="success-popup">
         <div class="popup-content">
             <h2>Sua conta será apagada!</h2>
-            <p>Uma vez que apagar sua conta, suas atividades não serão salvas.</p>
+            <p>Ao apagar sua conta, todos os seus dados serão permanentemente removidos e não poderão ser recuperados.</p>
             <button onclick="redirectToApagar()">OK</button>
             <button onclick="closePopup()" class="btn-cancel">Cancelar</button>
         </div>
     </div>
-     <script>
 
-    document.getElementById('deleteAccountBtn').addEventListener('click', function() {
-        document.getElementById('success-popup').classList.add('active');
+    <!-- Modal de foto de perfil -->
+    <div id="pic-modal" class="pic-modal hidden">
+        <div class="pic-modal-content">
+            <span class="close-pic-modal" onclick="closePicModal()">&times;</span>
+            <h3>Escolha sua foto de perfil</h3>
+            <div class="pic-options">
+                <img src="../img/foto perfil/perfil 1.svg" onclick="selectProfilePic('../img/foto perfil/perfil 1.svg')" alt="Perfil 1">
+                <img src="../img/foto perfil/perfil 2.svg" onclick="selectProfilePic('../img/foto perfil/perfil 2.svg')" alt="Perfil 2">
+                <img src="../img/foto perfil/perfil 3.svg" onclick="selectProfilePic('../img/foto perfil/perfil 3.svg')" alt="Perfil 3">
+                <img src="../img/foto perfil/perfil 4.svg" onclick="selectProfilePic('../img/foto perfil/perfil 4.svg')" alt="Perfil 4">
+                <img src="../img/foto perfil/perfil 5.svg" onclick="selectProfilePic('../img/foto perfil/perfil 5.svg')" alt="Perfil 5">
+                <img src="../img/foto perfil/perfil 6.svg" onclick="selectProfilePic('../img/foto perfil/perfil 6.svg')" alt="Perfil 6">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para validar senha antes de mostrar -->
+    <div class="popup hidden" id="senha-popup">
+        <div class="popup-content">
+            <h2>Confirme sua senha</h2>
+            <input type="password" id="senha-validacao" placeholder="Digite sua senha atual">
+            <button onclick="validarSenha()">Ver senha</button>
+            <button onclick="closeSenhaPopup()" class="btn-cancel">Cancelar</button>
+            <p id="senha-erro" style="color:red;display:none;margin-top:8px;">Senha incorreta!</p>
+        </div>
+    </div>
+
+    <script>
+    // Função para puxar dados do usuário (AJAX)
+    async function carregarUsuario() {
+        try {
+            const res = await fetch('../controllers/get_usuario.php');
+            const user = await res.json();
+            if (user.erro) {
+                document.getElementById('username').textContent = 'Não autenticado';
+                document.getElementById('user-email').textContent = '';
+                return;
+            }
+            if (user && user.nome && user.email) {
+                document.getElementById('nome').value = user.nome;
+                document.getElementById('email').value = user.email;
+                document.getElementById('apelido').value = user.apelido ? user.apelido : '';
+                document.getElementById('data_nascimento').value = user.data_nascimento ? user.data_nascimento : '';
+                // Sidebar: mostra apelido se existir, senão nome
+                document.getElementById('username').textContent = user.apelido && user.apelido.trim() !== '' ? user.apelido : user.nome;
+                document.getElementById('user-email').textContent = user.email;
+            }
+        } catch (e) {
+            document.getElementById('username').textContent = 'Erro ao carregar';
+            document.getElementById('user-email').textContent = '';
+        }
+    }
+
+    // Salvar alterações do perfil
+    async function salvarPerfil(event) {
+        event.preventDefault();
+        const nome = document.getElementById('nome').value.trim();
+        const apelido = document.getElementById('apelido').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const data_nascimento = document.getElementById('data_nascimento').value.trim();
+        const btn = document.querySelector('.save-profile-button');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+        try {
+            const res = await fetch('../controllers/atualizar_usuario.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({nome, apelido, email, data_nascimento})
+            });
+            const data = await res.json();
+            if (data.sucesso) {
+                alert('Perfil atualizado com sucesso!');
+                // Atualiza sidebar
+                document.getElementById('username').textContent = apelido !== '' ? apelido : nome;
+                document.getElementById('user-email').textContent = email;
+            } else {
+                alert(data.erro || 'Erro ao atualizar perfil.');
+            }
+        } catch (e) {
+            alert('Erro ao atualizar perfil.');
+        }
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
+        return false;
+    }
+
+    // Foto de perfil localStorage
+    function openPicModal() {
+        document.getElementById('pic-modal').classList.remove('hidden');
+    }
+    function closePicModal() {
+        document.getElementById('pic-modal').classList.add('hidden');
+    }
+    function selectProfilePic(src) {
+        document.getElementById('profile-pic').src = src;
+        localStorage.setItem('profilePic', src);
+        closePicModal();
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedPic = localStorage.getItem('profilePic');
+        if (savedPic) {
+            document.getElementById('profile-pic').src = savedPic;
+        }
+        carregarUsuario();
     });
 
+    // Logout
+    function redirectToIndex() {
+        const confirmLogout = confirm("Você deseja mesmo sair da conta?");
+        if (confirmLogout) {
+            window.location.href = "index.php";
+        }
+    }
 
+    // Modal de apagar conta
+    function openDeleteModal() {
+        document.getElementById('success-popup').classList.remove('hidden');
+    }
+    function closePopup() {
+        document.getElementById('success-popup').classList.add('hidden');
+    }
     function redirectToApagar() {
         window.location.href = '../controllers/apagar_conta.php';
     }
 
-    function closePopup() {
-        document.getElementById('success-popup').classList.remove('active');
+    // Validar senha para mostrar
+    function abrirModalSenha() {
+        document.getElementById('senha-popup').classList.remove('hidden');
+        document.getElementById('senha-validacao').value = '';
+        document.getElementById('senha-erro').style.display = 'none';
     }
-</script>
+    function closeSenhaPopup() {
+        document.getElementById('senha-popup').classList.add('hidden');
+    }
+    async function validarSenha() {
+        const senhaDigitada = document.getElementById('senha-validacao').value;
+        const res = await fetch('../controllers/validar_senha.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({senha: senhaDigitada})
+        });
+        const data = await res.json();
+        if (data.sucesso && data.senha) {
+            document.getElementById('senha').type = 'text';
+            document.getElementById('senha').value = data.senha;
+            closeSenhaPopup();
+        } else {
+            document.getElementById('senha-erro').style.display = 'block';
+        }
+    }
+    </script>
 </body>
 </html>
