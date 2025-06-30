@@ -24,7 +24,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
         margin: 0;
         padding: 0;
         font-family: 'Roboto', sans-serif;
-        background-image: url('img/welcome.svg'); /* Caminho atualizado para a imagem SVG */
+        background-image: url('/engenhariadesoftware/Daily_Planner/app/img/welcome.svg'); /* Caminho atualizado para a imagem SVG */
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
