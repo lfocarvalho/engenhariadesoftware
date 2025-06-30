@@ -438,11 +438,19 @@
 
                     dayCell.addEventListener('click', function() {
                         const selected = new Date(currentYear, currentMonth, day);
-                        selectedDate = selected.toISOString().split('T')[0];
-                        loadActivities(selectedDate);
+                        const clickedDate = selected.toISOString().split('T')[0];
 
-                        document.querySelectorAll('.calendar-grid .day').forEach(d => d.classList.remove('selected'));
-                        dayCell.classList.add('selected');
+                        // Se já está selecionado, desmarque e mostre todas as atividades
+                        if (dayCell.classList.contains('selected')) {
+                            document.querySelectorAll('.calendar-grid .day').forEach(d => d.classList.remove('selected'));
+                            selectedDate = null;
+                            loadActivities(); // Mostra todas as atividades
+                        } else {
+                            selectedDate = clickedDate;
+                            loadActivities(selectedDate);
+                            document.querySelectorAll('.calendar-grid .day').forEach(d => d.classList.remove('selected'));
+                            dayCell.classList.add('selected');
+                        }
                     });
 
                     calendarGrid.appendChild(dayCell);
@@ -475,10 +483,8 @@
         function redirectToIndex() {
             const confirmLogout = confirm("Você deseja mesmo sair da conta?");
             if (confirmLogout) {
-        
-                window.location.href = "index.php";
+                window.location.href = "/engenhariadesoftware/Daily_Planner/public/index.php";
             } else {
-
                 window.location.href = "dashboard.html";
             }
         }
