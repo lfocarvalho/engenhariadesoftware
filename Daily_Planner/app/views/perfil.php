@@ -1,167 +1,136 @@
 <?php
-session_start();
-if (!isset($_SESSION["usuario"])) {
-    header("Location: login.php");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Se o usuário já estiver logado, redireciona para o dashboard
+if (isset($_SESSION['usuario'])) {
+    header('Location: dashboard.html');
     exit();
 }
-require_once 'trocar_senha.php';
 
 $mensagem = '';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $senhaAtual = $_POST["senha_atual"] ?? '';
-    $novaSenha = $_POST["nova_senha"] ?? '';
-    $repeteSenha = $_POST["repete_senha"] ?? '';
+$tipo_mensagem = ''; // 'sucesso' ou 'erro'
 
-    if (empty($senhaAtual) || empty($novaSenha) || empty($repeteSenha)) {
-        $mensagem = "Preencha todos os campos.";
-    } elseif ($novaSenha !== $repeteSenha) {
-        $mensagem = "As novas senhas não coincidem.";
-    } else {
-        $_SESSION['usuario_id'] = $_SESSION['usuario']['id'];
-        $mensagem = editarSenhaUsuario($senhaAtual, $novaSenha);
-        if ($mensagem === "Senha alterada com sucesso.") {
-            session_destroy();
-            header("Location: alterar_senha.php?sucesso=1");
-            exit();
-        }
+// Verifica se há alguma mensagem vinda de outra página (como a de troca de senha)
+if (isset($_GET['status']) && isset($_GET['msg'])) {
+    
+    // MENSAGEM DE SUCESSO DA TROCA DE SENHA
+    if ($_GET['status'] === 'sucesso' && $_GET['msg'] === 'senha_alterada') {
+        $tipo_mensagem = 'sucesso';
+        $mensagem = 'Senha alterada com sucesso! Por favor, faça login com sua nova senha.';
+    }
+    
+    // Mensagem de erro de login
+    if ($_GET['status'] === 'erro' && $_GET['msg'] === 'login_invalido') {
+        $tipo_mensagem = 'erro';
+        $mensagem = 'E-mail ou senha inválidos. Tente novamente.';
     }
 }
 ?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Perfil - Trocar Senha</title>
+    <title>Login - Daily Planner</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .logout-btn {
-            color: #fff;
-            font-weight: 700;
-            background: linear-gradient(90deg, #a86f3c 60%, #755F52 100%);
-            border-radius: 12px;
-            padding: 14px 0;
-            width: 100%;
+        body {
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 18px;
-            margin-top: auto;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-            gap: 10px;
-            box-shadow: 0 2px 8px #bca18c22;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fdfaf7; /* Cor de fundo suave do seu app */
         }
-        .logout-btn:hover {
+        .login-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #755F52; /* Cor principal do seu tema */
+            font-size: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: .5rem;
+            color: #7c5a3a;
+        }
+        .form-group input {
+            width: 100%;
+            padding: .8rem 1rem;
+            border-radius: 10px;
+            border: 1.5px solid #e0d6c3;
+            font-size: 1rem;
+        }
+        .login-button {
+            width: 100%;
+            background: #755F52;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: .8rem 1.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background .2s;
+            font-weight: 600;
+        }
+        .login-button:hover {
             background: #604A3E;
-            color: #fff7f7;
         }
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #777;
+        }
+        .register-link a {
+            color: #a86f3c;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* ESTILOS PARA AS MENSAGENS */
+        .mensagem { padding: 15px; margin-bottom: 20px; border-radius: 8px; text-align: center; font-size: 1rem; font-weight: 500; }
+        .mensagem.sucesso { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .mensagem.erro { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Sidebar moderna igual ao dashboard -->
-        <div class="sidebar">
-            <div class="user-profile">
-                <img id="profile-pic" src="../img/foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
-                <button class="change-pic-btn" onclick="openPicModal()" title="Alterar foto de perfil">
-                    <i class="fas fa-camera"></i>
-                </button>
-                <h3 id="username">Carregando...</h3>
-                <p id="user-email">Carregando...</p>
+    <div class="login-card">
+        <h2>Login</h2>
+
+        <?php if (!empty($mensagem)): ?>
+            <div class="mensagem <?php echo htmlspecialchars($tipo_mensagem); ?>">
+                <?php echo htmlspecialchars($mensagem); ?>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
-                    <li><a href="progresso.html"><i class="fas fa-chart-line"></i> <span>Progresso</span></a></li>
-                    <li><a href="perfil.php" class="active"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
-                    <li>
-                        <a href="#" class="logout-btn" onclick="redirectToIndex()" style="margin-top:0;">
-                            <i class="fas fa-sign-out-alt"></i> Sair
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="perfil-content-area">
-            <div class="perfil-center-container">
-                <header class="dashboard-header">
-                    <h1>Perfil do Usuário</h1>
-                    <p>Gerencie suas informações pessoais</p>
-                </header>
-                <div class="perfil-card">
-                    <h2 style="text-align:center;margin-bottom:2rem;">Trocar Senha</h2>
-                    <?php if (!empty($mensagem)): ?>
-                        <div class="mensagem<?php echo (strpos($mensagem, 'sucesso') !== false) ? ' sucesso' : ''; ?>">
-                            <?php echo $mensagem; ?>
-                        </div>
-                    <?php endif; ?>
-                    <form method="POST">
-                        <div class="form-group">
-                            <label for="senha_atual">Senha Atual:</label>
-                            <input type="password" id="senha_atual" name="senha_atual" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nova_senha">Nova Senha:</label>
-                            <input type="password" id="nova_senha" name="nova_senha" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="repete_senha">Repita a Nova Senha:</label>
-                            <input type="password" id="repete_senha" name="repete_senha" required>
-                        </div>
-                        <button type="submit" class="change-password-button">
-                            <i class="fas fa-key"></i> Alterar Senha
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal de foto de perfil -->
-    <div id="pic-modal" class="pic-modal hidden">
-        <div class="pic-modal-content">
-            <span class="close-pic-modal" onclick="closePicModal()">&times;</span>
-            <h3>Escolha sua foto de perfil</h3>
-            <div class="pic-options">
-                <img src="../img/foto perfil/perfil 1.svg" onclick="selectProfilePic('../img/foto perfil/perfil 1.svg')" alt="Perfil 1">
-                <img src="../img/foto perfil/perfil 2.svg" onclick="selectProfilePic('../img/foto perfil/perfil 2.svg')" alt="Perfil 2">
-                <img src="../img/foto perfil/perfil 3.svg" onclick="selectProfilePic('../img/foto perfil/perfil 3.svg')" alt="Perfil 3">
-                <img src="../img/foto perfil/perfil 4.svg" onclick="selectProfilePic('../img/foto perfil/perfil 4.svg')" alt="Perfil 4">
-                <img src="../img/foto perfil/perfil 5.svg" onclick="selectProfilePic('../img/foto perfil/perfil 5.svg')" alt="Perfil 5">
-                <img src="../img/foto perfil/perfil 6.svg" onclick="selectProfilePic('../img/foto perfil/perfil 6.svg')" alt="Perfil 6">
-            </div>
-        </div>
-    </div>
-    <script>
-    function openPicModal() {
-        document.getElementById('pic-modal').classList.remove('hidden');
-    }
-    function closePicModal() {
-        document.getElementById('pic-modal').classList.add('hidden');
-    }
-    function selectProfilePic(src) {
-        document.getElementById('profile-pic').src = src;
-        localStorage.setItem('profilePic', src);
-        closePicModal();
-    }
-    window.addEventListener('DOMContentLoaded', function() {
-        const savedPic = localStorage.getItem('profilePic');
-        if (savedPic) {
-            document.getElementById('profile-pic').src = savedPic;
-        }
-        // Carregar nome e email do usuário na sidebar
-        <?php if (isset($_SESSION['usuario'])): ?>
-            document.getElementById('username').textContent = <?php echo json_encode($_SESSION['usuario']['nome']); ?>;
-            document.getElementById('user-email').textContent = <?php echo json_encode($_SESSION['usuario']['email']); ?>;
         <?php endif; ?>
-    });
-    function redirectToIndex() {
-        const confirmLogout = confirm("Você deseja mesmo sair da conta?");
-        if (confirmLogout) {
-            window.location.href = "index.php";
-        }
-    }
-    </script>
+
+        <form action="../controllers/login.php" method="POST">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" required>
+            </div>
+            <button type="submit" class="login-button">Entrar</button>
+        </form>
+
+        <div class="register-link">
+            Não tem uma conta? <a href="cadastrar_usuario.php">Cadastre-se</a>
+        </div>
+    </div>
 </body>
 </html>

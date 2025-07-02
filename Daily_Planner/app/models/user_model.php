@@ -62,7 +62,7 @@ class UserModel {
     // Métodos existentes mantidos conforme seu código original
     public function getUsuarioEmail($email) {
         try {
-            $query = "SELECT id, nome, email, senha, tipo, data_criacao FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
+            $query = "SELECT id, nome, email, apelido, senha, tipo, data_criacao FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
@@ -175,7 +175,20 @@ class UserModel {
             return false;
         }
     }
-
+public function redefinirSenhaPorEmail(string $email, string $novaSenha): bool {
+    try {
+        $novaSenhaHash = password_hash($novaSenha, PASSWORD_DEFAULT);
+        $query = "UPDATE " . $this->table_name . " SET senha = :senha WHERE email = :email";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':senha', $novaSenhaHash);
+        $stmt->bindParam(':email', $email);
+        
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        error_log("Erro PDO ao redefinir senha por email: " . $e->getMessage());
+        return false;
+    }
+}
     public function excluirUsuario($id) {
         if (!$id || !is_numeric($id)) {
             error_log("Tentativa de exclusão com ID inválido: " . var_export($id, true));
