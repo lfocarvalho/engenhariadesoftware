@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 session_start();
 
-// Garante que todos os erros sejam reportados para depuração
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -36,6 +35,7 @@ try {
     $chart_data = [];
 
     if ($view === 'mensal') {
+        // Lógica para a visão mensal (mantida como estava)
         $today = new DateTime();
         $daysInMonth = (int)$today->format('t');
         $numWeeks = (int)ceil($daysInMonth / 7);
@@ -45,7 +45,9 @@ try {
 
         foreach ($all_tasks as $task) {
             if ($task['concluida']) {
-                $date_completed = new DateTime($task['data_vencimento']);
+                $date_to_check_str = isset($task['data_conclusao']) && $task['data_conclusao'] ? $task['data_conclusao'] : $task['data_vencimento'];
+                $date_completed = new DateTime($date_to_check_str);
+
                 if (strpos($date_completed->format('Y-m'), $currentMonth) === 0) {
                     $dayOfMonth = (int)$date_completed->format('d');
                     $weekIndex = floor(($dayOfMonth - 1) / 7);
@@ -61,20 +63,37 @@ try {
         }
 
     } else { // Semanal
+        $chart_labels = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
         $chart_data = array_fill(0, 7, 0);
         $today = new DateTime();
-        $startOfWeek = (clone $today)->modify('Sunday last week');
+        
+        // --- CORREÇÃO APLICADA AQUI ---
+        // Cálculo robusto para o início da semana (Domingo)
+        $dayNumInWeek = (int)$today->format('w'); // 0 para Domingo, 1 para Segunda, etc.
+        $startOfWeek = (clone $today)->modify("-{$dayNumInWeek} days")->setTime(0, 0, 0);
+        $endOfWeek = (clone $startOfWeek)->modify("+6 days")->setTime(23, 59, 59);
 
         foreach ($all_tasks as $task) {
             if ($task['concluida']) {
-                $date_completed = new DateTime($task['data_vencimento']);
-                if ($date_completed >= $startOfWeek && $date_completed <= $today) {
-                    $dayOfWeek = (int)$date_completed->format('w');
-                    $chart_data[$dayOfWeek]++;
+                try {
+                    // --- CORREÇÃO APLICADA AQUI ---
+                    // Prioriza a data de conclusão, se existir. Senão, usa a data de vencimento.
+                    $date_to_check_str = isset($task['data_conclusao']) && $task['data_conclusao'] ? $task['data_conclusao'] : $task['data_vencimento'];
+                    $date_to_check = new DateTime($date_to_check_str);
+
+                    // Verifica se a data está dentro do intervalo da semana atual
+                    if ($date_to_check >= $startOfWeek && $date_to_check <= $endOfWeek) {
+                        $dayOfWeek = (int)$date_to_check->format('w');
+                        if (isset($chart_data[$dayOfWeek])) {
+                            $chart_data[$dayOfWeek]++;
+                        }
+                    }
+                } catch (Exception $e) {
+                    // Ignora datas inválidas que podem estar no banco
+                    continue;
                 }
             }
         }
-        $chart_labels = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     }
     
     $progress_data = [
