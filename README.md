@@ -15,7 +15,10 @@ Este projeto foi desenvolvido como parte da disciplina de Engenharia de Software
 
 ### Links Rápidos
 * **[Planejamento de Sprints e Evolução do Projeto](SPRINT_PLAN.md)**
-* **[Protótipo no Figma]([https://www.figma.com/design/jv0gykfRstoIKWcypGvp1A/Untitled?node-id=1-2&t=cr9aatuTIzlfmUJu-1](https://www.figma.com/design/dWx1QhkWDqtIrZCTiXHCmC/Untitled?node-id=0-1&t=SPjJd34N8xG4ibq2-1))**
+* **[Link para o repositório do projeto](https://github.com/lfocarvalho/engenhariadesoftware)**
+* **[Landing Page](https://natalia-nerys.github.io/daily-landingPage/)**
+* **[Apresentação Final](https://www.canva.com/design/DAGryiWg8vs/1biOXCbjtC6qSIbNcjb1kw/view?utm_content=DAGryiWg8vs&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc76e07b93f)**
+* **[Video](https://youtu.be/Z9VFx2eBiZs)**
 
 ---
 
