@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    /* Cole aqui o CSS da sidebar do perfil.html */
+    .sidebar {
+        background: linear-gradient(135deg, #8d6e5c 0%, #604A3E 100%);
+        color: #fff7f7;
+        /* ...restante do CSS igual ao perfil... */
+    }
+    /* ...restante do CSS igual ao perfil... */
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <script>
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('sucesso_sac') === '1') {
+            const msg = document.createElement('div');
+            msg.className = 'sac-success-overlay';
+            msg.innerHTML = `
+                <div class="sac-success-box">
+                    <h2>SAC enviado com sucesso!</h2>
+                    <button class="sac-success-btn" onclick="window.location.href='dashboard.html'">Fechar</button>
+                </div>
+            `;
+            document.body.appendChild(msg);
+        }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('msg') === 'tarefa_excluida') {
+        alert('Tarefa excluída com sucesso!');
+    }
+    if (params.get('msg') === 'status_alterado') {
+        alert('Status da tarefa alterado com sucesso!');
+    }
+    if (params.get('erro') === 'tarefa_nao_encontrada') {
+        alert('Tarefa não encontrada!');
+    }
+    if (params.get('erro') === 'sem_id') {
+        alert('ID da tarefa não informado!');
+    }
+    </script>
+    <div class="dashboard-container">
+        <!-- Sidebar idêntica ao perfil.html -->
+        <div class="sidebar">
+            <div class="user-profile">
+                <img id="profile-pic" src="../img/foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
+                <button class="change-pic-btn" onclick="openPicModal()" title="Alterar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <h3 id="username">Carregando...</h3>
+                <p id="user-email">Carregando...</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html" class="active" id="menu-dashboard"><i class="fas fa-home"></i> <span>Início</span></a></li>
+                    <li><a href="progresso.html" id="menu-progresso"><i class="fas fa-chart-line"></i> <span>Progresso</span></a></li>
+                    <li><a href="perfil.html" id="menu-perfil"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+                </ul>
+            </nav>
+            <a href="#" class="logout-btn" onclick="redirectToIndex()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </div>
+        <!-- Conteúdo principal centralizado -->
+        <main class="content-area">
+            <header class="dashboard-header">
+                <h1>Bem-vindo ao Daily</h1>
+                <p>Gerencie suas tarefas e produtividade</p>
+            </header>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h2>Agenda do Dia</h2>
+                    <select id="filtro-tarefas" onchange="filtrarTarefas()">
+                        <option value="todas">Todas</option>
+                        <option value="pendentes">Pendentes</option>
+                        <option value="concluidas">Concluídas</option>
+                    </select>
+                    <ul class="agenda-list" id="activity-list"></ul>
+                    <button class="add-button" onclick="openAddActivityModal()">Adicionar Atividade</button>
+                </div>
+                <div class="card">
+                    <h2>Produtividade</h2>
+                    <div class="productivity-circle">
+                        <canvas id="productivityChart" width="120" height="120"></canvas>
+                        <div id="productivityPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.5rem;font-weight:700;color:#604A3E;"></div>
+                    </div>
+                </div>
+                <div class="card calendar-card">
+                    <h2>Calendário</h2>
+                    <div class="calendar-header">
+                        <button class="prev-button">Anterior</button>
+                        <span class="current-month">Mês Ano</span>
+                        <button class="next-button">Próximo</button>
+                    </div>
+                    <div class="week-days">
+                        <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+                    </div>
+                    <div class="calendar-grid"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <div id="activity-modal" class="popup hidden">
+        <div class="popup-content">
+        <h2 id="modal-title">Adicionar Atividade</h2>
+            <form id="activity-form" action="../controllers/salvar_tarefa.php" method="POST">
+                <input type="hidden" id="activity-id" name="usuario_id">
+                <div class="form-group">
+                    <label for="activity-title">Título</label>
+                    <input type="text" id="activity-title" name="titulo" class="input-field" placeholder="Digite o título" required>
+                </div>
+                <div class="form-group">
+                    <label for="activity-description">Descrição</label>
+                    <textarea id="activity-description" name="descricao" class="input-field" placeholder="Digite a descrição"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="activity-date">Data</label>
+                    <input type="date" id="activity-date" name="data_vencimento" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="activity-time">Hora</label>
+                    <input type="time" id="activity-time" name="time" class="input-field" required>
+                </div>
+                <button type="submit" class="save-button">Salvar</button>
+                <button type="button" class="cancel-button" onclick="closeModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="pic-modal" class="pic-modal hidden">
+        <div class="pic-modal-content">
+            <span class="close-pic-modal" onclick="closePicModal()">&times;</span>
+            <h3>Escolha sua foto de perfil</h3>
+            <div class="pic-options">
+                <img src="../img/foto perfil/perfil 1.svg" onclick="selectProfilePic('../img/foto perfil/perfil 1.svg')" alt="Perfil 1">
+                <img src="../img/foto perfil/perfil 2.svg" onclick="selectProfilePic('../img/foto perfil/perfil 2.svg')" alt="Perfil 2">
+                <img src="../img/foto perfil/perfil 3.svg" onclick="selectProfilePic('../img/foto perfil/perfil 3.svg')" alt="Perfil 3">
+                <img src="../img/foto perfil/perfil 4.svg" onclick="selectProfilePic('../img/foto perfil/perfil 4.svg')" alt="Perfil 4">
+                <img src="../img/foto perfil/perfil 5.svg" onclick="selectProfilePic('../img/foto perfil/perfil 5.svg')" alt="Perfil 5">
+                <img src="../img/foto perfil/perfil 6.svg" onclick="selectProfilePic('../img/foto perfil/perfil 6.svg')" alt="Perfil 6">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDate = null;
+        let productivityChart = null;
+
+        async function loadActivities(date = null) {
+
+            if (!date) {
+                const today = new Date();
+                date = today.toISOString().split('T')[0];
+            }
+
+            const response = await fetch('../controllers/get_atividades.php?date=' + date);
+            const activities = await response.json();
+            const activityList = document.getElementById('activity-list');
+            activityList.innerHTML = '';
+
+            if (activities.length === 0) {
+                activityList.innerHTML = '<li class="activity">Nenhuma atividade para este dia.</li>';
+            } else {
+                activities.forEach(activity => {
+                    const li = document.createElement('li');
+                    li.classList.add('activity');
+
+                    const header = document.createElement('div');
+                    header.classList.add('activity-header');
+                    header.textContent = activity.titulo;
+                    header.style.cursor = 'pointer';
+
+
+                    const details = document.createElement('div');
+                    details.classList.add('activity-details', 'hidden');
+                    details.innerHTML = `
+                        <p class="activity-description">${activity.descricao || 'Sem descrição.'}</p>
+                        <div class="activity-actions">
+                            <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
+                            <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
+                            <button class="done-button" onclick="markAsDone(${activity.id})">Concluir</button>
+                        </div>
+                    `;
+
+
+                    header.addEventListener('click', function(e) {
+                        if (e.target.tagName === 'BUTTON') return;
+                        const isOpen = !details.classList.contains('hidden');
+                        document.querySelectorAll('.activity-details').forEach(d => d.classList.add('hidden'));
+                        document.querySelectorAll('.agenda-list li').forEach(li => li.classList.remove('open'));
+                        if (!isOpen) {
+                            details.classList.remove('hidden');
+                            li.classList.add('open');
+                        }
+                    });
+
+                    li.appendChild(header);
+                    li.appendChild(details);
+                    activityList.appendChild(li);
+                });
+            }
+        }
+
+
+        function openAddActivityModal() {
+            document.getElementById('modal-title').textContent = 'Adicionar Atividade';
+            document.getElementById('activity-form').reset();
+            document.getElementById('activity-id').value = '';
+            document.getElementById('activity-modal').classList.remove('hidden');
+        }
+
+
+        function closeModal() {
+            document.getElementById('activity-modal').classList.add('hidden');
+        }
+
+
+        function toggleActivity(header) {
+            const details = header.nextElementSibling;
+            const toggleButton = header.querySelector('.toggle-button');
+
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                toggleButton.textContent = '-';
+            } else {
+                details.classList.add('hidden');
+                toggleButton.textContent = '+';
+            }
+        }
+
+        async function filtrarTarefas() {
+            const filtro = document.getElementById('filtro-tarefas').value;
+            let url = '../controllers/get_atividades.php';
+            if (filtro && filtro !== 'todas') {
+                url += `?filtro=${filtro}`;
+            }
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Erro HTTP! status: ${response.status}`);
+                const activities = await response.json();
+                if (activities.error) {
+                    document.getElementById('activity-list').innerHTML = `<li style="color:red;">${activities.error}</li>`;
+                    return;
+                }
+                renderActivities(activities);
+            } catch (error) {
+                document.getElementById('activity-list').innerHTML = '<li style="color:red;">Falha ao filtrar atividades. Verifique o console.</li>';
+            }
+        }
+
+        async function loadActivities(date = null) {
+            let url = '../controllers/get_atividades.php';
+            if (date) {
+                url += `?date=${date}`;
+            }
+            selectedDate = date;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Erro HTTP! status: ${response.status}`);
+                const activities = await response.json();
+                if (activities.error) {
+                    document.getElementById('activity-list').innerHTML = `<li style="color:red;">${activities.error}</li>`;
+                    return;
+                }
+                renderActivities(activities);
+            } catch (error) {
+                document.getElementById('activity-list').innerHTML = '<li style="color:red;">Falha ao carregar atividades. Verifique o console para detalhes.</li>';
+            }
+        }
+
+        function renderActivities(activities) {
+            const activityList = document.getElementById('activity-list');
+            activityList.innerHTML = '';
+
+            if (!activities || activities.length === 0) {
+                activityList.innerHTML = '<li class="activity">Nenhuma atividade encontrada.</li>';
+
+                updateProductivity(0, 0);
+                return;
+            }
+
+            let concluidas = 0;
+            activities.forEach(activity => {
+                if (activity.concluida == 1 || activity.concluida === true) concluidas++;
+
+                const li = document.createElement('li');
+                li.classList.add('activity');
+
+
+                const header = document.createElement('div');
+                header.classList.add('activity-header');
+                header.textContent = activity.titulo;
+                header.style.cursor = 'pointer';
+
+
+                const details = document.createElement('div');
+                details.classList.add('activity-details', 'hidden');
+                details.innerHTML = `
+                    <p class="activity-description"><strong>Descrição:</strong> ${activity.descricao || ''}</p>
+                    <p><strong>Data:</strong> ${activity.data_vencimento ? new Date(activity.data_vencimento).toLocaleString('pt-BR') : ''}</p>
+                    <div class="activity-actions">
+                        <button class="edit-button" onclick="openEditActivityModal(${activity.id})">Editar</button>
+                        <button class="delete-button" onclick="deleteActivity(${activity.id})">Excluir</button>
+                        <button class="done-button" onclick="markAsDone(${activity.id})">${activity.concluida == 1 ? 'Desfazer' : 'Concluir'}</button>
+                    </div>
+                `;
+
+                header.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'BUTTON') return;
+                    const isOpen = !details.classList.contains('hidden');
+                    document.querySelectorAll('.activity-details').forEach(d => d.classList.add('hidden'));
+                    document.querySelectorAll('.agenda-list li').forEach(li => li.classList.remove('open'));
+                    if (!isOpen) {
+                        details.classList.remove('hidden');
+                        li.classList.add('open');
+                    }
+                });
+
+                li.appendChild(header);
+                li.appendChild(details);
+                activityList.appendChild(li);
+            });
+
+            updateProductivity(concluidas, activities.length);
+        }
+
+        function updateProductivity(concluidas, total) {
+            let percent = 0;
+            if (total > 0) {
+                percent = Math.round((concluidas / total) * 100);
+            }
+            renderProductivityChart(percent);
+        }
+
+        function renderProductivityChart(percent) {
+            const ctx = document.getElementById('productivityChart').getContext('2d');
+            if (productivityChart) {
+                productivityChart.data.datasets[0].data = [percent, 100 - percent];
+                productivityChart.update();
+            } else {
+                productivityChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [percent, 100 - percent],
+                            backgroundColor: ['#a86f3c', '#f7eadc'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        cutout: '70%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            }
+            document.getElementById('productivityPercent').textContent = percent + '%';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const initialFilter = document.getElementById('filtro-tarefas').value;
+            if (initialFilter && initialFilter !== 'todas') {
+                filtrarTarefas();
+            } else {
+                loadActivities(selectedDate); 
+            }
+
+            generateCalendar();
+            loadActivities();
+        });
+
+        function generateCalendar() {
+            const calendarGrid = document.querySelector('.calendar-grid');
+            const currentMonthElement = document.querySelector('.current-month');
+
+            const today = new Date();
+            let currentMonth = today.getMonth(); 
+            let currentYear = today.getFullYear(); 
+
+
+            function updateCalendar() {
+                calendarGrid.innerHTML = '';
+
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay(); 
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+                const monthNames = [
+                    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+                ];
+                currentMonthElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.classList.add('empty-day');
+                    calendarGrid.appendChild(emptyCell);
+                }
+
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.classList.add('day');
+                    dayCell.textContent = day;
+
+
+                    if (
+                        day === today.getDate() &&
+                        currentMonth === today.getMonth() &&
+                        currentYear === today.getFullYear()
+                    ) {
+                        dayCell.classList.add('today');
+                    }
+
+
+                    dayCell.addEventListener('click', function() {
+                        const selected = new Date(currentYear, currentMonth, day);
+                        const clickedDate = selected.toISOString().split('T')[0];
+
+                        // Se já está selecionado, desmarque e mostre todas as atividades
+                        if (dayCell.classList.contains('selected')) {
+                            document.querySelectorAll('.calendar-grid .day').forEach(d => d.classList.remove('selected'));
+                            selectedDate = null;
+                            loadActivities(); // Mostra todas as atividades
+                        } else {
+                            selectedDate = clickedDate;
+                            loadActivities(selectedDate);
+                            document.querySelectorAll('.calendar-grid .day').forEach(d => d.classList.remove('selected'));
+                            dayCell.classList.add('selected');
+                        }
+                    });
+
+                    calendarGrid.appendChild(dayCell);
+                }
+            }
+
+
+            document.querySelector('.prev-button').addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                updateCalendar();
+            });
+
+            document.querySelector('.next-button').addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                updateCalendar();
+            });
+
+
+            updateCalendar();
+        }
+
+        function redirectToIndex() {
+            const confirmLogout = confirm("Você deseja mesmo sair da conta?");
+            if (confirmLogout) {
+                window.location.href = "/engenhariadesoftware/Daily_Planner/public/index.php";
+            } else {
+                window.location.href = "dashboard.html";
+            }
+        }
+
+        function openPicModal() {
+            document.getElementById('pic-modal').classList.remove('hidden');
+        }
+        function closePicModal() {
+            document.getElementById('pic-modal').classList.add('hidden');
+        }
+        function selectProfilePic(src) {
+            document.getElementById('profile-pic').src = src;
+            localStorage.setItem('profilePic', src); 
+            closePicModal();
+        }
+    
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedPic = localStorage.getItem('profilePic');
+            if (savedPic) {
+                document.getElementById('profile-pic').src = savedPic;
+            }
+        });
+
+        document.getElementById('activity-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('activity-id').value;
+            const titulo = document.getElementById('activity-title').value;
+            const descricao = document.getElementById('activity-description').value;
+            const data = document.getElementById('activity-date').value;
+            const hora = document.getElementById('activity-time').value;
+            const data_vencimento = data + ' ' + hora + ':00';
+
+            const formData = new FormData();
+            formData.append('titulo', titulo);
+            formData.append('descricao', descricao);
+            formData.append('data_vencimento', data_vencimento);
+
+            let url = '../controllers/salvar_tarefa.php';
+            if (id) {
+                formData.append('id', id);
+                url = '../controllers/editar_tarefa.php?id=' + id;
+            }
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+
+            const res = await response.json().catch(() => null);
+            if (res && res.success) {
+                closeModal();
+                loadActivities(selectedDate);
+            } else if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                alert(res && res.error ? res.error : 'Erro ao salvar tarefa.');
+            }
+        };
+
+
+        async function openEditActivityModal(id) {
+            try {
+                const response = await fetch(`../controllers/get_atividades.php?id=${id}`);
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    const tarefa = data[0];
+                    document.getElementById('modal-title').textContent = 'Editar Atividade';
+                    document.getElementById('activity-id').value = tarefa.id;
+                    document.getElementById('activity-title').value = tarefa.titulo;
+                    document.getElementById('activity-description').value = tarefa.descricao || '';
+                    if (tarefa.data_vencimento) {
+                        const [date, time] = tarefa.data_vencimento.split(' ');
+                        document.getElementById('activity-date').value = date;
+                        document.getElementById('activity-time').value = time ? time.substring(0,5) : '';
+                    }
+                    document.getElementById('activity-modal').classList.remove('hidden');
+                } else {
+                    alert('Tarefa não encontrada.');
+                }
+            } catch (e) {
+                alert('Erro ao buscar dados da tarefa.');
+            }
+        }
+
+
+        async function deleteActivity(id) {
+            if (!confirm('Deseja realmente excluir esta atividade?')) return;
+            try {
+                const response = await fetch(`../controllers/excluir_tarefa.php?id=${id}`);
+                const res = await response.json();
+                if (res.success) {
+                    loadActivities(selectedDate);
+                } else {
+                    alert(res.error || 'Erro ao excluir tarefa.');
+                }
+            } catch (e) {
+                alert('Erro ao excluir tarefa.');
+            }
+        }
+
+        async function markAsDone(id) {
+            try {
+                const response = await fetch(`../controllers/alterar_status.php?id=${id}`);
+                const res = await response.json();
+                if (res.success) {
+                    loadActivities(selectedDate);
+                } else {
+                    alert(res.error || 'Erro ao alterar status da tarefa.');
+                }
+            } catch (e) {
+                alert('Erro ao alterar status da tarefa.');
+            }
+        }
+
+
+    </script>
+    
+    <div class="sac-flutuante">
+        <button type="button" class="botao-sac" onclick="toggleModalSac()">SAC</button>
+    </div>
+
+
+    <div class="modal-sac" id="modalSac" style="display: none;">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="toggleModalSac()">&times;</span>
+            <h2>Enviar Mensagem ao SAC</h2>
+            <form method="post" action="salvar_sac.php">
+                <input type="text" name="titulo" placeholder="Assunto" required><br>
+                <textarea name="descricao" placeholder="Sua mensagem..." required rows="5"></textarea><br>
+                <button type="submit">Enviar</button>
+                
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function toggleModalSac() {
+        var modal = document.getElementById('modalSac');
+        if (modal.style.display === 'none' || modal.style.display === '') {
+            modal.style.display = 'block';
+        } else {
+            modal.style.display = 'none';
+        }
+    }
+    </script>
+
+    <!-- Exemplo para dashboard.html ou perfil.html -->
+    <script>
+    // Função para puxar dados do usuário (AJAX)
+    document.addEventListener('DOMContentLoaded', async function() {
+        try {
+            const res = await fetch('../controllers/get_usuario.php');
+            const user = await res.json();
+            if (user && user.nome && user.email) {
+                document.getElementById('username').textContent = user.apelido && user.apelido.trim() !== '' ? user.apelido : user.nome;
+                document.getElementById('user-email').textContent = user.email;
+            } else {
+                document.getElementById('username').textContent = 'Erro ao carregar';
+                document.getElementById('user-email').textContent = 'Erro ao carregar';
+            }
+        } catch (e) {
+            document.getElementById('username').textContent = 'Erro ao carregar';
+            document.getElementById('user-email').textContent = 'Erro ao carregar';
+        }
+    });
+    </script>
+</body>
+</html>

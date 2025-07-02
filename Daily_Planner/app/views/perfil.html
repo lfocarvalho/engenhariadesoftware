@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    body {
+        background: linear-gradient(120deg, #f7eadc 60%, #fffdf8 100%);
+        font-family: 'Inter', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+        align-items: flex-start;
+        background: none;
+    }
+    .sidebar {
+        background: linear-gradient(135deg, #8d6e5c 0%, #604A3E 100%);
+        color: #fff7f7;
+        width: 270px;
+        min-height: 100vh;
+        border-radius: 0 24px 24px 0;
+        box-shadow: 6px 0 24px rgba(120, 90, 70, 0.13), 0 1.5px 0 #bca18c inset;
+        border-right: 2px solid #bca18c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 32px 18px 24px 18px;
+        position: relative;
+        transition: background 0.3s;
+    }
+    .user-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 3px solid #fff7f7;
+        box-shadow: 0 2px 8px rgba(120, 90, 70, 0.13);
+        margin-bottom: 12px;
+        object-fit: cover;
+    }
+    .change-pic-btn {
+        background: none;
+        border: none;
+        color: #bca18c;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .change-pic-btn:hover {
+        color: #fff7f7;
+    }
+    #username {
+        color: #fff !important;
+        font-size: 1.3rem;
+        margin: 0 0 5px 0;
+        font-weight: 600;
+        text-align: center;
+    }
+    #user-email {
+        color: #e3d9d2 !important;
+        font-size: 1rem;
+        margin: 0;
+        text-align: center;
+    }
+    .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px 0;
+        width: 100%;
+    }
+    .sidebar nav ul li {
+        margin-bottom: 12px;
+    }
+    .sidebar nav ul li a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #fff7f7;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 10px 18px;
+        border-radius: 8px;
+        transition: background 0.2s, color 0.2s;
+    }
+    .sidebar nav ul li a.active,
+    .sidebar nav ul li a:focus {
+        background: #bca18c;
+        color: #604A3E;
+        font-weight: 700;
+        box-shadow: 0 2px 8px #bca18c44;
+    }
+    .sidebar nav ul li a:hover {
+        background: #bca18c;
+        color: #604A3E;
+    }
+    .logout-btn {
+        background: linear-gradient(90deg, #a86f3c 60%, #755F52 100%);
+        color: #fff;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 14px 0;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 2px 8px #0001;
+        gap: 10px;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s, transform 0.2s;
+        margin: 32px auto 0 auto;
+    }
+    .logout-btn:hover {
+        background: #604A3E;
+        color: #fff7f7;
+    }
+    .perfil-content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        padding: 40px 0;
+        position: relative;
+    }
+    .perfil-center-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .dashboard-header {
+        width: 100%;
+        max-width: 540px;
+        margin: 0 0 24px 0;
+        text-align: left;
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .perfil-card {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 6px 32px #0002;
+        padding: 2.5rem 3rem;
+        max-width: 540px;
+        width: 100%;
+        margin: 0;
+        transition: box-shadow .2s;
+    }
+    .perfil-card:hover {
+        box-shadow: 0 10px 40px #0003;
+    }
+    h2, h1 {
+        color: #7c5a3a;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: .4rem;
+        color: #7c5a3a;
+        font-size: 1.08rem;
+        letter-spacing: 0.01em;
+    }
+    .form-group input {
+        width: 100%;
+        padding: .7rem 1rem;
+        border-radius: 10px;
+        border: 1.5px solid #e0d6c3;
+        font-size: 1.08rem;
+        background: #faf7f3;
+        transition: border-color .2s, box-shadow .2s;
+        outline: none;
+        color: #3d2c1e;
+        box-shadow: 0 1px 2px #0001;
+    }
+    .form-group input:focus {
+        border-color: #a86f3c;
+        background: #fff;
+        box-shadow: 0 2px 8px #a86f3c22;
+    }
+    .perfil-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .perfil-row .form-group {
+        margin-bottom: 0;
+    }
+    .perfil-row .form-group input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+    .save-profile-button {
+        background: linear-gradient(90deg, #4caf50 60%, #388e3c 100%);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: .8rem 1.5rem;
+        font-size: 1.08rem;
+        cursor: pointer;
+        transition: background .2s, box-shadow .2s;
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        box-shadow: 0 2px 8px #4caf5022;
+        font-weight: 600;
+    }
+    .save-profile-button:hover {
+        background: linear-gradient(90deg, #388e3c 60%, #4caf50 100%);
+        box-shadow: 0 4px 16px #4caf5044;
+    }
+    .change-password-button, .delete-account-button {
+        border: none;
+        border-radius: 10px;
+        padding: .8rem 1.5rem;
+        font-size: 1.08rem;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        background: #f7ede3;
+        color: #a86f3c;
+        transition: background .2s, color .2s;
+    }
+    .change-password-button:hover {
+        background: #e0d6c3;
+        color: #7c5a3a;
+    }
+    .delete-account-button {
+        background: #ffeaea;
+        color: #d32f2f;
+    }
+    .delete-account-button:hover {
+        background: #ffd6d6;
+        color: #b71c1c;
+    }
+    @media (max-width: 900px) {
+        .dashboard-container {
+            flex-direction: column;
+        }
+        .sidebar {
+            width: 100%;
+            min-height: unset;
+            border-radius: 0 0 24px 24px;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 18px 8px;
+        }
+        .perfil-content-area {
+            padding: 24px 0;
+        }
+        .dashboard-header, .perfil-card {
+            max-width: 98vw;
+        }
+        .dashboard-header {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    @media (max-width: 700px) {
+        .perfil-card {
+            padding: 1.2rem .5rem;
+        }
+        .perfil-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .perfil-row .form-group[style*="grid-column"] {
+            grid-column: auto !important;
+        }
+    }
+    @media (min-width: 900px) {
+        .dashboard-header {
+            padding-left: 60px;
+        }
+        .perfil-card {
+            margin-left: 60px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar moderna e padronizada -->
+        <div class="sidebar">
+            <div class="user-profile">
+                <img id="profile-pic" src="../img/foto perfil/perfil 1.svg" alt="Foto do usuário" class="profile-pic">
+                <button class="change-pic-btn" onclick="openPicModal()" title="Alterar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <h3 id="username">Carregando...</h3>
+                <p id="user-email">Carregando...</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Início</span></a></li>
+                    <li><a href="progresso.html"><i class="fas fa-chart-line"></i> <span>Progresso</span></a></li>
+                    <li><a href="perfil.html" class="active"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+                </ul>
+            </nav>
+            <a href="#" class="logout-btn" onclick="redirectToIndex()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </div>
+        <div class="perfil-content-area">
+            <div class="perfil-center-container">
+                <header class="dashboard-header">
+                    <h1>Perfil do Usuário</h1>
+                    <p>Gerencie suas informações pessoais</p>
+                </header>
+                <div class="card perfil-card">
+                    <h2 style="text-align:center;margin-bottom:2rem;">Informações da Conta</h2>
+                    <form id="perfil-form" onsubmit="return salvarPerfil(event)">
+                        <div class="perfil-row">
+                            <div class="form-group" style="grid-column: 1 / span 2;">
+                                <label for="nome">Nome completo:</label>
+                                <input type="text" id="nome" name="nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="apelido">Apelido (opcional):</label>
+                                <input type="text" id="apelido" name="apelido" maxlength="20" placeholder="Como prefere ser chamado">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_nascimento">Data de nascimento:</label>
+                                <input type="date" id="data_nascimento" name="data_nascimento">
+                            </div>
+                            <div class="form-group" style="grid-column: 1 / span 2;">
+                                <label for="email">E-mail:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:1rem;justify-content:center;margin-top:2rem;">
+                            <button type="submit" class="save-profile-button">
+                                <i class="fas fa-save"></i> Salvar Alterações
+                            </button>
+                            <button type="button" class="change-password-button" onclick="window.location.href='alterar_senha.html'">
+                                <i class="fas fa-key"></i> Alterar Senha
+                            </button>
+                            <button type="button" class="delete-account-button" onclick="openDeleteModal()">
+                                <i class="fas fa-trash-alt"></i> Apagar Conta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para apagar conta -->
+    <div class="popup hidden" id="success-popup">
+        <div class="popup-content">
+            <h2>Sua conta será apagada!</h2>
+            <p>Ao apagar sua conta, todos os seus dados serão permanentemente removidos e não poderão ser recuperados.</p>
+            <button onclick="redirectToApagar()">OK</button>
+            <button onclick="closePopup()" class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal de foto de perfil -->
+    <div id="pic-modal" class="pic-modal hidden">
+        <div class="pic-modal-content">
+            <span class="close-pic-modal" onclick="closePicModal()">&times;</span>
+            <h3>Escolha sua foto de perfil</h3>
+            <div class="pic-options">
+                <img src="../img/foto perfil/perfil 1.svg" onclick="selectProfilePic('../img/foto perfil/perfil 1.svg')" alt="Perfil 1">
+                <img src="../img/foto perfil/perfil 2.svg" onclick="selectProfilePic('../img/foto perfil/perfil 2.svg')" alt="Perfil 2">
+                <img src="../img/foto perfil/perfil 3.svg" onclick="selectProfilePic('../img/foto perfil/perfil 3.svg')" alt="Perfil 3">
+                <img src="../img/foto perfil/perfil 4.svg" onclick="selectProfilePic('../img/foto perfil/perfil 4.svg')" alt="Perfil 4">
+                <img src="../img/foto perfil/perfil 5.svg" onclick="selectProfilePic('../img/foto perfil/perfil 5.svg')" alt="Perfil 5">
+                <img src="../img/foto perfil/perfil 6.svg" onclick="selectProfilePic('../img/foto perfil/perfil 6.svg')" alt="Perfil 6">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para validar senha antes de mostrar -->
+    <div class="popup hidden" id="senha-popup">
+        <div class="popup-content">
+            <h2>Confirme sua senha</h2>
+            <input type="password" id="senha-validacao" placeholder="Digite sua senha atual">
+            <button onclick="validarSenha()">Ver senha</button>
+            <button onclick="closeSenhaPopup()" class="btn-cancel">Cancelar</button>
+            <p id="senha-erro" style="color:red;display:none;margin-top:8px;">Senha incorreta!</p>
+        </div>
+    </div>
+
+    <script>
+    // Função para puxar dados do usuário (AJAX)
+    async function carregarUsuario() {
+        try {
+            const res = await fetch('../controllers/get_usuario.php');
+            const user = await res.json();
+            if (user.erro) {
+                document.getElementById('username').textContent = 'Não autenticado';
+                document.getElementById('user-email').textContent = '';
+                return;
+            }
+            if (user && user.nome && user.email) {
+                document.getElementById('nome').value = user.nome;
+                document.getElementById('email').value = user.email;
+                document.getElementById('apelido').value = user.apelido ? user.apelido : '';
+                document.getElementById('data_nascimento').value = user.data_nascimento ? user.data_nascimento : '';
+                // Sidebar: mostra apelido se existir, senão nome
+                document.getElementById('username').textContent = user.apelido && user.apelido.trim() !== '' ? user.apelido : user.nome;
+                document.getElementById('user-email').textContent = user.email;
+            }
+        } catch (e) {
+            document.getElementById('username').textContent = 'Erro ao carregar';
+            document.getElementById('user-email').textContent = '';
+        }
+    }
+
+    // Salvar alterações do perfil
+    async function salvarPerfil(event) {
+        event.preventDefault();
+        const nome = document.getElementById('nome').value.trim();
+        const apelido = document.getElementById('apelido').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const data_nascimento = document.getElementById('data_nascimento').value.trim();
+        const btn = document.querySelector('.save-profile-button');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+        try {
+            const res = await fetch('../controllers/atualizar_usuario.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({nome, apelido, email, data_nascimento})
+            });
+            const data = await res.json();
+            if (data.sucesso) {
+                alert('Perfil atualizado com sucesso!');
+                // Atualiza sidebar
+                document.getElementById('username').textContent = apelido !== '' ? apelido : nome;
+                document.getElementById('user-email').textContent = email;
+            } else {
+                alert(data.erro || 'Erro ao atualizar perfil.');
+            }
+        } catch (e) {
+            alert('Erro ao atualizar perfil.');
+        }
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
+        return false;
+    }
+
+    // Foto de perfil localStorage
+    function openPicModal() {
+        document.getElementById('pic-modal').classList.remove('hidden');
+    }
+    function closePicModal() {
+        document.getElementById('pic-modal').classList.add('hidden');
+    }
+    function selectProfilePic(src) {
+        document.getElementById('profile-pic').src = src;
+        localStorage.setItem('profilePic', src);
+        closePicModal();
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedPic = localStorage.getItem('profilePic');
+        if (savedPic) {
+            document.getElementById('profile-pic').src = savedPic;
+        }
+        carregarUsuario();
+    });
+
+    // Logout
+    function redirectToIndex() {
+        const confirmLogout = confirm("Você deseja mesmo sair da conta?");
+        if (confirmLogout) {
+            window.location.href = "index.php";
+        }
+    }
+
+    // Modal de apagar conta
+    function openDeleteModal() {
+        document.getElementById('success-popup').classList.remove('hidden');
+    }
+    function closePopup() {
+        document.getElementById('success-popup').classList.add('hidden');
+    }
+    function redirectToApagar() {
+        window.location.href = '../controllers/apagar_conta.php';
+    }
+
+    // Validar senha para mostrar
+    function abrirModalSenha() {
+        document.getElementById('senha-popup').classList.remove('hidden');
+        document.getElementById('senha-validacao').value = '';
+        document.getElementById('senha-erro').style.display = 'none';
+    }
+    function closeSenhaPopup() {
+        document.getElementById('senha-popup').classList.add('hidden');
+    }
+    async function validarSenha() {
+        const senhaDigitada = document.getElementById('senha-validacao').value;
+        const res = await fetch('../controllers/validar_senha.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({senha: senhaDigitada})
+        });
+        const data = await res.json();
+        if (data.sucesso && data.senha) {
+            document.getElementById('senha').type = 'text';
+            document.getElementById('senha').value = data.senha;
+            closeSenhaPopup();
+        } else {
+            document.getElementById('senha-erro').style.display = 'block';
+        }
+    }
+    </script>
+</body>
+</html>

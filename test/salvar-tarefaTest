@@ -1,0 +1,56 @@
+<?php
+// filepath: c:\xampp\htdocs\engenhariadesoftware\test\salvar_tarefasTest.php
+
+use PHPUnit\Framework\TestCase;
+
+class SalvarTarefasTest extends TestCase
+{
+    public function testSalvarTarefaComSucesso()
+    {
+        // Mock do PDO e do TarefaModel
+        $pdoMock = $this->createMock(PDO::class);
+        $tarefaModelMock = $this->getMockBuilder(TarefaModel::class)
+                                ->setConstructorArgs([$pdoMock])
+                                ->onlyMethods(['create'])
+                                ->getMock();
+
+        // Simula sucesso na criação da tarefa
+        $tarefaModelMock->expects($this->once())
+                        ->method('create')
+                        ->with('Título Teste', 'Descrição Teste', '2025-06-25 10:00:00', 1)
+                        ->willReturn(true);
+
+        // Simula sessão e POST
+        $_SESSION['usuario']['id'] = 1;
+        $_POST['titulo'] = 'Título Teste';
+        $_POST['descricao'] = 'Descrição Teste';
+        $_POST['data_vencimento'] = '2025-06-25 10:00:00';
+
+        // Substitui o modelo real pelo mock
+        // (Ajuste necessário no controlador para permitir injeção do mock)
+
+        // Captura a saída
+        ob_start();
+        require __DIR__ . '/../Daily_Planner/app/controllers/salvar_tarefa.php';
+        $output = ob_get_clean();
+
+        $this->assertStringContainsString('"success":true', $output);
+        $this->assertStringContainsString('Tarefa criada com sucesso', $output);
+    }
+
+    public function testSalvarTarefaSemTitulo()
+    {
+        // Simula sessão e POST sem título
+        $_SESSION['usuario']['id'] = 1;
+        $_POST['titulo'] = '';
+        $_POST['descricao'] = 'Descrição Teste';
+        $_POST['data_vencimento'] = '2025-06-25 10:00:00';
+
+        ob_start();
+        require __DIR__ . '/../Daily_Planner/app/controllers/salvar_tarefa.php';
+        $output = ob_get_clean();
+
+        $this->assertStringContainsString('"success":false', $output);
+        $this->assertStringContainsString('Título e data de vencimento completa (com hora) são obrigatórios', $output);
+    }
+}
