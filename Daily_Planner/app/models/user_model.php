@@ -62,7 +62,7 @@ class UserModel {
     // Métodos existentes mantidos conforme seu código original
     public function getUsuarioEmail($email) {
         try {
-            $query = "SELECT id, nome, email, apelido, senha, tipo, data_criacao FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
+            $query = "SELECT id, nome, email, senha, tipo, data_criacao FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();

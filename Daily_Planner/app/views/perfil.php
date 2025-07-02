@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensagem = editarSenhaUsuario($senhaAtual, $novaSenha);
         if ($mensagem === "Senha alterada com sucesso.") {
             session_destroy();
-            header("Location: login.php?senha_alterada=1");
+            header("Location: alterar_senha.php?sucesso=1");
             exit();
         }
     }

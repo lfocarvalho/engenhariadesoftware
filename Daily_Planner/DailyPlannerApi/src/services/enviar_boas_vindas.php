@@ -2,7 +2,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+
+require_once __DIR__ . '/../../vendor/autoload.php';;
 
 function enviarEmailBoasVindas($para_email, $para_nome, $url_do_site) {
     $mail = new PHPMailer(true);
@@ -22,10 +23,14 @@ function enviarEmailBoasVindas($para_email, $para_nome, $url_do_site) {
         $mail->isHTML(true);
         $mail->Subject = 'Bem-vindo(a) ao Daily Planner!';
         $mail->Body    = <<<HTML
-        <h2>Olá, {$para_nome}!</h2>
-        <p>Bem-vindo(a) ao Daily Planner!</p>
-        <a href="{$url_do_site}">Acessar o Site</a>
-        HTML;
+    <h2>Olá, {$para_nome}!</h2>
+    <p>Prezado(a) {$para_nome},</p>
+    <p>
+        É com grande satisfação que confirmamos a criação da sua conta no Daily Planner, sua nova central de produtividade.<br>
+        Nossa plataforma foi desenhada para ajudá-lo(a) a otimizar seu tempo, gerenciar tarefas e alcançar seus objetivos com máxima eficiência. A partir de agora, você tem as ferramentas necessárias para assumir o controle total da sua rotina!
+    </p>
+    <a href="{$url_do_site}">Acessar o Site</a>
+HTML;
 
         $mail->send();
         return true;
