@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["usuario"] = [
                 "id" => $usuario["id"],
                 "nome" => $usuario["nome"],
-                "apelido" => $usuario["apelido"] ?? "",
                 "email" => $usuario["email"],
                 "data_nascimento" => $usuario["data_nascimento"] ?? null,
                 "tipo" => $usuario["tipo"] ?? "usuario"

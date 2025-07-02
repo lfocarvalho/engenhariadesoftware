@@ -263,7 +263,7 @@ $usuario_id = $_SESSION['usuario']['id'] ?? null;
       <a href="#contato">Contato</a>
     </nav>
     <div>
-      <a href="../app/views/login.php" class="login-button">Login</a>
+      <a href="login.php" class="login-button">Login</a>
       <a href="cadastrar_usuario.php" class="register-button">Cadastre-se</a>
     </div>
   </header>

@@ -34,7 +34,7 @@
             </div>
             
             <button type="submit" class="login-button">ENTRAR</button>
-            <a href="#" class="forgot-password">Esqueci minha senha</a>
+            <a href="recuperar_senha.php" class="forgot-password">Esqueci minha senha</a>
         </form>
     </div>
 </body>

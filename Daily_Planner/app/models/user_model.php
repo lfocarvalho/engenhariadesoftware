@@ -62,7 +62,7 @@ class UserModel {
     // Métodos existentes mantidos conforme seu código original
     public function getUsuarioEmail($email) {
         try {
-            $query = "SELECT id, nome, email, apelido, senha, tipo, data_criacao FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
+            $query = "SELECT id, nome, email, senha, tipo, data_criacao FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
@@ -74,7 +74,7 @@ class UserModel {
     }
 
     public function getUsuarioId($id) {
-        $query = "SELECT id, nome, email, apelido, data_nascimento, senha, tipo, data_criacao FROM usuarios WHERE id = :id LIMIT 1";
+        $query = "SELECT id, nome, email, data_nascimento, senha, tipo, data_criacao FROM usuarios WHERE id = :id LIMIT 1";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -219,12 +219,11 @@ public function redefinirSenhaPorEmail(string $email, string $novaSenha): bool {
 
     public function atualizarDados($id, $nome, $email, $apelido, $data_nascimento) {
         try {
-            $sql = "UPDATE usuarios SET nome = :nome, email = :email, apelido = :apelido, data_nascimento = :data_nascimento WHERE id = :id";
+            $sql = "UPDATE usuarios SET nome = :nome, email = :email, data_nascimento = :data_nascimento WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':nome' => $nome,
                 ':email' => $email,
-                ':apelido' => $apelido,
                 ':data_nascimento' => $data_nascimento,
                 ':id' => $id
             ]);
